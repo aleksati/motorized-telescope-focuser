@@ -1,16 +1,30 @@
-import "./App.css";
 import React, { Component } from "react";
-import NavBar from "./components/navbar";
-import SideBar from "./components/sidebar";
+import Graph from "./components/Graph";
+//import SideBar from "./components/sidebar";
+import { TestData } from "./components/feeds.js";
+
+// this should be the "app interface".
 
 class App extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      feeds: TestData,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ feeds: TestData });
+  }
+
   render() {
-    console.log("hello");
     return (
-      <React.Fragment>
-        <SideBar />
-      </React.Fragment>
+      <Graph
+        data={this.state.feeds.data}
+        title={this.state.feeds.title}
+        color="#70CAD1"
+      />
     );
   }
 }
