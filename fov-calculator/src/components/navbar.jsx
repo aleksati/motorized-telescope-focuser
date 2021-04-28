@@ -4,11 +4,11 @@ class NavBar extends Component {
   state = {};
   render() {
     return (
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <a className="navbar-brand" href="#">
+      <nav className="navbar navbar-expand navbar-dark border-bottom border-secondary">
+        {/* <a className="navbar-brand" href="#">
           Moonwatcher
-        </a>
-        <button
+        </a> */}
+        {/* <button
           className="navbar-toggler"
           type="button"
           data-toggle="collapse"
@@ -18,7 +18,7 @@ class NavBar extends Component {
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon">YO</span>
-        </button>
+        </button> */}
 
         <div className="collapse navbar-collapse" id="navbarsExample02">
           <ul className="navbar-nav mr-auto">
@@ -28,11 +28,11 @@ class NavBar extends Component {
                 <span className="sr-only">(current)</span>
               </a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link" href="#">
                 Sky Tracker
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>
