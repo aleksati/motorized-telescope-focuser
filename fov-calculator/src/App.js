@@ -1,39 +1,36 @@
 import React, { Component } from "react";
-import Graph from "./components/graph";
+import LineChart from "./components/graph";
 //import SideBar from "./components/sidebar";
-import { TestData } from "./components/feeds.js";
-
 //import NavBar from "./components/navbar";
 import "./App.css";
 
 // FIRST - FIXED GRAPH SIZE!
 // SECOND - ADD IMAGE INN AND OUT OF GRAPH. THAT CAN CHANGE SIZE
-
 // THIRD - MAIN LOGIC
 // FOUTH - DESIGN
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
+  constructor() {
+    super();
     this.state = {
-      data: TestData,
+      userData: {
+        plotSize: 20,
+        plotDivisor: 6,
+        axisLabel: "Minutes of arc",
+      },
     };
   }
 
   componentDidMount() {
-    this.setState({ data: TestData });
+    //this.setState({ plotData: datasets });
   }
 
   render() {
     return (
       <div className="App">
         {/* <SideBar /> */}
-        <div className="chart-container">
-          <Graph
-            data={this.state.data.datasets}
-            labels={this.state.data.labels}
-          />
+        <div id="chart-container">
+          <LineChart key="PlanetGraph" userdata={this.state.userData} />
         </div>
       </div>
     );

@@ -1,82 +1,108 @@
 import React, { Component } from "react";
-import Chart from "chart.js/auto";
+import { Line } from "react-chartjs-2";
+import jupiterLogo from "./../img/jupiter2.png";
 
-class Graph extends Component {
-  constructor(props) {
-    super(props);
-    this.chartRef = React.createRef();
+class LineChart extends Component {
+  // options changes underway.
+  // input stuff that changes the Plotting interface should be set in the state
+
+  constructor() {
+    super();
+    this.state = {
+      planets: [
+        {
+          label: "Mars",
+          data: [{ x: 1.5, y: 10 }],
+          backgroundColor: "rgb(75, 192, 192)",
+          hidden: true,
+        },
+        {
+          label: "Jupiter",
+          data: [{ x: 1.5, y: 10 }],
+          backgroundColor: "rgb(255, 255, 255)",
+          hidden: false,
+          pointStyle: "circle",
+        },
+      ],
+    };
   }
 
   componentDidMount() {
-    this.myChart = new Chart(this.chartRef.current, {
-      type: "line",
-      data: {
-        datasets: this.props.data,
+    // get canvas height..
+    const chartHeight = document.getElementById("chart-container").clientHeight;
+    const jupiterImg = new Image(chartHeight - 100, chartHeight - 100);
+    jupiterImg.src = jupiterLogo;
+
+    // update state
+    const newPlanets = [...this.state.planets];
+    newPlanets[1].pointStyle = jupiterImg;
+    newPlanets[1].data = [
+      {
+        x: this.props.userdata.plotSize / this.props.userdata.plotDivisor / 2,
+        y: this.props.userdata.plotSize / 2,
       },
+    ];
 
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
+    this.setState({ planets: newPlanets });
 
-        // plugins: {
-        //   legend: {
-        //     onClick: this.legendEvent,
-        //   },
-        // },
-
-        scales: {
-          y: {
-            min: 0,
-            max: 20,
-            display: true,
-            title: {
-              display: true,
-              text: "minutes of Arc",
-            },
-            ticks: {
-              stepSize: 1,
-              callback: function (item, index) {
-                return index % 6 === 0 ? item / 6 : "";
-              },
-            },
-          },
-          x: {
-            min: 0,
-            display: true,
-            labels: Array.from({ length: 20 }, (_, i) => i / 6),
-            title: {
-              display: true,
-              text: "minutes of Arc",
-            },
-            ticks: {
-              callback: function (item, index) {
-                return index % 6 === 0 ? this.getLabelForValue(item) : "";
-              },
-            },
-          },
-        },
-      },
-    });
+    // server call to update this.state. mostly the size of the planets.
   }
 
   render() {
     return (
-      <canvas ref={this.chartRef} className="border border-secondary m-2" />
+      <Line
+        className="border border-secondary m-2"
+        data={{
+          datasets: this.state.planets,
+        }}
+        options={this.getOptions(
+          this.props.userdata.plotSize,
+          this.props.userdata.plotDivisor,
+          this.props.userdata.axisLabel
+        )}
+        ref={this.chartRef}
+      />
     );
   }
+
+  getOptions = (size, divisor, label) => {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+
+      scales: {
+        y: {
+          min: 0,
+          max: size,
+          display: true,
+          title: {
+            display: true,
+            text: label,
+          },
+          ticks: {
+            stepSize: 1,
+            callback: function (item, index) {
+              return index % divisor === 0 ? item / divisor : "";
+            },
+          },
+        },
+        x: {
+          min: 0,
+          display: true,
+          labels: Array.from({ length: size }, (_, i) => i / divisor),
+          title: {
+            display: true,
+            text: label,
+          },
+          ticks: {
+            callback: function (item, index) {
+              return index % divisor === 0 ? this.getLabelForValue(item) : "";
+            },
+          },
+        },
+      },
+    };
+  };
 }
 
-export default Graph;
-
-//   legendEvent = (e, legendItem, legend) => {
-//     // which legend is activated.
-//     var index = legendItem.datasetIndex;
-//     const ci = legend.chart;
-//     if (ci.isDatasetVisible(index)) {
-//       ci.hide(index);
-//       legendItem.hidden = true;
-//     } else {
-//       ci.show(index);
-//       legendItem.hidden = false;
-//     }
-//   };
+export default LineChart;
