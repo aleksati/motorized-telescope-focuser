@@ -2,7 +2,18 @@ import React, { Component } from "react";
 import "./sidebar-placeholder-anim.css";
 
 class SideBar extends Component {
-  state = {};
+  state = {
+    apature: "",
+    flength: "",
+    chipSize: "",
+    sensorWidth: "",
+    sensorHeight: "",
+  };
+
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: Number(event.target.value) });
+  };
+
   render() {
     return (
       <nav className="navbar navbar-expand navbar-dark">
@@ -12,25 +23,31 @@ class SideBar extends Component {
             <div className="form-label-group">
               <input
                 type="number"
-                id="telescopeApature"
-                className="form-control"
+                id="apature"
+                name="apature"
+                onChange={this.handleChange}
+                value={this.state.apature}
                 placeholder="Apature (mm)"
+                className="form-control"
                 required
                 autoFocus
               />
-              <label htmlFor="telescopeApature">Apature (mm)</label>
+              <label htmlFor="apature">Apature (mm)</label>
             </div>
 
             <div className="form-label-group ml-2">
               <input
                 type="number"
-                id="telescopeFL"
+                id="flength"
+                name="flength"
+                onChange={this.handleChange}
+                value={this.state.flength}
                 className="form-control"
                 placeholder="Focal Length (mm)"
                 required
                 autoFocus
               />
-              <label htmlFor="telescopeFL">Focal Length (mm)</label>
+              <label htmlFor="flength">Focal Length (mm)</label>
             </div>
           </div>
         </div>
@@ -41,37 +58,46 @@ class SideBar extends Component {
             <div className="form-label-group">
               <input
                 type="number"
-                id="cameraSensorSize"
+                id="chipSize"
+                name="chipSize"
+                onChange={this.handleChange}
+                value={this.state.chipSize}
                 className="form-control"
-                placeholder="Pixel Size (microns)"
+                placeholder="Chip Size (mm)"
                 required
                 autoFocus
               />
-              <label htmlFor="cameraSensorSize">Pixel Size (microns)</label>
+              <label htmlFor="chipSize">Chip Size (mm)</label>
             </div>
 
             <div className="form-label-group ml-2">
               <input
                 type="number"
-                id="cameraSensorWidth"
+                id="sensorWidth"
+                name="sensorWidth"
+                onChange={this.handleChange}
+                value={this.state.sensorWidth}
                 className="form-control"
                 placeholder="Width (px)"
                 required
                 autoFocus
               />
-              <label htmlFor="cameraSensorWidth"> Width (px)</label>
+              <label htmlFor="sensorWidth">Width (px)</label>
             </div>
 
             <div className="form-label-group ml-2">
               <input
                 type="number"
-                id="cameraSensorHeight"
+                id="sensorHeight"
+                name="sensorHeight"
+                onChange={this.handleChange}
+                value={this.state.sensorHeight}
                 className="form-control"
                 placeholder="Heigth (px)"
                 required
                 autoFocus
               />
-              <label htmlFor="cameraSensorHeight">Height (px)</label>
+              <label htmlFor="sensorHeight">Height (px)</label>
             </div>
           </div>
         </div>
@@ -81,8 +107,9 @@ class SideBar extends Component {
             type="button"
             id="goButton"
             className="btn btn-primary btn-lg"
+            onClick={() => this.props.onButton(this.state)}
           >
-            Setup Plot
+            Setup FOV
           </button>
         </div>
       </nav>

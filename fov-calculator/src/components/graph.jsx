@@ -3,49 +3,50 @@ import { Line } from "react-chartjs-2";
 import jupiterLogo from "./../img/jupiter2.png";
 
 class LineChart extends Component {
-  // options changes underway.
-  // input stuff that changes the Plotting interface should be set in the state
-
   constructor() {
     super();
     this.state = {
-      planets: [
-        {
-          label: "Mars",
-          data: [{ x: 1.5, y: 10 }],
-          backgroundColor: "rgb(75, 192, 192)",
-          hidden: true,
-        },
+      planetData: [
         {
           label: "Jupiter",
-          data: [{ x: 1.5, y: 10 }],
+          data: [{ x: 50, y: 20 }],
           backgroundColor: "rgb(255, 255, 255)",
-          hidden: false,
-          pointStyle: "circle",
+          hidden: true,
+          pointStyle: new Image(20, 20),
+        },
+      ],
+      planetAU: [
+        {
+          mars: 0,
+          jupiter: 0,
+          venus: 0,
+          mercury: 0,
+          saturn: 0,
+          uranus: 0,
+          neptune: 0,
         },
       ],
     };
   }
 
+  //APIcall = () => {
+  // gather the AU data from server.
+  // set state.
+  //}
+
   componentDidMount() {
-    // get canvas height..
-    const chartHeight = document.getElementById("chart-container").clientHeight;
-    const jupiterImg = new Image(chartHeight - 100, chartHeight - 100);
-    jupiterImg.src = jupiterLogo;
+    // Make a call to the server to get the planet size in AU. set data in setState.
+    // get canvas height.?
+    //const chartHeight = document.getElementById("chart-container").clientHeight;
+    //this.setState({ planets: newPlanets });
+  }
 
-    // update state
-    const newPlanets = [...this.state.planets];
-    newPlanets[1].pointStyle = jupiterImg;
-    newPlanets[1].data = [
-      {
-        x: this.props.userdata.plotSize / this.props.userdata.plotDivisor / 2,
-        y: this.props.userdata.plotSize / 2,
-      },
-    ];
-
-    this.setState({ planets: newPlanets });
-
-    // server call to update this.state. mostly the size of the planets.
+  componentDidUpdate() {
+    // Here, a user has requested a new plot. So new PROPS have come inn.
+    // Call function(s) to resize all planets based on the current props data.
+    // Also resize the position in the plot.
+    //let img = this.state.planetData[0].pointStyle;
+    //img.src = jupiterLogo;
   }
 
   render() {
@@ -53,7 +54,7 @@ class LineChart extends Component {
       <Line
         className="border border-secondary m-2"
         data={{
-          datasets: this.state.planets,
+          datasets: this.state.planetData,
         }}
         options={this.getOptions(
           this.props.userdata.plotSize,
