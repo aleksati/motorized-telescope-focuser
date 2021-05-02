@@ -38,7 +38,7 @@ class App extends Component {
     //console.log(this.state.userData);
   }
 
-  handleButton = (item) => {
+  handleSubmit = (item) => {
     let newUserData = this.calculateFOV(item);
     this.setState({ userData: newUserData });
   };
@@ -47,7 +47,7 @@ class App extends Component {
     //console.log("App rendered!");
     return (
       <div className="App">
-        <SideBar onButton={this.handleButton} />
+        <SideBar onSubmit={this.handleSubmit} />
         <div id="chart-container">
           <LineChart key="PlanetGraph" userdata={this.state.userData} />
         </div>
@@ -63,7 +63,8 @@ class App extends Component {
         plotSize: Math.round(FOV * 57.3 * 6),
         plotDivisor: 6,
         chipDim: [newData.sensorWidth, newData.sensorHeight],
-        axisLabel: "Degrees",
+        axisLabel:
+          "Degrees " + newData.sensorWidth + "x" + newData.sensorHeight,
       };
     }
 
@@ -73,7 +74,8 @@ class App extends Component {
         plotSize: Math.round(FOV * 3438 * 6),
         plotDivisor: 6,
         chipDim: [newData.sensorWidth, newData.sensorHeight],
-        axisLabel: "Minutes of Arc",
+        axisLabel:
+          "Minutes of Arc " + newData.sensorWidth + "x" + newData.sensorHeight,
       };
     }
 
@@ -82,7 +84,11 @@ class App extends Component {
       plotSize: Math.round(FOV * 206265),
       plotDivisor: 1,
       chipDim: [newData.sensorWidth, newData.sensorHeight],
-      axisLabel: "Seconds of arc of Arc",
+      axisLabel:
+        "Seconds of arc of Arc " +
+        newData.sensorWidth +
+        "x" +
+        newData.sensorHeight,
     };
   }
 }

@@ -11,12 +11,21 @@ class SideBar extends Component {
   };
 
   handleChange = (event) => {
-    this.setState({ [event.target.name]: Number(event.target.value) });
+    // if its 0, we change the value to an empty string
+    let value = Number(event.target.value);
+    if (value === 0) value = "";
+    this.setState({ [event.target.name]: value });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.onSubmit(this.state);
   };
 
   render() {
     return (
-      <nav className="navbar navbar-expand navbar-dark">
+      //   <nav className="navbar navbar-expand navbar-dark">
+      <form className="d-flex" onSubmit={this.handleSubmit}>
         <div className="d-block text-white border border-secondary rounded p-2">
           <h4>Telescope</h4>
           <div className="d-flex">
@@ -104,15 +113,14 @@ class SideBar extends Component {
 
         <div className="d-flex ml-4">
           <button
-            type="button"
+            type="submit"
             id="goButton"
             className="btn btn-primary btn-lg"
-            onClick={() => this.props.onButton(this.state)}
           >
             Setup FOV
           </button>
         </div>
-      </nav>
+      </form>
     );
   }
 }
