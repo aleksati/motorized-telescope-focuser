@@ -61,7 +61,6 @@ class LineChart extends Component {
           this.props.userdata.plotDivisor,
           this.props.userdata.axisLabel
         )}
-        ref={this.chartRef}
       />
     );
   }
