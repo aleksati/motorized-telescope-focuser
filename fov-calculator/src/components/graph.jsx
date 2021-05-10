@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import { Line } from "react-chartjs-2";
-//import VENUS_PNG from "./../img/venus-transparent.png";
-//import MERCURY_PNG from "./../img/mercury-transparent.png";
-//import MARS_PNG from "./../img/mars-transparent.png";
-//import JUPITER_PNG from "./../img/jupiter-transparent.png";
-//import SATURN_PNG from "./../img/saturn-transparent.png";
-//import URNAUS_PNG from "./../img/uranus-transparent.png";
-//import NEPTUNE_PNG from "./../img/neptune-transparent.png";
-//import MOON_PNG from "./../img/moon-transparent.png";
+import IMAGES from "./img/images.js";
 
 class LineChart extends Component {
   constructor() {
@@ -16,7 +9,14 @@ class LineChart extends Component {
       planetData: [
         {
           label: "Jupiter",
-          data: [{ x: 3, y: 2 }],
+          data: [{ x: 1.5, y: 5 }],
+          backgroundColor: "rgb(255, 255, 255)",
+          hidden: true,
+          pointStyle: new Image(50, 50),
+        },
+        {
+          label: "Mars",
+          data: [{ x: 1.5, y: 5 }],
           backgroundColor: "rgb(255, 255, 255)",
           hidden: true,
           pointStyle: new Image(20, 20),
@@ -41,15 +41,14 @@ class LineChart extends Component {
   // set state.
   //}
 
-  getPlanetPNG = () => {
-    const reqPngs = require.context("./../img", true, /\.png$/);
-    const paths = reqPngs.keys();
-    const images = paths.map((path) => reqPngs(path));
-    console.log(images);
-  };
-
   componentDidMount() {
-    this.getPlanetPNG();
+    let img = this.state.planetData[0].pointStyle;
+    img.src = IMAGES.jupiter;
+
+    let test = this.state.planetData[0].label;
+
+    console.log(IMAGES[test]);
+
     // Make a call to the server to get the planet size in AU. set data in setState.
     // get canvas height.?
     //const chartHeight = document.getElementById("chart-container").clientHeight;
@@ -60,8 +59,6 @@ class LineChart extends Component {
     // Here, a user has requested a new plot. So new PROPS have come inn.
     // Call function(s) to resize all planets based on the current props data.
     // Also resize the position in the plot.
-    //let img = this.state.planetData[0].pointStyle;
-    //img.src = this.state.planetIMG.id
   }
 
   render() {
@@ -89,8 +86,8 @@ class LineChart extends Component {
       scales: {
         y: {
           min: 0,
-          max: sizeY,
           display: true,
+          max: sizeY,
           title: {
             display: true,
             text: label,
