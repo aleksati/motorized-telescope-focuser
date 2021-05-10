@@ -7,19 +7,26 @@ import "./App.css";
 // TO DO:
 
 // MAKE USER SETTINGS CONTROL FOV GRAPH SIZE.
-// make the XY dim control the aspect ratio of the plot
 
 // IMPORT ALL IMAGES TO GRAPH
 // MAKE IMAGE RESIZE WITH BROWSER RESETTING.
 
 // MAKE A SERVER.
 
+// SWITCH FROM CAMERA MODE TO VIEWING MODE.
+
+// A viewer under the form which states the:
+// Focal length
+// Aspect Ratio
+// How many pixels per unit of measure.
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
       userData: {
-        plotSize: 20,
+        plotSizeX: 20,
+        plotSizeY: 10,
         plotDivisor: 6,
         chipDim: [640, 420],
         axisLabel: "Minutes of arc",

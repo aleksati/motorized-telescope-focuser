@@ -7,7 +7,7 @@ class SideBar extends Component {
   state = {
     apature: "",
     flength: "",
-    chipSize: "",
+    pixelSize: "",
     sensorWidth: "",
     sensorHeight: "",
   };
@@ -70,16 +70,16 @@ class SideBar extends Component {
             <div className="form-label-group">
               <input
                 type="number"
-                id="chipSize"
-                name="chipSize"
+                id="pixelSize"
+                name="pixelSize"
                 onChange={this.handleChange}
-                value={this.state.chipSize}
+                value={this.state.pixelSize}
                 className="form-control"
-                placeholder="Chip Size (mm)"
+                placeholder="Pixel Size (μm)"
                 required
                 autoFocus
               />
-              <label htmlFor="chipSize">Chip Size (mm)</label>
+              <label htmlFor="pixelSize">Pixel Size (μm)</label>
             </div>
 
             <div className="form-label-group ml-2">
@@ -128,12 +128,17 @@ class SideBar extends Component {
   }
 
   calculateFOV = () => {
-    let FOV = this.state.chipSize / this.state.flength;
+    const chipSizeX = (this.state.pixelSize / 1000) * this.state.sensorWidth;
+    const chipSizeY = (this.state.pixelSize / 1000) * this.state.sensorHeight;
 
-    // if the total size is more than 2 degrees, we choose degrees
-    if (FOV * 57.3 >= 2) {
+    const FOV_X = chipSizeX / this.state.flength;
+    const FOV_Y = chipSizeY / this.state.flength;
+
+    // if the width is more than 2 degrees, we choose degrees
+    if (FOV_X * 57.3 >= 2) {
       return {
-        plotSize: Math.round(FOV * 57.3 * 6),
+        plotSizeX: Math.round(FOV_X * 57.3 * 6),
+        plotSizeY: Math.round(FOV_Y * 57.3 * 6),
         plotDivisor: 6,
         chipDim: [this.state.sensorWidth, this.state.sensorHeight],
         axisLabel: "Degrees",
@@ -141,9 +146,10 @@ class SideBar extends Component {
     }
 
     // if the total size is more than 2 arc minutes, we choose arc minutes.
-    if (FOV * 3438 >= 2) {
+    if (FOV_X * 3438 >= 2) {
       return {
-        plotSize: Math.round(FOV * 3438 * 6),
+        plotSizeX: Math.round(FOV_X * 3438 * 6),
+        plotSizeY: Math.round(FOV_Y * 3438 * 6),
         plotDivisor: 6,
         chipDim: [this.state.sensorWidth, this.state.sensorHeight],
         axisLabel: "Minutes of Arc",
@@ -152,7 +158,8 @@ class SideBar extends Component {
 
     // if the total size is more than 2 arc minutes, we choose arc seconds
     return {
-      plotSize: Math.round(FOV * 206265),
+      plotSizeX: Math.round(FOV_X * 206265),
+      plotSizeY: Math.round(FOV_Y * 206265),
       plotDivisor: 1,
       chipDim: [this.state.sensorWidth, this.state.sensorHeight],
       axisLabel: "Seconds of Arc",

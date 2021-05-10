@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { Line } from "react-chartjs-2";
-import jupiterLogo from "./../img/jupiter2.png";
+//import VENUS_PNG from "./../img/venus-transparent.png";
+//import MERCURY_PNG from "./../img/mercury-transparent.png";
+//import MARS_PNG from "./../img/mars-transparent.png";
+//import JUPITER_PNG from "./../img/jupiter-transparent.png";
+//import SATURN_PNG from "./../img/saturn-transparent.png";
+//import URNAUS_PNG from "./../img/uranus-transparent.png";
+//import NEPTUNE_PNG from "./../img/neptune-transparent.png";
+//import MOON_PNG from "./../img/moon-transparent.png";
 
 class LineChart extends Component {
   constructor() {
@@ -9,7 +16,7 @@ class LineChart extends Component {
       planetData: [
         {
           label: "Jupiter",
-          data: [{ x: 50, y: 20 }],
+          data: [{ x: 3, y: 2 }],
           backgroundColor: "rgb(255, 255, 255)",
           hidden: true,
           pointStyle: new Image(20, 20),
@@ -34,7 +41,15 @@ class LineChart extends Component {
   // set state.
   //}
 
+  getPlanetPNG = () => {
+    const reqPngs = require.context("./../img", true, /\.png$/);
+    const paths = reqPngs.keys();
+    const images = paths.map((path) => reqPngs(path));
+    console.log(images);
+  };
+
   componentDidMount() {
+    this.getPlanetPNG();
     // Make a call to the server to get the planet size in AU. set data in setState.
     // get canvas height.?
     //const chartHeight = document.getElementById("chart-container").clientHeight;
@@ -46,7 +61,7 @@ class LineChart extends Component {
     // Call function(s) to resize all planets based on the current props data.
     // Also resize the position in the plot.
     //let img = this.state.planetData[0].pointStyle;
-    //img.src = jupiterLogo;
+    //img.src = this.state.planetIMG.id
   }
 
   render() {
@@ -57,7 +72,8 @@ class LineChart extends Component {
           datasets: this.state.planetData,
         }}
         options={this.getOptions(
-          this.props.userdata.plotSize,
+          this.props.userdata.plotSizeX,
+          this.props.userdata.plotSizeY,
           this.props.userdata.plotDivisor,
           this.props.userdata.axisLabel
         )}
@@ -65,15 +81,15 @@ class LineChart extends Component {
     );
   }
 
-  getOptions = (size, divisor, label) => {
+  getOptions = (sizeX, sizeY, divisor, label) => {
     return {
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
 
       scales: {
         y: {
           min: 0,
-          max: size,
+          max: sizeY,
           display: true,
           title: {
             display: true,
@@ -89,7 +105,7 @@ class LineChart extends Component {
         x: {
           min: 0,
           display: true,
-          labels: Array.from({ length: size }, (_, i) => i / divisor),
+          labels: Array.from({ length: sizeX }, (_, i) => i / divisor),
           title: {
             display: true,
             text: label,
