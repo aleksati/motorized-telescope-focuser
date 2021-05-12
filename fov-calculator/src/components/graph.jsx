@@ -9,14 +9,14 @@ class LineChart extends Component {
       planetData: [
         {
           label: "Jupiter",
-          data: [{ x: 1.5, y: 5 }],
+          data: [{ x: 1.3, y: 5 }],
           backgroundColor: "rgb(255, 255, 255)",
           hidden: true,
           pointStyle: new Image(50, 50),
         },
         {
           label: "Mars",
-          data: [{ x: 1.5, y: 5 }],
+          data: [{ x: 1.3, y: 5 }],
           backgroundColor: "rgb(255, 255, 255)",
           hidden: true,
           pointStyle: new Image(20, 20),
