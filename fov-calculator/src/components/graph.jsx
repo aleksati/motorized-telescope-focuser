@@ -6,7 +6,8 @@ class LineChart extends Component {
   constructor() {
     super();
     this.state = {
-      planetData: [
+      planetdata: [
+        // move this in the App state, eventually.
         {
           label: "Jupiter",
           data: [{ x: 1.3, y: 5 }],
@@ -22,7 +23,7 @@ class LineChart extends Component {
           pointStyle: new Image(20, 20),
         },
       ],
-      planetAU: [
+      planetau: [
         {
           mars: 0,
           jupiter: 0,
@@ -42,10 +43,10 @@ class LineChart extends Component {
   //}
 
   componentDidMount() {
-    let img = this.state.planetData[0].pointStyle;
+    let img = this.state.planetdata[0].pointStyle;
     img.src = IMAGES.jupiter;
 
-    let test = this.state.planetData[0].label;
+    let test = this.state.planetdata[0].label;
 
     console.log(IMAGES[test]);
 
@@ -59,23 +60,6 @@ class LineChart extends Component {
     // Here, a user has requested a new plot. So new PROPS have come inn.
     // Call function(s) to resize all planets based on the current props data.
     // Also resize the position in the plot.
-  }
-
-  render() {
-    return (
-      <Line
-        className="border border-secondary m-2"
-        data={{
-          datasets: this.state.planetData,
-        }}
-        options={this.getOptions(
-          this.props.userdata.plotSizeX,
-          this.props.userdata.plotSizeY,
-          this.props.userdata.plotDivisor,
-          this.props.userdata.axisLabel
-        )}
-      />
-    );
   }
 
   getOptions = (sizeX, sizeY, divisor, label) => {
@@ -116,6 +100,23 @@ class LineChart extends Component {
       },
     };
   };
+
+  render() {
+    return (
+      <Line
+        className="border border-secondary m-2"
+        data={{
+          datasets: this.state.planetdata,
+        }}
+        options={this.getOptions(
+          this.props.chartinfo.plotSizeX,
+          this.props.chartinfo.plotSizeY,
+          this.props.chartinfo.plotDivisor,
+          this.props.chartinfo.axisLabel
+        )}
+      />
+    );
+  }
 }
 
 export default LineChart;

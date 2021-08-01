@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import "./sidebar-placeholder-anim.css";
+//import "./sidebar-placeholder-anim.css";
 
-// check react homepage for other forms..
-
-class SideBar extends Component {
+class Menubar1 extends Component {
   state = {
     apature: "",
     flength: "",
@@ -167,4 +165,4 @@ class SideBar extends Component {
   };
 }
 
-export default SideBar;
+export default Menubar1;
