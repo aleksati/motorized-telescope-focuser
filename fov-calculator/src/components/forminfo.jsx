@@ -1,9 +1,9 @@
 import React from "react";
 
-const InputSection = (props) => {
+const FormInfo = (props) => {
   return (
     <div className="form-group border border-white rounded m-2">
-      <h2 className="ml-2 mt-1 text-light">{props.title}</h2>
+      <h2 className="ml-2 mt-2 text-light">{props.title}</h2>
       <div className="d-flex">
         {props.items.map((item) => {
           return (
@@ -33,4 +33,11 @@ const InputSection = (props) => {
   );
 };
 
-export default InputSection;
+// Here i Want:
+// A viewer under the form which states the:
+// Focal Ratio
+// Aspect Ratio of the camera.
+// How many pixels per unit of measure.
+// Grid switch
+
+export default FormInfo;

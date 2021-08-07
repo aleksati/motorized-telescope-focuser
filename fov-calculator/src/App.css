@@ -11,6 +11,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.app-font {
+  font-family: "Alata", sans-serif;
+  font-weight: 300;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -19,15 +24,15 @@ code {
 .App {
   height: 100vh;
   width: 100vw;
-  background-color: #353333;
+  /* background-color: #353333; */
+  background-color: #000000;
 }
 
-#chart-container {
-  position: relative;
+/* #chart-container {
   height: 80%;
   width: 80%;
   display: flex;
   flex-grow: 1;
-  /* border: 2px solid black;
-  border-radius: 0.25rem; */
-}
+  border: 2px solid black;
+  border-radius: 0.25rem;
+} */

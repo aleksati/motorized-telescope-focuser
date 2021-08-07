@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Line } from "react-chartjs-2";
+import { isCompositeComponentWithType } from "react-dom/test-utils";
 import IMAGES from "./img/images.js";
 
 class LineChart extends Component {
@@ -48,7 +49,7 @@ class LineChart extends Component {
 
     let test = this.state.planetdata[0].label;
 
-    console.log(IMAGES[test]);
+    //console.log(IMAGES[test]);
 
     // Make a call to the server to get the planet size in AU. set data in setState.
     // get canvas height.?
@@ -65,18 +66,25 @@ class LineChart extends Component {
   getOptions = (sizeX, sizeY, divisor, label) => {
     return {
       responsive: true,
-      maintainAspectRatio: true,
+      //maintainAspectRatio: true,
 
       scales: {
         y: {
           min: 0,
           display: true,
           max: sizeY,
+          grid: {
+            //borderColor: "white",
+            color: "grey",
+            tickColor: "black",
+          },
           title: {
+            color: "white",
             display: true,
             text: label,
           },
           ticks: {
+            color: "white",
             stepSize: 1,
             callback: function (item, index) {
               return index % divisor === 0 ? item / divisor : "";
@@ -86,12 +94,19 @@ class LineChart extends Component {
         x: {
           min: 0,
           display: true,
+          grid: {
+            //borderColor: "white",
+            color: "grey",
+            tickColor: "black",
+          },
           labels: Array.from({ length: sizeX }, (_, i) => i / divisor),
           title: {
             display: true,
+            color: "white",
             text: label,
           },
           ticks: {
+            color: "white",
             callback: function (item, index) {
               return index % divisor === 0 ? this.getLabelForValue(item) : "";
             },
