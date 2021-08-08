@@ -1,201 +1,61 @@
-import React, { Component } from "react";
+import React from "react";
 import InputSection from "./inputsection.jsx";
-import FormInfo from "./forminfo";
-import { getFormDataInfo, camChartSize, eyepieceChartSize } from "./utils.js";
 
-class Form extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      formdata: {
-        aperture: {
-          ref: "aperture",
-          value: "",
-          required: true,
-          type: "number",
-          name: "Aperture",
-          unit: "mm",
-        },
-        focallength: {
-          ref: "focallength",
-          value: "",
-          required: true,
-          type: "number",
-          name: "Focal Length",
-          unit: "mm",
-        },
-        barlow: {
-          ref: "barlow",
-          value: "",
-          required: false,
-          type: "number",
-          name: "Barlow",
-          unit: "x",
-        },
-        pixelsize: {
-          ref: "pixelsize",
-          value: "",
-          required: true,
-          type: "number",
-          name: "Pixel Size",
-          unit: "μm²",
-        },
-        resolutionx: {
-          ref: "resolutionx",
-          value: "",
-          required: true,
-          type: "number",
-          name: "Res (X)",
-          unit: "px",
-        },
-        resolutiony: {
-          ref: "resolutiony",
-          value: "",
-          required: true,
-          type: "number",
-          name: "Res (Y)",
-          unit: "px",
-        },
-        eyepiecefocallength: {
-          ref: "eyepiecefocallength",
-          value: "",
-          required: true,
-          type: "number",
-          name: "Focal Length",
-          unit: "mm",
-        },
-        eyepiecefov: {
-          ref: "eyepiecefov",
-          value: "",
-          required: false,
-          type: "number",
-          name: "FOV",
-          unit: "°",
-        },
-      },
-      formdatainfo: {
-        focalratio: {
-          value: "",
-          ref: "focalratio",
-          name: "Focal Ratio",
-          type: "number",
-          unit: "",
-        },
-        aspectratio: {
-          value: "",
-          ref: "aspectratio",
-          name: "Aspect Ratio",
-          type: "number",
-          unit: "",
-        },
-        pxperunit: {
-          value: "",
-          ref: "pxperunit",
-          name: "Pixels Per Unit Measure",
-          unit: "",
-        },
-      },
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  SubmitBtnColor = () => {
+const Form = (props) => {
+  const SubmitBtnColor = () => {
     let className = "btn m-2 btn-";
-    className += this.props.formswitch ? "primary" : "success";
+    className += props.formswitch ? "primary" : "success";
     return className;
   };
 
-  inputAddonColor = () => {
+  const inputAddonColor = () => {
     let className = "input-group-text text-light mr-2 bg-";
-    className += this.props.formswitch ? "primary" : "success";
+    className += props.formswitch ? "primary" : "success";
     return className;
   };
 
-  handleChange(e) {
-    let newValue = e.target.value;
-    let itemRef = e.target.id;
-    let stateCopy = { ...this.state.formdata };
-    let itemCopy = { ...stateCopy[itemRef] };
-    itemCopy.value = newValue;
-    stateCopy[itemRef] = itemCopy;
-    this.setState({ formdata: stateCopy });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-
-    // update the chart size and config
-    let newchartinfo = this.props.formswitch
-      ? eyepieceChartSize(this.state.formdata)
-      : camChartSize(this.state.formdata);
-    this.props.onChartinfo(newchartinfo);
-
-    // update the form data info
-    let newformdatainfo = getFormDataInfo(this.state.formdata);
-    this.setState({ formdatainfo: newformdatainfo });
-  }
-
-  getCamSection = () => {
+  const getCamSection = () => {
     return (
       <InputSection
         title="Camera"
         items={[
-          this.state.formdata.pixelsize,
-          this.state.formdata.resolutionx,
-          this.state.formdata.resolutiony,
+          props.formdata.pixelsize,
+          props.formdata.resolutionx,
+          props.formdata.resolutiony,
         ]}
-        addoncolor={this.inputAddonColor()}
-        onChange={this.handleChange}
+        addoncolor={inputAddonColor()}
+        onChange={props.onChange}
       />
     );
   };
 
-  getEyeSection = () => {
+  const getEyeSection = () => {
     return (
       <InputSection
         title="Eyepiece"
-        items={[
-          this.state.formdata.eyepiecefocallength,
-          this.state.formdata.eyepiecefov,
-        ]}
-        addoncolor={this.inputAddonColor()}
-        onChange={this.handleChange}
+        items={[props.formdata.eyepiecefocallength, props.formdata.eyepiecefov]}
+        addoncolor={inputAddonColor()}
+        onChange={props.onChange}
       />
     );
   };
 
-  render() {
-    return (
-      <div>
-        <div className="row">
-          <form className="d-flex" onSubmit={this.handleSubmit}>
-            <InputSection
-              title="Telescope"
-              items={[
-                this.state.formdata.aperture,
-                this.state.formdata.focallength,
-                this.state.formdata.barlow,
-              ]}
-              onChange={this.handleChange}
-              addoncolor={this.inputAddonColor()}
-            />
-            {this.props.formswitch
-              ? this.getEyeSection()
-              : this.getCamSection()}
-            <input
-              className={this.SubmitBtnColor()}
-              type="submit"
-              value="Plot!"
-            />
-          </form>
-        </div>
-        {/* <div className="row">
-          <FormInfo items=[]/>
-        </div> */}
-      </div>
-    );
-  }
-}
+  return (
+    <form className="d-flex" onSubmit={props.onSubmit}>
+      <InputSection
+        title="Telescope"
+        items={[
+          props.formdata.aperture,
+          props.formdata.focallength,
+          props.formdata.barlow,
+        ]}
+        onChange={props.onChange}
+        addoncolor={inputAddonColor()}
+      />
+      {props.formswitch ? getEyeSection() : getCamSection()}
+      <input className={SubmitBtnColor()} type="submit" value="Plot!" />
+    </form>
+  );
+};
 
 export default Form;

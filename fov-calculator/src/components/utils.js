@@ -1,16 +1,15 @@
-export function camChartSize(FormData) {
+export function camChartSize(formdata) {
   // Calculate the size of the sensor (X and Y) in mm
   const sensorXsizeMM =
-    (Number(FormData.pixelsize.value) / 1000) *
-    Number(FormData.resolutionx.value);
+    (Number(formdata.pixelsize.value) / 1000) *
+    Number(formdata.resolutionx.value);
   const sensorYsizeMM =
-    (Number(FormData.pixelsize.value) / 1000) *
-    Number(FormData.resolutiony.value);
+    (Number(formdata.pixelsize.value) / 1000) *
+    Number(formdata.resolutiony.value);
 
   // We take the Barlow into account
-  let flength = Number(FormData.focallength.value);
-  let barlow = Number(FormData.barlow.value);
-  console.log("barlow", barlow);
+  let flength = Number(formdata.focallength.value);
+  let barlow = Number(formdata.barlow.value);
   if (barlow !== 0) {
     flength *= barlow;
   }
@@ -25,8 +24,8 @@ export function camChartSize(FormData) {
       plotSizeY: Math.round(FOV_Y * 57.3 * 6),
       plotDivisor: 6,
       chipDim: [
-        Number(FormData.resolutionx.value),
-        Number(FormData.resolutiony.value),
+        Number(formdata.resolutionx.value),
+        Number(formdata.resolutiony.value),
       ],
       axisLabel: "Degrees",
     };
@@ -39,8 +38,8 @@ export function camChartSize(FormData) {
       plotSizeY: Math.round(FOV_Y * 3438 * 6),
       plotDivisor: 6,
       chipDim: [
-        Number(FormData.resolutionx.value),
-        Number(FormData.resolutiony.value),
+        Number(formdata.resolutionx.value),
+        Number(formdata.resolutiony.value),
       ],
       axisLabel: "Minutes of Arc",
     };
@@ -52,22 +51,22 @@ export function camChartSize(FormData) {
     plotSizeY: Math.round(FOV_Y * 206265),
     plotDivisor: 1,
     chipDim: [
-      Number(FormData.resolutionx.value),
-      Number(FormData.resolutiony.value),
+      Number(formdata.resolutionx.value),
+      Number(formdata.resolutiony.value),
     ],
     axisLabel: "Seconds of Arc",
   };
 }
 
-export function eyepieceChartSize(FormData) {
+export function eyepieceChartSize(formdata) {
   console.log("hey");
 }
 
-export function getFormDataInfo(state) {
+export function getFormdataInfo(menustate) {
   // calculate the focal ratio
-  let focallenght = Number(state.FormData.focallength.value);
-  let barlow = Number(state.FormData.barlow.value);
-  let aperture = Number(state.FormData.aperture.value);
+  let focallenght = Number(menustate.formdata.focallength.value);
+  let barlow = Number(menustate.formdata.barlow.value);
+  let aperture = Number(menustate.formdata.aperture.value);
   if (barlow !== 0) {
     focallenght *= barlow;
   }
@@ -96,7 +95,7 @@ export function getFormDataInfo(state) {
       value: "",
       ref: "pxperunit",
       name: "Px Per Unit",
-      unit: state.chartinfo.axisLabel,
+      unit: menustate.chartinfo.axisLabel,
     },
   };
 }
