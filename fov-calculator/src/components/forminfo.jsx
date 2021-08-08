@@ -33,9 +33,10 @@ const FormInfo = (props) => (
 
 // Here i Want:
 // A viewer under the form which states the:
-// Focal Ratio
-// Aspect Ratio of the camera.
+// FOCAL RATIO
+// ASPECT RATIO of CAMERA
 // How many pixels per unit of measure.
-// Grid switch
+// MAKE OPTION TO SEE GRAPH GRID OR NOT
+// THE WEATHER TONIGHT?
 
 export default FormInfo;
