@@ -10,9 +10,7 @@ export function camChartSize(formdata) {
   // We take the Barlow into account
   let flength = Number(formdata.focallength.value);
   let barlow = Number(formdata.barlow.value);
-  if (barlow !== 0) {
-    flength *= barlow;
-  }
+  if (barlow !== 0) flength *= barlow;
 
   const FOV_X = sensorXsizeMM / flength;
   const FOV_Y = sensorYsizeMM / flength;
@@ -60,42 +58,4 @@ export function camChartSize(formdata) {
 
 export function eyepieceChartSize(formdata) {
   console.log("hey");
-}
-
-export function getFormdataInfo(menustate) {
-  // calculate the focal ratio
-  let focallenght = Number(menustate.formdata.focallength.value);
-  let barlow = Number(menustate.formdata.barlow.value);
-  let aperture = Number(menustate.formdata.aperture.value);
-  if (barlow !== 0) {
-    focallenght *= barlow;
-  }
-  let fr = Math.round((focallenght / aperture) * 10) / 10;
-  let fr_unit = "f/" + fr;
-
-  // calculate the aspect ratio of the camera
-  // ...
-
-  return {
-    focalratio: {
-      value: fr,
-      ref: "focalratio",
-      name: "Focal Ratio",
-      type: "number",
-      unit: fr_unit,
-    },
-    aspectratio: {
-      value: "",
-      ref: "aspectratio",
-      name: "Aspect Ratio",
-      type: "text",
-      unit: "Camera",
-    },
-    pxperunit: {
-      value: "",
-      ref: "pxperunit",
-      name: "Px Per Unit",
-      unit: menustate.chartinfo.axisLabel,
-    },
-  };
 }

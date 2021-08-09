@@ -1,19 +1,14 @@
 import React, { Component } from "react";
 import Menubar from "./components/menubar";
 import LineChart from "./components/linechart";
-import {
-  getFormdataInfo,
-  camChartSize,
-  eyepieceChartSize,
-} from "./components/utils.js";
+import { camChartSize, eyepieceChartSize } from "./components/utils.js";
 
 // TO DO:
 
-// MAKE USER SETTINGS CONTROL FOV GRAPH SIZE.
+// ADD FORMINFO TAB BELOW FORM
 
 // IMPORT ALL IMAGES TO GRAPH
-// MAKE IMAGE RESIZE WITH BROWSER RESETTING.
-// MAKE OPTION TO SEE GRID OR NOT
+// MAKE IMAGE RESIZE WITH BROWSER RESIZING.
 
 // MAKE A LIST BESIDES/OR UNDER THE GRAPH WITH THE CURRENT SETTINGS.
 
@@ -81,35 +76,13 @@ class App extends Component {
             name: "Focal Length",
             unit: "mm",
           },
-          eyepiecefov: {
-            ref: "eyepiecefov",
+          eyepieceafov: {
+            ref: "eyepieceafov",
             value: "",
             required: false,
             type: "number",
-            name: "FOV",
+            name: "AFOV",
             unit: "°",
-          },
-        },
-        formdatainfo: {
-          focalratio: {
-            value: "",
-            ref: "focalratio",
-            name: "Focal Ratio",
-            type: "number",
-            unit: "",
-          },
-          aspectratio: {
-            value: "",
-            ref: "aspectratio",
-            name: "Aspect Ratio",
-            type: "number",
-            unit: "",
-          },
-          pxperunit: {
-            value: "",
-            ref: "pxperunit",
-            name: "Pixels Per Unit Measure",
-            unit: "",
           },
         },
         formswitch: true,
@@ -117,7 +90,7 @@ class App extends Component {
           plotSizeX: 20,
           plotSizeY: 10,
           plotDivisor: 6,
-          chipDim: [640, 420],
+          chipDim: [640, 480],
           axisLabel: "Minutes of arc",
         },
       },
@@ -160,13 +133,9 @@ class App extends Component {
       ? eyepieceChartSize(this.state.menustate.formdata)
       : camChartSize(this.state.menustate.formdata);
 
-    // update the formdata info
-    let newformdatainfo = getFormdataInfo(this.state.menustate);
-
     this.setState((prevState) => ({
       menustate: {
         ...prevState.menustate,
-        formdatainfo: newformdatainfo,
         chartinfo: newchartinfo,
       },
     }));

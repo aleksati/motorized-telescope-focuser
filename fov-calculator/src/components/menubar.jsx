@@ -16,7 +16,7 @@ const Menubar = (props) => (
         style="w-100"
       />
     </div>
-    <div className="row p-1">
+    <div className="row">
       <Form
         formswitch={props.menustate.formswitch}
         formdata={props.menustate.formdata}
@@ -24,7 +24,9 @@ const Menubar = (props) => (
         onSubmit={props.onSubmit}
       />
     </div>
-    {/* Here the FORMINFO will go */}
+    <div className="row">
+      <FormInfo menustate={props.menustate} />
+    </div>
   </div>
 );
 

@@ -14,31 +14,27 @@ const Form = (props) => {
     return className;
   };
 
-  const getCamSection = () => {
-    return (
-      <InputSection
-        title="Camera"
-        items={[
-          props.formdata.pixelsize,
-          props.formdata.resolutionx,
-          props.formdata.resolutiony,
-        ]}
-        addoncolor={inputAddonColor()}
-        onChange={props.onChange}
-      />
-    );
-  };
+  const getCamSection = () => (
+    <InputSection
+      title="Camera"
+      items={[
+        props.formdata.pixelsize,
+        props.formdata.resolutionx,
+        props.formdata.resolutiony,
+      ]}
+      addoncolor={inputAddonColor()}
+      onChange={props.onChange}
+    />
+  );
 
-  const getEyeSection = () => {
-    return (
-      <InputSection
-        title="Eyepiece"
-        items={[props.formdata.eyepiecefocallength, props.formdata.eyepiecefov]}
-        addoncolor={inputAddonColor()}
-        onChange={props.onChange}
-      />
-    );
-  };
+  const getEyeSection = () => (
+    <InputSection
+      title="Eyepiece"
+      items={[props.formdata.eyepiecefocallength, props.formdata.eyepieceafov]}
+      addoncolor={inputAddonColor()}
+      onChange={props.onChange}
+    />
+  );
 
   return (
     <form className="d-flex" onSubmit={props.onSubmit}>
