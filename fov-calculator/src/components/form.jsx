@@ -49,7 +49,7 @@ const Form = (props) => {
         addoncolor={inputAddonColor()}
       />
       {props.formswitch ? getEyeSection() : getCamSection()}
-      <input className={SubmitBtnColor()} type="submit" value="Plot!" />
+      <input className={SubmitBtnColor()} type="submit" value="Pikk!" />
     </form>
   );
 };

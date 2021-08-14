@@ -75,6 +75,7 @@ class LineChart extends Component {
           max: sizeY,
           grid: {
             //borderColor: "white",
+            display: this.props.gridswitch,
             color: "grey",
             tickColor: "black",
           },
@@ -96,6 +97,7 @@ class LineChart extends Component {
           display: true,
           grid: {
             //borderColor: "white",
+            display: this.props.gridswitch,
             color: "grey",
             tickColor: "black",
           },

@@ -86,6 +86,7 @@ class App extends Component {
           },
         },
         formswitch: true,
+        gridswitch: true,
         chartinfo: {
           plotSizeX: 20,
           plotSizeY: 10,
@@ -95,16 +96,26 @@ class App extends Component {
         },
       },
     };
-    this.handleSwitchChange = this.handleSwitchChange.bind(this);
+    this.handleFormSwitchChange = this.handleFormSwitchChange.bind(this);
+    this.handleGridSwitchChange = this.handleGridSwitchChange.bind(this);
     this.handleMenuChange = this.handleMenuChange.bind(this);
     this.handleMenuSubmit = this.handleMenuSubmit.bind(this);
   }
 
-  handleSwitchChange(bool) {
+  handleFormSwitchChange(bool) {
     this.setState((prevState) => ({
       menustate: {
         ...prevState.menustate,
         formswitch: bool,
+      },
+    }));
+  }
+
+  handleGridSwitchChange(bool) {
+    this.setState((prevState) => ({
+      menustate: {
+        ...prevState.menustate,
+        gridswitch: bool,
       },
     }));
   }
@@ -147,10 +158,15 @@ class App extends Component {
         <Menubar
           onChange={this.handleMenuChange}
           onSubmit={this.handleMenuSubmit}
-          onFormSwitch={this.handleSwitchChange}
+          onFormSwitch={this.handleFormSwitchChange}
+          onGridSwitch={this.handleGridSwitchChange}
           menustate={this.state.menustate}
         />
-        <LineChart key="chart" chartinfo={this.state.menustate.chartinfo} />
+        <LineChart
+          key="chart"
+          chartinfo={this.state.menustate.chartinfo}
+          gridswitch={this.state.menustate.gridswitch}
+        />
       </div>
     );
   }

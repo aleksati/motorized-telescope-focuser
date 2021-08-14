@@ -1,4 +1,5 @@
 import React from "react";
+import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
 const FormInfo = (props) => {
   const getFocalRatio = () => {
@@ -44,12 +45,22 @@ const FormInfo = (props) => {
     return ["Aspect Ratio", aspectRatio];
   };
 
-  const getPixelPerUnit = () => {
-    // hmmm
-    // pixels per grid square
-    // Need to know the total amount of pixels
-    // and the amount of squares. (which is the hard part)
-  };
+  const chartGridSwitch = () => (
+    <BootstrapSwitchButton
+      checked={props.menustate.gridswitch}
+      onlabel="Grid On"
+      onstyle="dark"
+      offlabel="Grid Off"
+      offstyle="dark"
+      onChange={(checked) => {
+        props.onGridSwitch(checked);
+      }}
+      size=""
+      style="ml-2"
+      width="100"
+      height="50"
+    />
+  );
 
   const funks = [getFocalRatio(), getAspectRatio()];
 
@@ -72,13 +83,12 @@ const FormInfo = (props) => {
             </div>
           );
         })}
+        {chartGridSwitch()}
       </div>
     </div>
   );
 };
 
-// How many pixels per unit of measure.
-// MAKE OPTION TO SEE GRAPH GRID OR NOT
 // THE WEATHER TONIGHT?
 
 export default FormInfo;

@@ -5,7 +5,7 @@ import FormInfo from "./forminfo";
 
 const Menubar = (props) => (
   <div className="container">
-    <div className="row p-1">
+    <div className="row">
       <BootstrapSwitchButton
         checked={props.menustate.formswitch}
         onlabel="Camera"
@@ -13,7 +13,7 @@ const Menubar = (props) => (
         offlabel="Eyepiece"
         offstyle="success"
         onChange={props.onFormSwitch}
-        style="w-100"
+        style="w-100 m-2"
       />
     </div>
     <div className="row">
@@ -25,7 +25,7 @@ const Menubar = (props) => (
       />
     </div>
     <div className="row">
-      <FormInfo menustate={props.menustate} />
+      <FormInfo menustate={props.menustate} onGridSwitch={props.onGridSwitch} />
     </div>
   </div>
 );
