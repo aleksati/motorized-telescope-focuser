@@ -12,7 +12,7 @@ import { camChartSize, eyepieceChartSize } from "./components/utils.js";
 
 // MAKE A LIST BESIDES/OR UNDER THE GRAPH WITH THE CURRENT SETTINGS.
 
-// MAKE A SERVER.
+// MAKE A SERVER.? Maybe an easy one.. Just to test.
 
 class App extends Component {
   constructor() {
