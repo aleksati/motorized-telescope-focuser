@@ -1,7 +1,7 @@
 
-// Electronic Telescope Focuser
+// Motorized Telescope Focuser
 // Arduino Nano Every + Easy Driver
-// Sketch by Aleksander Tidemann
+// By Aleksander Tidemann
 // https://github.com/AleksanderTidemann
 
 #include <AccelStepper.h>
@@ -17,13 +17,13 @@
 #define LED 9
 #define POT A0
 
-const int STEPS_PER_REV = 1600;
-const int MAXSPEED = 150;
-float motor_dir = 1; // init motor to CW rotation
-float potval;
+const int STEPS_PER_REV = 1600; // stepper motor in "eight-step" mode.
+const int MAXSPEED = 150;       // the maximum stepper steps per second "allowed".
+const float POT_EXPO = 0.2;     // The closer to 0, the more logarithmic the potentiometer curve becomes.
+const int POT_RANGE = 707;      // The range of the potentiometer, when read through analogRead();
 
-float potExpo = 0.2; // The lower the potExpo, the more exponentinal the pot becomes
-int OrgPotRange = 707;
+float motor_dir = 1; // init motor to CW rotation. -1 for CCW
+float potval;
 
 // Create stepper motor object
 AccelStepper focusStepper(EASYDRIVER, STEP, DIR);
@@ -35,9 +35,9 @@ void setup()
 
     //  init Motor
     focusStepper.setPinsInverted(true, false, true); // I have to invert the enable pin, for some reason.
-    focusStepper.setMaxSpeed(MAXSPEED);              // int for max steps per second.
-    focusStepper.setAcceleration(1000);              // int for steps per second during accelration an decelration
-    focusStepper.setEnablePin(EN);                   // enableOutputs() == MotorON and disableOutputs() == OFF
+    focusStepper.setMaxSpeed(MAXSPEED);
+    focusStepper.setAcceleration(1000); // int determining the frequency of steps during accelration an decelration
+    focusStepper.setEnablePin(EN);
 
     // Set stepper to eigth step; 1600 steps per rev
     // Init light to signal that the arudiono is ready.
@@ -54,8 +54,8 @@ void setup()
     if (!digitalRead(SWITCH))
     {
         motor_dir = -1;
-    }                                              // set the motor rotation to CCW
-    potval = map(analogRead(POT), 707, 0, 150, 0); // init read pot value
+    }                                                         // set the motor rotation to CCW
+    potval = map(analogRead(POT), POT_RANGE, 0, MAXSPEED, 0); // init read pot value
 
     // Motor direction Event handler
     attachInterrupt(digitalPinToInterrupt(SWITCH), changedir, CHANGE);
@@ -72,7 +72,7 @@ void loop()
     {
         if (analogRead(POT) > 0)
         {
-            potval = logPotVal(potExpo, OrgPotRange, MAXSPEED);
+            potval = logPot(POT_EXPO, POT_RANGE, MAXSPEED);
             focusStepper.enableOutputs();
             focusStepper.setSpeed(potval * motor_dir); //number of steps per second, times the current durection flag (1 or -1)
             focusStepper.run();
@@ -83,7 +83,7 @@ void loop()
 }
 
 // Convert a linear potentiometer to a desired logatirthmic scale.
-float logPotVal(float expo, int actualPotRange, int desiredPotRange)
+float logPot(float expo, int actualPotRange, int desiredPotRange)
 {
     float norm_pot;
     float result;
@@ -99,6 +99,6 @@ float logPotVal(float expo, int actualPotRange, int desiredPotRange)
     result = pow(norm_pot, expo);           // raise the inverted normalized pot value to the power of the chosen exponent.
     result = result * desiredPotRange;      // scale the result to a desired range.
     result = abs(result - desiredPotRange); // Flip the values back to the original (re-invert)
-    Serial.println(result);
+    // Serial.println(result);
     return result;
 }

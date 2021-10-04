@@ -1,0 +1,6 @@
+{
+  "port": "COM3",
+  "board": "arduino:megaavr:nona4809",
+  "sketch": "ElectricFocus.ino",
+  "configuration": "mode=on"
+}
