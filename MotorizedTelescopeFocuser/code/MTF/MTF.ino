@@ -17,7 +17,7 @@
 #define LED 9
 #define POT A0
 
-const int STEPS_PER_REV = 1600; // stepper motor in "eight-step" mode.
+const int STEPS_PER_REV = 1600; // stepper motor steps per revolution.
 const int MAXSPEED = 150;       // the maximum stepper steps per second "allowed".
 const float POT_EXPO = 0.2;     // The closer to 0, the more logarithmic the potentiometer curve becomes.
 const int POT_RANGE = 707;      // The range of the potentiometer, when read through analogRead();
@@ -39,7 +39,7 @@ void setup()
     focusStepper.setAcceleration(1000); // int determining the frequency of steps during accelration an decelration
     focusStepper.setEnablePin(EN);
 
-    // Set stepper to eigth step; 1600 steps per rev
+    // Set stepper to eigth step; from 200 - 1600 steps per rev
     // Init light to signal that the arudiono is ready.
     pinMode(MS1, OUTPUT);
     pinMode(MS2, OUTPUT);
@@ -54,8 +54,8 @@ void setup()
     if (!digitalRead(SWITCH))
     {
         motor_dir = -1;
-    }                                                         // set the motor rotation to CCW
-    potval = map(analogRead(POT), POT_RANGE, 0, MAXSPEED, 0); // init read pot value
+    }
+    potval = map(analogRead(POT), POT_RANGE, 0, MAXSPEED, 0); // init pot value
 
     // Motor direction Event handler
     attachInterrupt(digitalPinToInterrupt(SWITCH), changedir, CHANGE);
@@ -74,15 +74,18 @@ void loop()
         {
             potval = logPot(POT_EXPO, POT_RANGE, MAXSPEED);
             focusStepper.enableOutputs();
-            focusStepper.setSpeed(potval * motor_dir); //number of steps per second, times the current durection flag (1 or -1)
+            // motor_dir is 1 or -1, turning the potval either positive or negative, rotating the motor either CW or CCW.
+            focusStepper.setSpeed(potval * motor_dir);
             focusStepper.run();
             return;
         }
     }
+    // Disabling the motor (outputs) when the button is "un-pressed" gives me the ability to focus my telescope
+    // manually even if the motor is still attached to it.
     focusStepper.disableOutputs();
 }
 
-// Convert a linear potentiometer to a desired logatirthmic scale.
+// Give a linear potentiometer a desired logatirthmic curve.
 float logPot(float expo, int actualPotRange, int desiredPotRange)
 {
     float norm_pot;
