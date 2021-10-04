@@ -74,7 +74,7 @@ void loop()
         {
             potval = logPot(POT_EXPO, POT_RANGE, MAXSPEED);
             focusStepper.enableOutputs();
-            // motor_dir is 1 or -1, turning the potval either positive or negative, rotating the motor either CW or CCW.
+            // motor_dir is either 1 or -1, turning the potval either positive or negative, rotating the motor CW or CCW.
             focusStepper.setSpeed(potval * motor_dir);
             focusStepper.run();
             return;
