@@ -6,6 +6,7 @@ import { camChartSize, eyepieceChartSize } from "./components/utils.js";
 // TO DO:
 
 // ADD FORMINFO TAB BELOW FORM
+// MAKE SURE EVEYRTHING RESIZE CORRECTLY.
 
 // IMPORT ALL IMAGES TO GRAPH
 // MAKE IMAGE RESIZE WITH BROWSER RESIZING.

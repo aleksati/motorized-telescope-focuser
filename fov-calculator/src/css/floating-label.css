@@ -1,4 +1,4 @@
-html,
+/* html,
 body {
   height: 100%;
 }
@@ -11,7 +11,7 @@ body {
   padding-top: 40px;
   padding-bottom: 40px;
   background-color: #f5f5f5;
-}
+} */
 
 .form-signin {
   width: 100%;
@@ -21,13 +21,13 @@ body {
 }
 
 .form-control {
-  /*By me*/
-  border-radius: 10% 0% 0% 10%;
+  /*By me. The actual input boxes borders.*/
+  border-radius: 5px 0px 0px 5px;
 }
 
 .input-group-text {
-  /*By me*/
-  border-radius: 0% 10% 10% 0%;
+  /*the "mm" labe stuff.. By me*/
+  border-radius: 0px 5px 5px 0px;
 }
 
 .form-label-group {

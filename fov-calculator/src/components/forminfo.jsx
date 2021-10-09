@@ -1,5 +1,6 @@
 import React from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
+import TheWeatherTonight from "./theweather";
 
 const FormInfo = (props) => {
   const getFocalRatio = () => {
@@ -45,30 +46,13 @@ const FormInfo = (props) => {
     return ["Aspect Ratio", aspectRatio];
   };
 
-  const chartGridSwitch = () => (
-    <BootstrapSwitchButton
-      checked={props.menustate.gridswitch}
-      onlabel="Grid On"
-      onstyle="dark"
-      offlabel="Grid Off"
-      offstyle="dark"
-      onChange={(checked) => {
-        props.onGridSwitch(checked);
-      }}
-      size=""
-      style="ml-2"
-      width="100"
-      height="50"
-    />
-  );
-
-  const funks = [getFocalRatio(), getAspectRatio()];
+  const inputFunks = [getFocalRatio(), getAspectRatio()];
 
   return (
-    <div className="form-group border border-white rounded m-2">
+    <div className="form-group border border-white rounded m-2 w-100">
       <h2 className="ml-2 mt-1 text-light">Info</h2>
-      <div className="d-flex">
-        {funks.map((funk) => {
+      <div className="d-flex justify-content-center text-light">
+        {inputFunks.map((funk) => {
           const [name, value] = funk;
           return (
             <div className="form-label-group" key={name}>
@@ -83,12 +67,24 @@ const FormInfo = (props) => {
             </div>
           );
         })}
-        {chartGridSwitch()}
+        <BootstrapSwitchButton
+          checked={props.menustate.gridswitch}
+          onlabel="Grid Off"
+          onstyle="dark"
+          offlabel="Grid On"
+          offstyle="dark"
+          onChange={(checked) => {
+            props.onGridSwitch(checked);
+          }}
+          size=""
+          style="ml-2"
+          width="100"
+          height="50"
+        />
+        <TheWeatherTonight />
       </div>
     </div>
   );
 };
-
-// THE WEATHER TONIGHT?
 
 export default FormInfo;
