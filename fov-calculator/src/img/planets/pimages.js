@@ -1,4 +1,4 @@
-const IMAGES = {
+const PIMAGES = {
   mercury: require("./mercury.png").default,
   venus: require("./venus.png").default,
   mars: require("./mars.png").default,
@@ -9,4 +9,4 @@ const IMAGES = {
   moon: require("./moon.png").default,
 };
 
-export default IMAGES;
+export default PIMAGES;

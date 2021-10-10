@@ -1,75 +1,109 @@
 import React, { useEffect, useState } from "react";
 
 const TheWeatherTonight = (props) => {
-  const [weather, setWeather] = useState({
-    loading: true,
-    timeseries: {},
-    next12h: {},
+  const [YRdata, setYRData] = useState({});
+  const [next12h, setNext12h] = useState({
+    temp: 0,
+    img: "",
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setError] = useState(false);
 
-  const getLocationPromise = new Promise((resolve, reject) => {
-    // I create a promise for the users geolocation
-    // If it is successfull, we can start finding the weather data
-    // happens in useEffect.
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          let lat = position.coords.latitude;
-          let long = position.coords.longitude;
-
-          resolve({
-            latitude: lat,
-            longitude: long,
-          });
-        },
-        (error) => {
-          // this happens everytime?!? even though the useEffect is not fired.
-          alert("Okay, but then I cant get the weather for you.. :(");
-        }
-      );
-    } else {
-      reject("your browser doesnt support geolocation API :( ..");
-    }
-  });
-
-  // Fist make sure the user agrees to give their location data.
-  // if so, then fetch weather data from the user location from the MET weather API.
-  useEffect(() => {
-    console.log("hello");
-    getLocationPromise.then((location) => {
-      let lat = Math.round(location.latitude);
-      let long = Math.round(location.longitude);
-      let url =
-        "https://api.met.no/weatherapi/locationforecast/2.0/compact.json?altitude=0&lat=" +
-        lat +
-        "&lon=" +
-        long;
-      fetch(url)
-        .then((resp) => resp.json())
-        .then((data) =>
-          setWeather((weather) => ({
-            ...weather,
-            loading: false,
-            timeseries: data.properties.timeseries,
-          }))
+  function getLocation() {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            let lat = position.coords.latitude;
+            let long = position.coords.longitude;
+            resolve({
+              latitude: lat,
+              longitude: long,
+            });
+          },
+          (error) => {
+            // this happens everytime?!? even though the useEffect is not fired.
+            reject(error);
+          }
         );
+      } else {
+        reject("your browser doesnt support geolocation API :( ..");
+      }
     });
+  }
+  // Coponenmt did mount
+  useEffect(() => {
+    setIsLoading(true);
+    setError(false);
+    const fetchData = async () => {
+      try {
+        const location = await getLocation();
+        const lat = Math.round(location.latitude);
+        const long = Math.round(location.longitude);
+        const url =
+          "https://api.met.no/weatherapi/locationforecast/2.0/compact.json?altitude=0&lat=" +
+          lat +
+          "&lon=" +
+          long;
+
+        const response = await fetch(url);
+        const data = await response.json();
+        setYRData(data.properties.timeseries);
+      } catch (error) {
+        console.log(error);
+        setError(true);
+      }
+    };
+    fetchData();
   }, []);
 
+  // Find the next12hours forecast from 22:00.
+  // + image
   useEffect(() => {
-    // Scroll to the time data to find the first 22:00 pm.
-    // then store the "next_12_hours" summary_code.
-    // I will use this to look up a weather image to display to the user.
-    if (Object.keys(weather.timeseries).length !== 0) {
-      for (let i = 0; i < weather.timeseries.length; i++) {
-        console.log("from the second effect: ", weather.timeseries[i].time);
+    if (Object.keys(YRdata).length === 0) {
+      return;
+    }
+    for (let i = 0; i < YRdata.length; i++) {
+      if (YRdata[i].time.slice(11, 13) === "22") {
+        const symbol_code = YRdata[i].data.next_12_hours.summary.symbol_code;
+        const temperature = YRdata[i].data.instant.details.air_temperature;
+        // "try" to get image from folder based on symbol_code
+        try {
+          const wimg = require("../img/weather/" +
+            symbol_code +
+            ".png").default;
+          setNext12h({
+            img: wimg,
+            temp: temperature,
+          });
+          setIsLoading(false); // loading is complete when we have the image loaded in our state.
+        } catch {
+          setError(true);
+        }
+        break;
       }
     }
-  }, [weather.timeseries]);
+  }, [YRdata]);
 
   return (
     <div className="m-2 mt-1">
-      {weather.loading ? <h2>Loading...</h2> : <h2>ITEM!</h2>}
+      {isError ? (
+        <p>
+          <small>Something went wrong here...</small>
+        </p>
+      ) : isLoading ? (
+        <h2>Loading...</h2>
+      ) : (
+        <div className="d-flex">
+          <img
+            src={next12h.img}
+            alt="Specification Drawing"
+            width="40px"
+            height="40px"
+          />
+          <p className="m-2">{next12h.temp}°C</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Line } from "react-chartjs-2";
 import { isCompositeComponentWithType } from "react-dom/test-utils";
-import IMAGES from "./img/images.js";
+import PIMAGES from "../img/planets/pimages.js";
 
 class LineChart extends Component {
   constructor() {
@@ -45,12 +45,10 @@ class LineChart extends Component {
   //}
 
   componentDidMount() {
-    let img = this.state.planetdata[0].pointStyle;
-    img.src = IMAGES.jupiter;
-    let test = this.state.planetdata[0].label;
-
+    // let img = this.state.planetdata[0].pointStyle;
+    // img.src = PIMAGES.jupiter;
+    // let test = this.state.planetdata[0].label;
     //console.log(IMAGES[test]);
-
     // Make a call to the server to get the planet size in AU. set data in setState.
     // get canvas height.?
     //const chartHeight = document.getElementById("chart-container").clientHeight;
