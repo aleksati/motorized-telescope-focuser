@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 
+// combine next12h and YRdata. Like this:
+// timeseries:
+// next12h_symbol_imgpath:
+// temp:
+
+// make the layout a bit better.
+// then we're done.
+// test is the HTTP req fails.
+
 const TheWeatherTonight = (props) => {
-  const [YRdata, setYRData] = useState({});
+  const [YRdata, setYRdata] = useState({});
   const [next12h, setNext12h] = useState({
     temp: 0,
     img: "",
@@ -31,6 +40,18 @@ const TheWeatherTonight = (props) => {
       }
     });
   }
+
+  // filter the YRdata. We are only interested in one weather forcast at night time.
+  // if its night already, just return the first one.
+  const filterData = (data) => {
+    for (let i = 0; i < data.length; i++) {
+      let currTime = data[i].time.slice(11, 13);
+      if (currTime >= "22" || currTime <= "03") {
+        return data[i];
+      }
+    }
+  };
+
   // Coponenmt did mount
   useEffect(() => {
     setIsLoading(true);
@@ -48,7 +69,8 @@ const TheWeatherTonight = (props) => {
 
         const response = await fetch(url);
         const data = await response.json();
-        setYRData(data.properties.timeseries);
+        const fdata = filterData(data.properties.timeseries); // remove the timeseries to one object.
+        setYRdata(fdata);
       } catch (error) {
         console.log(error);
         setError(true);
@@ -63,25 +85,19 @@ const TheWeatherTonight = (props) => {
     if (Object.keys(YRdata).length === 0) {
       return;
     }
-    for (let i = 0; i < YRdata.length; i++) {
-      if (YRdata[i].time.slice(11, 13) === "22") {
-        const symbol_code = YRdata[i].data.next_12_hours.summary.symbol_code;
-        const temperature = YRdata[i].data.instant.details.air_temperature;
-        // "try" to get image from folder based on symbol_code
-        try {
-          const wimg = require("../img/weather/" +
-            symbol_code +
-            ".png").default;
-          setNext12h({
-            img: wimg,
-            temp: temperature,
-          });
-          setIsLoading(false); // loading is complete when we have the image loaded in our state.
-        } catch {
-          setError(true);
-        }
-        break;
-      }
+    const symbol_code = YRdata.data.next_12_hours.summary.symbol_code;
+    const temperature = YRdata.data.instant.details.air_temperature;
+    // "try" to get image from folder based on symbol_code
+    try {
+      const wimg = require("../img/weather/" + symbol_code + ".png").default;
+      setNext12h({
+        img: wimg,
+        temp: temperature,
+      });
+      setIsLoading(false); // loading is complete when we have the image loaded in our state.
+    } catch (error) {
+      console.log(error);
+      setError(true);
     }
   }, [YRdata]);
 
