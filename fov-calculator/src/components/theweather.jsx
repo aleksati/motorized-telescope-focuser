@@ -18,6 +18,7 @@ const TheWeatherTonight = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
 
+  // request to use user location through the browser
   function getLocation() {
     return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
@@ -31,12 +32,11 @@ const TheWeatherTonight = (props) => {
             });
           },
           (error) => {
-            // this happens everytime?!? even though the useEffect is not fired.
             reject(error);
           }
         );
       } else {
-        reject("your browser doesnt support geolocation API :( ..");
+        reject("geolocation API not supported :(");
       }
     });
   }
@@ -69,7 +69,7 @@ const TheWeatherTonight = (props) => {
 
         const response = await fetch(url);
         const data = await response.json();
-        const fdata = filterData(data.properties.timeseries); // remove the timeseries to one object.
+        const fdata = filterData(data.properties.timeseries); // remove the timeseries to a single desired object.
         setYRdata(fdata);
       } catch (error) {
         console.log(error);
