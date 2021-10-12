@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-// combine next12h and YRdata. Like this:
-// timeseries:
-// next12h_symbol_imgpath:
-// temp:
-
-// make the layout a bit better.
-// then we're done.
 // test is the HTTP req fails.
+// ADD loading gif
+// Make so that, if we check at 23:00 (for instace) it get the info from 23:00.. not 21:00..
 
 const TheWeatherTonight = (props) => {
-  const [YRdata, setYRdata] = useState({});
-  const [next12h, setNext12h] = useState({
-    temp: 0,
-    img: "",
+  const [YRdata, setYRdata] = useState({
+    timeseries: {},
+    next6h_temp: 0,
+    next6h_img: "",
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
@@ -46,7 +41,7 @@ const TheWeatherTonight = (props) => {
   const filterData = (data) => {
     for (let i = 0; i < data.length; i++) {
       let currTime = data[i].time.slice(11, 13);
-      if (currTime >= "22" || currTime <= "03") {
+      if (currTime >= "21" || currTime <= "03") {
         return data[i];
       }
     }
@@ -70,7 +65,10 @@ const TheWeatherTonight = (props) => {
         const response = await fetch(url);
         const data = await response.json();
         const fdata = filterData(data.properties.timeseries); // remove the timeseries to a single desired object.
-        setYRdata(fdata);
+        setYRdata((prevState) => ({
+          ...prevState,
+          timeseries: fdata,
+        }));
       } catch (error) {
         console.log(error);
         setError(true);
@@ -79,27 +77,28 @@ const TheWeatherTonight = (props) => {
     fetchData();
   }, []);
 
-  // Find the next12hours forecast from 22:00.
+  // Find the next6hours forecast from 22:00.
   // + image
   useEffect(() => {
-    if (Object.keys(YRdata).length === 0) {
+    if (Object.keys(YRdata.timeseries).length === 0) {
       return;
     }
-    const symbol_code = YRdata.data.next_12_hours.summary.symbol_code;
-    const temperature = YRdata.data.instant.details.air_temperature;
+    const symbol_code = YRdata.timeseries.data.next_6_hours.summary.symbol_code;
+    const temperature = YRdata.timeseries.data.instant.details.air_temperature;
     // "try" to get image from folder based on symbol_code
     try {
       const wimg = require("../img/weather/" + symbol_code + ".png").default;
-      setNext12h({
-        img: wimg,
-        temp: temperature,
-      });
+      setYRdata((prevState) => ({
+        ...prevState,
+        next6h_img: wimg,
+        next6h_temp: temperature,
+      }));
       setIsLoading(false); // loading is complete when we have the image loaded in our state.
     } catch (error) {
       console.log(error);
       setError(true);
     }
-  }, [YRdata]);
+  }, [YRdata.timeseries]);
 
   return (
     <div className="m-2 mt-1">
@@ -110,14 +109,14 @@ const TheWeatherTonight = (props) => {
       ) : isLoading ? (
         <h2>Loading...</h2>
       ) : (
-        <div className="d-flex">
+        <div className="d-flex justify-content-between text-light">
           <img
-            src={next12h.img}
+            src={YRdata.next6h_img}
             alt="Specification Drawing"
-            width="40px"
-            height="40px"
+            width="50px"
+            height="50px"
           />
-          <p className="m-2">{next12h.temp}°C</p>
+          <h5 className=" mt-3 ml-2">{YRdata.next6h_temp}°C</h5>
         </div>
       )}
     </div>

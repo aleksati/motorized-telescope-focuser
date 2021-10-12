@@ -9,11 +9,11 @@ const Menubar = (props) => (
       <BootstrapSwitchButton
         checked={props.menustate.formswitch}
         onlabel="Camera"
-        onstyle="primary"
+        onstyle="info"
         offlabel="Eyepiece"
         offstyle="success"
         onChange={props.onFormSwitch}
-        style="w-100 m-2"
+        style="w-100 ml-1 mb-1 mr-1 mt-2"
       />
     </div>
     <div className="row">
@@ -25,7 +25,11 @@ const Menubar = (props) => (
       />
     </div>
     <div className="row">
-      <FormInfo menustate={props.menustate} onGridSwitch={props.onGridSwitch} />
+      <FormInfo
+        menustate={props.menustate}
+        onGridSwitch={props.onGridSwitch}
+        formswitch={props.menustate.formswitch}
+      />
     </div>
   </div>
 );

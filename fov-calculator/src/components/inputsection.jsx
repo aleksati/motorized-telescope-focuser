@@ -1,7 +1,7 @@
 import React from "react";
 
 const InputSection = (props) => (
-  <div className="form-group border border-white rounded m-2">
+  <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark">
     <h2 className="ml-2 mt-1 text-light">{props.title}</h2>
     <div className="d-flex">
       {props.items.map((item) => {

@@ -3,14 +3,14 @@ import InputSection from "./inputsection.jsx";
 
 const Form = (props) => {
   const SubmitBtnColor = () => {
-    let className = "btn m-2 btn-";
-    className += props.formswitch ? "primary" : "success";
+    let className = "btn text-light ml-1 mb-1 bg-";
+    className += props.formswitch ? "gradient-info" : "gradient-success";
     return className;
   };
 
   const inputAddonColor = () => {
-    let className = "input-group-text text-light mr-2 bg-";
-    className += props.formswitch ? "primary" : "success";
+    let className = "input-group-text text-light mr-1 bg-";
+    className += props.formswitch ? "gradient-info" : "gradient-success";
     return className;
   };
 
@@ -49,7 +49,7 @@ const Form = (props) => {
         addoncolor={inputAddonColor()}
       />
       {props.formswitch ? getEyeSection() : getCamSection()}
-      <input className={SubmitBtnColor()} type="submit" value="Pikk!" />
+      <input className={SubmitBtnColor()} type="submit" value="Plot!" />
     </form>
   );
 };

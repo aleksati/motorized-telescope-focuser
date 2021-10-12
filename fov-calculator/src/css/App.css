@@ -19,7 +19,7 @@ body {
 
 .App {
   width: 100vw;
-  background-color: rgb(36, 36, 36);
+  background-color: rgb(0, 0, 0);
   /* background-color: #353333; */
 }
 
@@ -31,3 +31,23 @@ body {
   border: 2px solid black;
   border-radius: 0.25rem;
 } */
+
+.bg-gradient-dark {
+  background: #343a40 linear-gradient(180deg, #52585d, #343a40) repeat-x !important;
+}
+
+.bg-gradient-light {
+  background: #f8f9fa linear-gradient(180deg, #f9fafb, #f8f9fa) repeat-x !important;
+}
+
+.bg-gradient-success {
+  background: #28a745 linear-gradient(180deg, #48b461, #28a745) repeat-x !important;
+}
+
+.bg-gradient-info {
+  background: #17a2b8 linear-gradient(180deg, #3ab0c3, #17a2b8) repeat-x !important;
+}
+
+.bg-gradient-warning {
+  background: #ffc107 linear-gradient(180deg, #ffca2c, #ffc107) repeat-x !important;
+}

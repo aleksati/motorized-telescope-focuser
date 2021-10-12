@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import TheWeatherTonight from "./theweather";
 
 const FormInfo = (props) => {
+  const [test, forceUpdater] = useState({});
   const getFocalRatio = () => {
     let barlow = Number(props.menustate.formdata.barlow.value);
     let flength = Number(props.menustate.formdata.focallength.value);
@@ -49,41 +50,46 @@ const FormInfo = (props) => {
   const inputFunks = [getFocalRatio(), getAspectRatio()];
 
   return (
-    <div className="form-group border border-white rounded m-2 w-100">
-      <h2 className="ml-2 mt-1 text-light">Info</h2>
-      <div className="d-flex justify-content-center text-light">
-        {inputFunks.map((funk) => {
-          const [name, value] = funk;
-          return (
-            <div className="form-label-group" key={name}>
-              <input
-                type="text"
-                name={name}
-                value={value}
-                className="rounded ml-2"
-                readOnly
-              />
-              <label htmlFor={name}>{name}</label>
-            </div>
-          );
-        })}
-        <BootstrapSwitchButton
-          checked={props.menustate.gridswitch}
-          onlabel="Grid Off"
-          onstyle="dark"
-          offlabel="Grid On"
-          offstyle="dark"
-          onChange={(checked) => {
-            props.onGridSwitch(checked);
-          }}
-          size=""
-          style="ml-2"
-          width="100"
-          height="50"
-        />
+    <form className="d-flex">
+      <div className="form-group border border-white rounded ml-1 bg-gradient-dark">
+        <h2 className="ml-2 mt-1 text-light">Info</h2>
+        <div className="d-flex">
+          {inputFunks.map((funk) => {
+            const [name, value] = funk;
+            return (
+              <div className="form-label-group" key={name}>
+                <input
+                  type="text"
+                  name={name}
+                  value={value}
+                  className="form-control ml-2"
+                  readOnly
+                />
+                <label htmlFor={name}>{name}</label>
+              </div>
+            );
+          })}
+          <BootstrapSwitchButton
+            checked={props.menustate.gridswitch}
+            onlabel="Grid Off"
+            onstyle="info"
+            offlabel="Grid On"
+            offstyle="success"
+            onChange={(checked) => {
+              props.onGridSwitch(checked);
+            }}
+            size=""
+            style={props.formswitch ? "ml-2 mr-2" : " ml-2 mr-2"} // ARG IT DOESNT UPDATE WHEN THE STYLE IS SWITCHED.
+            width="160"
+            height="50"
+          />
+        </div>
+      </div>
+      <div className="form-group border border-white rounded ml-1 bg-gradient-dark">
+        <h2 className="m-1 text-light">Forecast</h2>
         <TheWeatherTonight />
       </div>
-    </div>
+    </form>
   );
 };
 
