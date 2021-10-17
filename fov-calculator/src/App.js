@@ -1,17 +1,37 @@
 import React, { Component } from "react";
-import Menubar from "./components/menubar";
-import LineChart from "./components/linechart";
-import { camChartSize, eyepieceChartSize } from "./components/utils.js";
+import Menubar from "./components/1-menubar";
+import Chart from "./components/2-linechart";
+import {
+  camChartSize,
+  eyepieceChartSize,
+} from "./components/utils-formdata2chartsize.js";
 
 // TO DO:
 
-// ADD FORMINFO TAB BELOW FORM
-// MAKE SURE EVEYRTHING RESIZE CORRECTLY.
+// APP:
+// UPDATE THE STATE NAMES AND STRUCTURE.
+// GO THROUGH ENTIRE APP AND UPDATE FOR THIS.
 
-// IMPORT ALL IMAGES TO GRAPH
-// MAKE IMAGE RESIZE WITH BROWSER RESIZING.
+// FORMINFO-INPUT:
+// ADD MAGINIFCATION.
+// REMOVE "ASPECT RATIO" WHEN IN EYEPIECE MODE.
+// COLOR THE SWITCH BY FORMSWITCH.
 
-// MAKE A LIST BESIDES/OR UNDER THE GRAPH WITH THE CURRENT SETTINGS.
+// FORM:
+// MAKE TEXT RESIZE WITH SIZE OF APP.
+
+// FUCK CHART.JS
+// FIND OUT HOW TO RESIZE A CANVAS BASED ON FORMDATA. (or just the chartsize)
+// CIRLCLE FOR EYEPIECE, RECT FOR CAMERA (SOME ANIMATION WOULD BE NICE. IN CSS)
+// TOGGLE GRID ON/OFF
+// THEN:
+// CALCULATE IMAGE SIZE ETC..
+// MAKE IMAGE RESIZE WITH BROWSER RESIZING. (ÆÆH)
+// ADD OPTION TO TOGGLE IMAGES
+// IMAGE HOVER..
+
+// FORM-INPUT:
+// ADD PRESETS OPTION.
 
 // MAKE A SERVER.? Maybe an easy one.. Just to test.
 
@@ -20,6 +40,8 @@ class App extends Component {
     super();
     this.state = {
       menustate: {
+        // or change name to form. also have a plot.
+        // then just "data", "switch".
         formdata: {
           aperture: {
             ref: "aperture",
@@ -87,12 +109,11 @@ class App extends Component {
           },
         },
         formswitch: true,
-        gridswitch: true,
+        gridswitch: true, // change name to "display-grid"
         chartinfo: {
           plotSizeX: 20,
-          plotSizeY: 10,
+          plotSizeY: 20,
           plotDivisor: 6,
-          chipDim: [640, 480],
           axisLabel: "Minutes of arc",
         },
       },
@@ -163,7 +184,7 @@ class App extends Component {
           onGridSwitch={this.handleGridSwitchChange}
           menustate={this.state.menustate}
         />
-        <LineChart
+        <Chart
           key="chart"
           chartinfo={this.state.menustate.chartinfo}
           gridswitch={this.state.menustate.gridswitch}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import loading from "../img/error-loading/loading.gif";
+import error from "../img/error-loading/error.gif";
 
-// test is the HTTP req fails.
-// ADD loading gif
 // Make so that, if we check at 23:00 (for instace) it get the info from 23:00.. not 21:00..
 
 const TheWeatherTonight = (props) => {
@@ -12,6 +12,7 @@ const TheWeatherTonight = (props) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
+  const currTime = Date();
 
   // request to use user location through the browser
   function getLocation() {
@@ -36,15 +37,22 @@ const TheWeatherTonight = (props) => {
     });
   }
 
-  // filter the YRdata. We are only interested in one weather forcast at night time.
-  // if its night already, just return the first one.
+  // We are only interested in one weather forcast at night time.
   const filterData = (data) => {
-    for (let i = 0; i < data.length; i++) {
-      let currTime = data[i].time.slice(11, 13);
-      if (currTime >= "21" || currTime <= "03") {
-        return data[i];
-      }
+    let currTimeHour = currTime.slice(16, 18);
+    let idx;
+
+    // IF its night already, we find the current hour and return it.
+    if (currTimeHour >= "21" || currTimeHour <= "03") {
+      idx = data.findIndex((item) => {
+        return item.time.slice(11, 13) === currTimeHour;
+      });
+    } else {
+      idx = data.findIndex((item) => {
+        return item.time.slice(11, 13) === "21";
+      });
     }
+    return data[idx];
   };
 
   // Coponenmt did mount
@@ -101,22 +109,24 @@ const TheWeatherTonight = (props) => {
   }, [YRdata.timeseries]);
 
   return (
-    <div className="m-2 mt-1">
+    <div>
       {isError ? (
-        <p>
-          <small>Something went wrong here...</small>
-        </p>
+        <div className="d-flex justify-content-center mt-2">
+          <img src={error} alt="ERROR..." width="50px" height="50px" />
+        </div>
       ) : isLoading ? (
-        <h2>Loading...</h2>
+        <div className="d-flex justify-content-center mt-3">
+          <img src={loading} alt="loading..." width="40px" height="40px" />
+        </div>
       ) : (
-        <div className="d-flex justify-content-between text-light">
+        <div className="d-flex justify-content-center mt-1 text-light">
           <img
             src={YRdata.next6h_img}
             alt="Specification Drawing"
             width="50px"
             height="50px"
           />
-          <h5 className=" mt-3 ml-2">{YRdata.next6h_temp}°C</h5>
+          <h5 className=" mt-3 ml-3">{YRdata.next6h_temp}°C</h5>
         </div>
       )}
     </div>
