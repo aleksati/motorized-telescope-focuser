@@ -21,7 +21,6 @@ const FormInfo = (props) => {
       </div>
       <div className="form-group border border-white rounded ml-1 bg-gradient-dark col">
         <h2 className="m-1 text-light">Presets</h2>
-        {/* Make them buttons. MAke the buttons have the color of the main switch when they are "saved". */}
       </div>
     </div>
   );
