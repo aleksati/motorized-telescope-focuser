@@ -4,7 +4,7 @@ import Form from "./1-2-form";
 import FormInfo from "./1-3-forminfo";
 
 const Menubar = (props) => (
-  <div className="container-xl">
+  <div className="container">
     <BootstrapSwitchButton
       checked={props.menustate.formswitch}
       onlabel="Camera"

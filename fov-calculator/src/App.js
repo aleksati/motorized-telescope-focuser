@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Menubar from "./components/1-menubar";
-import Chart from "./components/2-linechart";
+// import Chart from "./components/2-linechart";
+import Canvas from "./components/2-canvas";
 import {
   camChartSize,
   eyepieceChartSize,
@@ -155,11 +156,12 @@ class App extends Component {
           onGridSwitch={this.handleGridSwitchChange}
           menustate={this.state.menustate}
         />
-        <Chart
+        {/* <Chart
           key="chart"
           chartinfo={this.state.menustate.chartinfo}
           gridswitch={this.state.menustate.gridswitch}
-        />
+        /> */}
+        <Canvas chartinfo={this.state.menustate.chartinfo} />
       </div>
     );
   }

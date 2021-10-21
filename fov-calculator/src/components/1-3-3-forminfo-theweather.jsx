@@ -55,7 +55,7 @@ const TheWeatherTonight = (props) => {
     return data[idx];
   };
 
-  // Coponenmt did mount
+  // Componemt did mount
   useEffect(() => {
     setIsLoading(true);
     setError(false);
