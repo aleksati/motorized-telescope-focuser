@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import loading from "../img/error-loading/loading.gif";
 import error from "../img/error-loading/error.gif";
 
@@ -12,7 +12,6 @@ const TheWeatherTonight = (props) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
-  const currTime = Date();
 
   // request to use user location through the browser
   function getLocation() {
@@ -38,7 +37,8 @@ const TheWeatherTonight = (props) => {
   }
 
   // We are only interested in one weather forcast at night time.
-  const filterData = (data) => {
+  const filterData = useCallback((data) => {
+    const currTime = Date();
     let currTimeHour = currTime.slice(16, 18);
     let idx;
 
@@ -53,7 +53,7 @@ const TheWeatherTonight = (props) => {
       });
     }
     return data[idx];
-  };
+  }, []);
 
   // Componemt did mount
   useEffect(() => {
@@ -83,7 +83,7 @@ const TheWeatherTonight = (props) => {
       }
     };
     fetchData();
-  }, []);
+  }, [filterData]);
 
   // Find the next6hours forecast from 22:00.
   // + image
