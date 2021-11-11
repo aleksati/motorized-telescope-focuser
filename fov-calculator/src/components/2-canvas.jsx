@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useReducer, useLayoutEffect } from "react";
 import {
-  paintGridOnSquare,
+  paintOnSquare,
+  paintOnCircle,
   paintBg,
   paintHeight,
 } from "./2-utils-canvasMethods.js";
@@ -21,12 +22,18 @@ const Canvas = (props) => {
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
 
-      paintHeight(canvas, props.chartinfo);
+      let text = true;
+
+      paintHeight(canvas, props.chartinfo, text);
       paintBg(context);
       // if grid then do this. otherwise, skip it.
-      paintGridOnSquare(context, props.chartinfo);
+      if (props.formSwitch) {
+        paintOnSquare(context, props.chartinfo, text, props.displayGrid);
+      } else {
+        paintOnCircle(context, props.chartinfo, text, props.displayGrid);
+      }
     }
-  }, [update, props.chartinfo]);
+  }, [update, props]);
 
   // attach event listner.
   useEffect(() => {
@@ -38,13 +45,12 @@ const Canvas = (props) => {
     }
   }, [canvasRef]);
 
-  const circleOrSquare = () => {
-    //return style = formswitch ? "w-100 border border-5 rounded-circle" : "w-100 border border-5 "
-  };
+  const circleOrSquare = () =>
+    !props.formSwitch ? "w-100 border rounded-circle" : "w-100 border";
 
   return (
     <div className="container">
-      <canvas ref={canvasRef} className=" w-100" />
+      <canvas ref={canvasRef} className={circleOrSquare()} />
     </div>
   );
 };

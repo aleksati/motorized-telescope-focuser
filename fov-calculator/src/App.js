@@ -85,7 +85,7 @@ class App extends Component {
         chartinfo: {
           plotSizeX: 20,
           plotSizeY: 20,
-          plotDivisor: 6,
+          plotDivisor: 1,
           axisLabel: "Minutes of arc",
         },
       },
@@ -161,7 +161,11 @@ class App extends Component {
           chartinfo={this.state.menustate.chartinfo}
           gridswitch={this.state.menustate.gridswitch}
         /> */}
-        <Canvas chartinfo={this.state.menustate.chartinfo} />
+        <Canvas
+          chartinfo={this.state.menustate.chartinfo}
+          displayGrid={this.state.menustate.gridswitch}
+          formSwitch={this.state.menustate.formswitch}
+        />
       </div>
     );
   }
