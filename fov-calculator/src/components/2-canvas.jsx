@@ -3,7 +3,7 @@ import {
   paintOnSquare,
   paintOnCircle,
   paintBg,
-  paintHeight,
+  setupCanvas,
 } from "./2-utils-canvasMethods.js";
 
 // The props are:
@@ -20,11 +20,9 @@ const Canvas = (props) => {
     // layouteffect runs before the DOM initally renders. A good place to update/get size of DOM elements to avoid flickering.
     if (canvasRef.current) {
       const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
+      const text = true;
+      const context = setupCanvas(canvas, props.chartinfo, text);
 
-      let text = true;
-
-      paintHeight(canvas, props.chartinfo, text);
       paintBg(context);
       // if grid then do this. otherwise, skip it.
       if (props.formSwitch) {
@@ -46,7 +44,7 @@ const Canvas = (props) => {
   }, [canvasRef]);
 
   const circleOrSquare = () =>
-    !props.formSwitch ? "w-100 border rounded-circle" : "w-100 border";
+    !props.formSwitch ? "w-100 border rounded-circle" : "w-100";
 
   return (
     <div className="container">

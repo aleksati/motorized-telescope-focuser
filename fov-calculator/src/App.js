@@ -85,8 +85,8 @@ class App extends Component {
         chartinfo: {
           plotSizeX: 20,
           plotSizeY: 20,
-          plotDivisor: 1,
-          axisLabel: "Minutes of arc",
+          plotDivisor: 6,
+          axisLabel: "Seconds of arc",
         },
       },
     };
