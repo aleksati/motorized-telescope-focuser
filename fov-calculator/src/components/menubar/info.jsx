@@ -82,8 +82,8 @@ const Info = (props) => {
   }, [props.menustate.formdata, props.menustate.formswitch]);
 
   const bgColor = () => {
-    let css = "text-dark text-center border rounded col ";
-    let bg = props.menustate.formswitch ? "bg-info" : "bg-success";
+    let css = "text-light text-center border rounded col ";
+    let bg = props.menustate.formswitch ? "border-info" : "border-success";
     return css + bg;
   };
 
@@ -97,9 +97,7 @@ const Info = (props) => {
               <p className="text-light mr-2">
                 <small>{name}</small>
               </p>
-              <p className={bgColor()}>
-                <strong>{value}</strong>
-              </p>
+              <p className={bgColor()}>{value}</p>
             </div>
           );
         })}

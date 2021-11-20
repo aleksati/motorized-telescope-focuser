@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Menubar from "./components/menubar/menubar";
-import Canvas from "./components/2-canvas";
+import Canvas from "./components/canvas";
 import {
   camChartSize,
   eyepieceChartSize,

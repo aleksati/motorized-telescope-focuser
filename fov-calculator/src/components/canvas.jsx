@@ -4,7 +4,7 @@ import {
   paintOnCircle,
   paintBg,
   setupCanvas,
-} from "./2-utils-canvasMethods.js";
+} from "./utils-canvasMethods.js";
 
 // The props are:
 // chartinfo= {plotSizeX(num), plotSizeY(num), plotDivisor(num), axisLabel(string)}
