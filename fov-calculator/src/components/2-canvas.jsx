@@ -25,7 +25,7 @@ const Canvas = (props) => {
 
       paintBg(context);
       // if grid then do this. otherwise, skip it.
-      if (props.formSwitch) {
+      if (!props.formSwitch) {
         paintOnSquare(context, props.chartinfo, text, props.displayGrid);
       } else {
         paintOnCircle(context, props.chartinfo, text, props.displayGrid);
@@ -44,7 +44,7 @@ const Canvas = (props) => {
   }, [canvasRef]);
 
   const circleOrSquare = () =>
-    !props.formSwitch ? "w-100 border rounded-circle" : "w-100";
+    props.formSwitch ? "w-100 border rounded-circle" : "w-100";
 
   return (
     <div className="container">

@@ -1,7 +1,7 @@
 import React from "react";
-import FormInputs from "./1-2-2-form-inputs";
+import FormInputs from "./forminputs";
 
-const Form = (props) => {
+const Options = (props) => {
   const SubmitBtnColor = () => {
     let className = "btn text-light ml-1 mb-1 bg-";
     className += props.formswitch ? "gradient-info" : "gradient-success";
@@ -66,4 +66,4 @@ const Form = (props) => {
   );
 };
 
-export default Form;
+export default Options;

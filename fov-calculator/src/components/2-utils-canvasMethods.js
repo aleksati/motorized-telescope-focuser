@@ -7,9 +7,9 @@ const LABELFONT = "30px Arial";
 const NUMBERFONT = "15px Arial";
 const COZYOFFSET = 3;
 
-const textColor = "rgb(100, 100, 100)";
-const borderColor = "rgb(255, 255, 255)";
-const gridColor = "rgb(50, 50, 50)";
+const textColor = "#9C9C9C";
+const borderColor = "#9C9C9C";
+const gridColor = "#4c4c4c";
 
 function nearestHalf(orgX, orgY) {
   // round to nearest 0.5
@@ -279,23 +279,5 @@ export function paintOnCircle(ctx, chartinfo, text, grid) {
       ctx.lineTo(globalWidth, y);
       ctx.stroke();
     }
-
-    // paint numbers
-    // if (text) {
-    //   if (
-    //     i !== 0 &&
-    //     i % chartinfo.plotDivisor === 0 &&
-    //     i !== chartinfo.plotSizeY
-    //   ) {
-    //     // draw numbers along Y axis
-    //     ctx.font = NUMBERFONT;
-    //     ctx.textBaseline = "top";
-    //     ctx.fillText(
-    //       i / chartinfo.plotDivisor,
-    //       globalWidth / 2 - COZYOFFSET * 2,
-    //       globalHeight - pxPerUnitY * i + COZYOFFSET
-    //     );
-    //   }
-    // }
   }
 }

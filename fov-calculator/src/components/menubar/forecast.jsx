@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import loading from "../img/error-loading/loading.gif";
-import error from "../img/error-loading/error.gif";
+import loading from "../../img/error-loading/loading.gif";
+import error from "../../img/error-loading/error.gif";
 
 // Make so that, if we check at 23:00 (for instace) it get the info from 23:00.. not 21:00..
 
-const TheWeatherTonight = (props) => {
+const Forecast = (props) => {
   const [YRdata, setYRdata] = useState({
     timeseries: {},
     next6h_temp: 0,
@@ -95,7 +95,7 @@ const TheWeatherTonight = (props) => {
     const temperature = YRdata.timeseries.data.instant.details.air_temperature;
     // "try" to get image from folder based on symbol_code
     try {
-      const wimg = require("../img/weather/" + symbol_code + ".png").default;
+      const wimg = require("../../img/weather/" + symbol_code + ".png").default;
       setYRdata((prevState) => ({
         ...prevState,
         next6h_img: wimg,
@@ -111,26 +111,32 @@ const TheWeatherTonight = (props) => {
   return (
     <div>
       {isError ? (
-        <div className="d-flex justify-content-center mt-2">
-          <img src={error} alt="ERROR..." width="50px" height="50px" />
+        <div className="d-flex justify-content-left mt-2">
+          <img src={error} alt="ERROR..." width="40px" height="40px" />
         </div>
       ) : isLoading ? (
         <div className="d-flex justify-content-center mt-3">
           <img src={loading} alt="loading..." width="40px" height="40px" />
         </div>
       ) : (
-        <div className="d-flex justify-content-center mt-1 text-light">
+        <div className="d-flex col">
           <img
             src={YRdata.next6h_img}
             alt="Specification Drawing"
-            width="50px"
-            height="50px"
+            width="40px"
+            height="40px"
+            className="mt-1"
           />
-          <h5 className=" mt-3 ml-3">{YRdata.next6h_temp}°C</h5>
+          <p className="ml-2 mt-2 text-light">
+            <small>{YRdata.next6h_temp}°C</small>
+          </p>
         </div>
       )}
     </div>
   );
 };
 
-export default TheWeatherTonight;
+// className="d-flex justify-content-center mt-1 text-light"
+// className=" mt-3 ml-3"
+
+export default Forecast;

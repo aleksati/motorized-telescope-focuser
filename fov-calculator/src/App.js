@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import Menubar from "./components/1-menubar";
-// import Chart from "./components/2-linechart";
+import Menubar from "./components/menubar/menubar";
 import Canvas from "./components/2-canvas";
 import {
   camChartSize,
@@ -88,6 +87,7 @@ class App extends Component {
           plotDivisor: 6,
           axisLabel: "Seconds of arc",
         },
+        submit: true,
       },
     };
     this.handleFormSwitchChange = this.handleFormSwitchChange.bind(this);
@@ -142,6 +142,7 @@ class App extends Component {
       menustate: {
         ...prevState.menustate,
         chartinfo: newchartinfo,
+        submit: !this.state.menustate.submit,
       },
     }));
   }
@@ -156,11 +157,6 @@ class App extends Component {
           onGridSwitch={this.handleGridSwitchChange}
           menustate={this.state.menustate}
         />
-        {/* <Chart
-          key="chart"
-          chartinfo={this.state.menustate.chartinfo}
-          gridswitch={this.state.menustate.gridswitch}
-        /> */}
         <Canvas
           chartinfo={this.state.menustate.chartinfo}
           displayGrid={this.state.menustate.gridswitch}
