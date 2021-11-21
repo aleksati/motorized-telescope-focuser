@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormInputs = (props) => (
+const OptionInputs = (props) => (
   <div className="d-flex">
     {props.items.map((item) => {
       return (
@@ -28,4 +28,4 @@ const FormInputs = (props) => (
   </div>
 );
 
-export default FormInputs;
+export default OptionInputs;

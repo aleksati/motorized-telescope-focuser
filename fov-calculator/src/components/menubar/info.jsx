@@ -64,36 +64,57 @@ const Info = (props) => {
       return ["Magnification", mag];
     };
 
-    const getResolution = () => {
-      // yes..
+    const getCamResolution = () => {
+      if (!props.menustate.submit) {
+        return ["Px per square", ""];
+      }
+      let resX = Number(props.menustate.formdata.resolutionx.value);
+      let resY = Number(props.menustate.formdata.resolutiony.value);
+      let plotX = Number(props.menustate.chartinfo.plotSizeX);
+      let plotY = Number(props.menustate.chartinfo.plotSizeY);
+
+      if (resX === 0 || resY === 0) return ["Px per canvas square²", ""];
+      let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
+      let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
+
+      let res = pixelsPerUnitX + " x " + pixelsPerUnitY;
+      return ["Px per square", res];
     };
 
     let newState = [];
     newState.push(getFocalRatio());
     if (props.menustate.formswitch) {
-      // eyepiece mode.
+      // eyepiece mode
       newState.push(getMagnification());
     } else {
-      // get resolution
+      // cameras mode
       newState.push(getAspectRatio());
+      newState.push(getCamResolution());
     }
-
     setState(newState);
-  }, [props.menustate.formdata, props.menustate.formswitch]);
+  }, [
+    props.menustate.formdata,
+    props.menustate.formswitch,
+    props.menustate.submit,
+    props.menustate.chartinfo,
+  ]);
 
   const bgColor = () => {
-    let css = "text-light text-center border rounded col ";
+    let css = "text-light text-center col-auto bg-black border rounded ";
     let bg = props.menustate.formswitch ? "border-info" : "border-success";
     return css + bg;
   };
 
   return (
-    <div className="d-flex mb-2">
-      <div className="d-flex form-group border border-white rounded ml-1 bg-dark col">
+    <div className="border border-white rounded ml-1 mb-3 bg-dark w-100">
+      <div className="d-flex">
         {state.map((item) => {
           const [name, value] = item;
           return (
-            <div className="form-label-group col mt-2 mb-0" key={name}>
+            <div
+              className="form-label-group col justify-content-center mb-0 mt-2"
+              key={name}
+            >
               <p className="text-light mr-2">
                 <small>{name}</small>
               </p>
@@ -101,7 +122,10 @@ const Info = (props) => {
             </div>
           );
         })}
-        <div className="form-label-group col mb-0" key={"forecast"}>
+        <div
+          className="form-label-group col justify-content-center mb-0"
+          key={"forecast"}
+        >
           <p className="text-light mr-2 mt-2">
             <small>Forecast</small>
           </p>
@@ -111,5 +135,18 @@ const Info = (props) => {
     </div>
   );
 };
+
+//   let unitLabel = "";
+//   switch (props.menustate.chartinfo.axisLabel) {
+//     case "Seconds of Arc":
+//       unitLabel = "′′";
+//       break;
+//     case "Minutes of Arc":
+//       unitLabel = "′";
+//       break;
+//     case "Degrees":
+//       unitLabel = "°";
+//       break;
+//   }
 
 export default Info;

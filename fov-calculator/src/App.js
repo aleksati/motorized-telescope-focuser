@@ -73,7 +73,7 @@ class App extends Component {
           eyepieceafov: {
             ref: "eyepieceafov",
             value: "",
-            required: false,
+            required: true,
             type: "number",
             name: "AFOV",
             unit: "°",
@@ -85,9 +85,9 @@ class App extends Component {
           plotSizeX: 20,
           plotSizeY: 20,
           plotDivisor: 6,
-          axisLabel: "Seconds of arc",
+          axisLabel: "Minutes of Arc",
         },
-        submit: true,
+        submit: false,
       },
     };
     this.handleFormSwitchChange = this.handleFormSwitchChange.bind(this);
@@ -101,6 +101,7 @@ class App extends Component {
       menustate: {
         ...prevState.menustate,
         formswitch: bool,
+        submit: false,
       },
     }));
   }
@@ -126,6 +127,7 @@ class App extends Component {
       menustate: {
         ...prevState.menustate,
         formdata: formdataCopy,
+        submit: false,
       },
     }));
   }
@@ -142,7 +144,7 @@ class App extends Component {
       menustate: {
         ...prevState.menustate,
         chartinfo: newchartinfo,
-        submit: !this.state.menustate.submit,
+        submit: true,
       },
     }));
   }

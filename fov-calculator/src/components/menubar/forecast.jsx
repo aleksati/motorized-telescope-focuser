@@ -88,6 +88,7 @@ const Forecast = (props) => {
   // Find the next6hours forecast from 22:00.
   // + image
   useEffect(() => {
+    // when the object is empty on load, just return back
     if (Object.keys(YRdata.timeseries).length === 0) {
       return;
     }
@@ -111,21 +112,20 @@ const Forecast = (props) => {
   return (
     <div>
       {isError ? (
-        <div className="d-flex justify-content-left mt-2">
+        <div className="d-flex justify-content-left">
           <img src={error} alt="ERROR..." width="40px" height="40px" />
         </div>
       ) : isLoading ? (
-        <div className="d-flex justify-content-center mt-3">
+        <div className="d-flex justify-content-center">
           <img src={loading} alt="loading..." width="40px" height="40px" />
         </div>
       ) : (
-        <div className="d-flex col">
+        <div className="d-flex">
           <img
             src={YRdata.next6h_img}
             alt="Specification Drawing"
             width="40px"
             height="40px"
-            className="mt-1"
           />
           <p className="ml-2 mt-2 text-light">
             <small>{YRdata.next6h_temp}°C</small>
@@ -135,8 +135,5 @@ const Forecast = (props) => {
     </div>
   );
 };
-
-// className="d-flex justify-content-center mt-1 text-light"
-// className=" mt-3 ml-3"
 
 export default Forecast;

@@ -1,46 +1,28 @@
 import React from "react";
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+
+// canvasOptions
 
 const CanvasInputs = (props) => {
-  const addInfoStyleSwitch = () => {
-    return (
-      <BootstrapSwitchButton
-        checked={props.menustate.gridswitch}
-        onlabel="Grid Off"
-        onstyle="info"
-        offlabel="Grid On"
-        offstyle="info"
-        onChange={(checked) => {
-          props.onGridSwitch(checked);
-        }}
-        style="ml-2 mr-2"
-        width="160"
-        height="50"
-      />
-    );
-  };
-
-  const addSuccessStyleSwitch = () => {
-    return (
-      <BootstrapSwitchButton
-        checked={props.menustate.gridswitch}
-        onlabel="Grid Off"
-        onstyle="success"
-        offlabel="Grid On"
-        offstyle="success"
-        onChange={(checked) => {
-          props.onGridSwitch(checked);
-        }}
-        style="ml-2 mr-2"
-        width="160"
-        height="50"
-      />
-    );
-  };
   return (
-    <div className="d-flex">
-      {props.formswitch ? addInfoStyleSwitch() : addSuccessStyleSwitch()}
-    </div>
+    <FormGroup className="d-flex">
+      <FormControlLabel
+        control={
+          <Switch
+            inputProps={{ "aria-label": "controlled" }}
+            color={props.formswitch ? "info" : "success"}
+            checked={props.menustate.gridswitch}
+            onChange={(event) => {
+              props.onGridSwitch(event.target.checked);
+            }}
+          />
+        }
+        label="Grid"
+        labelPlacement="start"
+      />
+    </FormGroup>
   );
 };
 

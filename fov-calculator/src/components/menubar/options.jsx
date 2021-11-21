@@ -1,5 +1,5 @@
 import React from "react";
-import FormInputs from "./forminputs";
+import OptionInputs from "./optionInputs";
 
 const Options = (props) => {
   const SubmitBtnColor = () => {
@@ -17,7 +17,7 @@ const Options = (props) => {
   const getCamSection = () => (
     <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
       <h2 className="ml-2 mt-1 text-light">Camera</h2>
-      <FormInputs
+      <OptionInputs
         title="Camera"
         items={[
           props.formdata.pixelsize,
@@ -33,7 +33,7 @@ const Options = (props) => {
   const getEyeSection = () => (
     <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
       <h2 className="ml-2 mt-1 text-light">Eyepiece</h2>
-      <FormInputs
+      <OptionInputs
         title="Eyepiece"
         items={[
           props.formdata.eyepiecefocallength,
@@ -49,7 +49,7 @@ const Options = (props) => {
     <form className="d-flex" onSubmit={props.onSubmit}>
       <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
         <h2 className="ml-2 mt-1 text-light">Telescope</h2>
-        <FormInputs
+        <OptionInputs
           title="Telescope"
           items={[
             props.formdata.aperture,
