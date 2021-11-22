@@ -1,7 +1,7 @@
 import React from "react";
-import OptionInputs from "./optionInputs";
+import FormInput from "./forminput";
 
-const Options = (props) => {
+const Form = (props) => {
   const SubmitBtnColor = () => {
     let className = "btn text-light ml-1 mb-1 bg-";
     className += props.formswitch ? "gradient-info" : "gradient-success";
@@ -17,7 +17,7 @@ const Options = (props) => {
   const getCamSection = () => (
     <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
       <h2 className="ml-2 mt-1 text-light">Camera</h2>
-      <OptionInputs
+      <FormInput
         title="Camera"
         items={[
           props.formdata.pixelsize,
@@ -33,7 +33,7 @@ const Options = (props) => {
   const getEyeSection = () => (
     <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
       <h2 className="ml-2 mt-1 text-light">Eyepiece</h2>
-      <OptionInputs
+      <FormInput
         title="Eyepiece"
         items={[
           props.formdata.eyepiecefocallength,
@@ -49,7 +49,7 @@ const Options = (props) => {
     <form className="d-flex" onSubmit={props.onSubmit}>
       <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
         <h2 className="ml-2 mt-1 text-light">Telescope</h2>
-        <OptionInputs
+        <FormInput
           title="Telescope"
           items={[
             props.formdata.aperture,
@@ -66,4 +66,4 @@ const Options = (props) => {
   );
 };
 
-export default Options;
+export default Form;

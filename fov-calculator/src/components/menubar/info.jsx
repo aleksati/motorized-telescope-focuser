@@ -106,15 +106,12 @@ const Info = (props) => {
   };
 
   return (
-    <div className="border border-white rounded ml-1 mb-3 bg-dark w-100">
-      <div className="d-flex">
+    <div className="border border-white rounded ml-1 mb-1 bg-gradient-dark">
+      <div className="d-flex justify-content-around">
         {state.map((item) => {
           const [name, value] = item;
           return (
-            <div
-              className="form-label-group col justify-content-center mb-0 mt-2"
-              key={name}
-            >
+            <div className="form-label-group mb-0 mt-2" key={name}>
               <p className="text-light mr-2">
                 <small>{name}</small>
               </p>
@@ -122,10 +119,7 @@ const Info = (props) => {
             </div>
           );
         })}
-        <div
-          className="form-label-group col justify-content-center mb-0"
-          key={"forecast"}
-        >
+        <div className="form-label-group mb-0" key={"forecast"}>
           <p className="text-light mr-2 mt-2">
             <small>Forecast</small>
           </p>
