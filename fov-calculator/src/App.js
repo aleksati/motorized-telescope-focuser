@@ -79,24 +79,25 @@ class App extends Component {
             unit: "°",
           },
         },
-        formswitch: true,
-        gridswitch: true, // change name to "display-grid"
+        formswitch: true, // change name to "eyepiecemode"
+        gridswitch: true, // canvasgrid
+        canvaslabels: true, // canvaslabels
         chartinfo: {
           plotSizeX: 20,
           plotSizeY: 20,
           plotDivisor: 6,
           axisLabel: "Minutes of Arc",
         },
-        submit: false,
+        submit: false, // hasSubmit
       },
     };
-    this.handleFormSwitchChange = this.handleFormSwitchChange.bind(this);
-    this.handleGridSwitchChange = this.handleGridSwitchChange.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleGridChange = this.handleGridChange.bind(this);
     this.handleMenuChange = this.handleMenuChange.bind(this);
     this.handleMenuSubmit = this.handleMenuSubmit.bind(this);
   }
 
-  handleFormSwitchChange(bool) {
+  handleFormChange(bool) {
     this.setState((prevState) => ({
       menustate: {
         ...prevState.menustate,
@@ -106,7 +107,7 @@ class App extends Component {
     }));
   }
 
-  handleGridSwitchChange(bool) {
+  handleGridChange(bool) {
     this.setState((prevState) => ({
       menustate: {
         ...prevState.menustate,
@@ -155,8 +156,8 @@ class App extends Component {
         <Menubar
           onChange={this.handleMenuChange}
           onSubmit={this.handleMenuSubmit}
-          onFormSwitch={this.handleFormSwitchChange}
-          onGridSwitch={this.handleGridSwitchChange}
+          onFormSwitch={this.handleFormChange}
+          onGridSwitch={this.handleGridChange}
           menustate={this.state.menustate}
         />
         <Canvas

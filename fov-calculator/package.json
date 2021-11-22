@@ -5,21 +5,18 @@
   "dependencies": {
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.1.1",
     "@mui/material": "^5.1.1",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
-    "@tkrotoff/bootstrap-floating-label": "^0.11.2",
     "bootstrap": "^4.6.0",
     "bootstrap-switch-button-react": "^1.2.0",
-    "bootstrap4-toggle": "^3.6.1",
-    "chart.js": "^3.2.0",
-    "floating-label-react": "^1.0.3",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
-    "react-chartjs-2": "^3.0.3",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.12.1",
+    "react-native-counters": "^1.2.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.1"
   },
@@ -46,5 +43,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {}
 }
