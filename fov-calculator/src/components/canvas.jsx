@@ -1,4 +1,10 @@
-import React, { useRef, useReducer, useLayoutEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useReducer,
+  useLayoutEffect,
+  useEffect,
+} from "react";
 import {
   paintOnSquare,
   paintOnCircle,
@@ -17,6 +23,8 @@ import {
 
 const Canvas = (props) => {
   const canvasRef = useRef(null);
+  const divRef = useRef(null);
+  const [canvasWidth, setCanvasWidth] = useState(200);
   const [update, forceUpdate] = useReducer((x) => x + 1, 0);
 
   // on mount, attach event listner.
@@ -50,9 +58,16 @@ const Canvas = (props) => {
     }
   }, [update, props]);
 
+  useEffect(() => {
+    if (divRef.current) {
+      setCanvasWidth(divRef.current.clientWidth);
+    }
+  }, [divRef]);
+
   return (
     <div className="container d-flex justify-content-center">
-      <div style={{ width: 200 }}>
+      {console.log(canvasWidth)}
+      <div style={{ width: canvasWidth }} ref={divRef}>
         <canvas
           ref={canvasRef}
           className={props.formSwitch ? "w-100 border rounded-circle" : "w-100"}
