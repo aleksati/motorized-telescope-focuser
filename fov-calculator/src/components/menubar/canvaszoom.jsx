@@ -6,6 +6,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
 
 const CanvasZoom = (props) => {
+  const INC = 10;
   return (
     <Tooltip title={props.zoomValue + "%"} placement="bottom">
       <ButtonGroup
@@ -17,7 +18,7 @@ const CanvasZoom = (props) => {
         <Button
           onClick={() => {
             props.onCanvasZoom(
-              props.zoomValue - 1 <= 10 ? 10 : props.zoomValue - 1
+              props.zoomValue - INC <= 10 ? 10 : props.zoomValue - INC
             );
           }}
         >
@@ -26,7 +27,7 @@ const CanvasZoom = (props) => {
         <Button
           onClick={() => {
             props.onCanvasZoom(
-              props.zoomValue + 1 > 100 ? 100 : props.zoomValue + 1
+              props.zoomValue + INC > 100 ? 100 : props.zoomValue + INC
             );
           }}
         >

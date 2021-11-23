@@ -1,8 +1,5 @@
 let LABELOFFSET = 0; // We only use 5% of the canvas size to make room for labels.
 
-let globalWidth = 0;
-let globalHeight = 0;
-
 let currentWidth = 0;
 let currentHeight = 0;
 
@@ -13,6 +10,8 @@ const COZYOFFSET = 3;
 const textColor = "#9C9C9C";
 const borderColor = "#9C9C9C";
 const gridColor = "#4c4c4c";
+
+// I need to translate a 1.25 "world" into a 1 world.
 
 function nearestHalf(orgX, orgY) {
   // round to nearest 0.5
@@ -57,36 +56,8 @@ function paintCircularText(label, ctx, angle) {
   }
 }
 
-export function initCanvas(cnv) {
-  globalWidth = cnv.getBoundingClientRect().width;
-  globalHeight = cnv.getBoundingClientRect().height;
-
-  // have to do what is in scale canvas
-  // set the correct aspect ratio etc.
-}
-
-export function scaleCanvas(cnv, chartinfo, text, zoomValue) {
-  // set the correct size of the canvas and update variables.
-  // the width is always 100% by default.
-  // returns the context
-  console.log(globalWidth, globalHeight);
-  // for optimal canvas rendering on the current screen.
-  let dpr = window.devicePixelRatio || 1;
-  let context = cnv.getContext("2d");
-  context.scale(dpr, dpr);
-
-  let { width } = cnv.getBoundingClientRect();
-  cnv.width = width * dpr;
-  currentWidth = cnv.width;
-
-  let unitY = chartinfo.plotSizeY;
-  let unitX = chartinfo.plotSizeX;
-  let pxPerUnitX = cnv.width / unitX; // pixel to size ratio
-  let newHeight = pxPerUnitX * unitY;
-  cnv.height = newHeight;
-  currentHeight = cnv.height;
-
-  if (text) {
+function getLabelOffset(label) {
+  if (label && currentHeight && currentWidth) {
     // calculate how much we should shrink the canvas in order to fit the LABELFONT and NUMBERFONT nicely on the outside.
     // we base the calculation on whichever axis has the least pixels.
     let smllstSide =
@@ -101,7 +72,22 @@ export function scaleCanvas(cnv, chartinfo, text, zoomValue) {
   } else {
     LABELOFFSET = 0;
   }
-  return context;
+}
+
+export function updateCanvasSize(cnv, chartinfo, text, dpr) {
+  // for optimal canvas rendering on the current screen.
+  //   console.log(cnv.parentNode.getBoundingClientRect().width);
+  currentWidth = cnv.parentNode.getBoundingClientRect().width * dpr;
+
+  let unitY = chartinfo.plotSizeY;
+  let unitX = chartinfo.plotSizeX;
+  let pxPerUnitX = currentWidth / unitX; // pixel to size ratio
+  currentHeight = pxPerUnitX * unitY;
+
+  cnv.width = currentWidth;
+  cnv.height = currentHeight;
+
+  getLabelOffset(text);
 }
 
 export function paintBg(ctx) {
