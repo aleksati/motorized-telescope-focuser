@@ -26,6 +26,8 @@ const Menubar = (props) => (
       menustate={props.menustate}
       onGridSwitch={props.onGridSwitch}
       formswitch={props.menustate.formswitch}
+      onCanvasZoom={props.onCanvasZoom}
+      zoomValue={props.zoomValue}
     />
   </div>
 );

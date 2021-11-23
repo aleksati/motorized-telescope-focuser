@@ -2,7 +2,7 @@ import React from "react";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import CanvasPlusMinus from "./canvasplusminus";
+import CanvasZoom from "./canvaszoom";
 
 const CanvasOptions = (props) => {
   return (
@@ -43,7 +43,11 @@ const CanvasOptions = (props) => {
           label="Labels"
           labelPlacement="start"
         />
-        <CanvasPlusMinus formswitch={props.formswitch} />
+        <CanvasZoom
+          formswitch={props.formswitch}
+          onCanvasZoom={props.onCanvasZoom}
+          zoomValue={props.zoomValue}
+        />
       </FormGroup>
       {/* <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
         <h2 className="m-1 text-light">Presets</h2>

@@ -89,12 +89,14 @@ class App extends Component {
           axisLabel: "Minutes of Arc",
         },
         submit: false, // hasSubmit
+        zoomValue: 100,
       },
     };
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleGridChange = this.handleGridChange.bind(this);
     this.handleMenuChange = this.handleMenuChange.bind(this);
     this.handleMenuSubmit = this.handleMenuSubmit.bind(this);
+    this.handleCanvasZoom = this.handleCanvasZoom.bind(this);
   }
 
   handleFormChange(bool) {
@@ -150,6 +152,15 @@ class App extends Component {
     }));
   }
 
+  handleCanvasZoom(e) {
+    this.setState((prevState) => ({
+      menustate: {
+        ...prevState.menustate,
+        zoomValue: e,
+      },
+    }));
+  }
+
   render() {
     return (
       <div className="App">
@@ -159,11 +170,14 @@ class App extends Component {
           onFormSwitch={this.handleFormChange}
           onGridSwitch={this.handleGridChange}
           menustate={this.state.menustate}
+          onCanvasZoom={this.handleCanvasZoom}
+          zoomValue={this.state.menustate.zoomValue}
         />
         <Canvas
           chartinfo={this.state.menustate.chartinfo}
           displayGrid={this.state.menustate.gridswitch}
           formSwitch={this.state.menustate.formswitch}
+          zoomValue={this.state.menustate.zoomValue}
         />
       </div>
     );

@@ -3,28 +3,46 @@ import {
   paintOnSquare,
   paintOnCircle,
   paintBg,
-  setupCanvas,
+  scaleCanvas,
+  initCanvas,
 } from "./utils-canvasMethods.js";
+
+// layouteffect runs before the DOM initally renders. A good place to update/get size of DOM elements to avoid flickering.
 
 // The props are:
 // chartinfo= {plotSizeX(num), plotSizeY(num), plotDivisor(num), axisLabel(string)}
 // gridswitch={bool}
 // formswitch={bool}
+// zoomValue={value}
 
 const Canvas = (props) => {
   const canvasRef = useRef(null);
   const [update, forceUpdate] = useReducer((x) => x + 1, 0);
 
+  // attach event listner.
   useLayoutEffect(() => {
-    // we draw the canvas on every render.
-    // layouteffect runs before the DOM initally renders. A good place to update/get size of DOM elements to avoid flickering.
+    if (canvasRef.current) {
+      window.addEventListener("resize", forceUpdate);
+      initCanvas(canvasRef.current);
+      return () => {
+        window.removeEventListener("resize", forceUpdate);
+      };
+    }
+  }, [canvasRef]);
+
+  // on all renders
+  useLayoutEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
       const text = true;
-      const context = setupCanvas(canvas, props.chartinfo, text);
+      const context = scaleCanvas(
+        canvas,
+        props.chartinfo,
+        text,
+        props.zoomValue
+      );
 
       paintBg(context);
-      // if grid then do this. otherwise, skip it.
       if (!props.formSwitch) {
         paintOnSquare(context, props.chartinfo, text, props.displayGrid);
       } else {
@@ -33,18 +51,8 @@ const Canvas = (props) => {
     }
   }, [update, props]);
 
-  // attach event listner.
-  useEffect(() => {
-    if (canvasRef.current) {
-      window.addEventListener("resize", forceUpdate);
-      return () => {
-        window.removeEventListener("resize", forceUpdate);
-      };
-    }
-  }, [canvasRef]);
-
   const circleOrSquare = () =>
-    props.formSwitch ? "w-100 border rounded-circle" : "w-100";
+    props.formSwitch ? "w-100 border rounded-circle" : "1-100";
 
   return (
     <div className="container">

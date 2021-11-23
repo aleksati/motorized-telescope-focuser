@@ -3,6 +3,9 @@ let LABELOFFSET = 0; // We only use 5% of the canvas size to make room for label
 let globalWidth = 0;
 let globalHeight = 0;
 
+let currentWidth = 0;
+let currentHeight = 0;
+
 const LABELFONT = "30px Arial";
 const NUMBERFONT = "15px Arial";
 const COZYOFFSET = 3;
@@ -19,9 +22,9 @@ function nearestHalf(orgX, orgY) {
   // http://diveintohtml5.info/canvas.html
 
   let x = Math.round(orgX - 0.5) + 0.5;
-  x = x > globalWidth ? globalWidth - 0.5 : x;
+  x = x > currentWidth ? currentWidth - 0.5 : x;
   let y = Math.round(orgY - 0.5) + 0.5;
-  y = y > globalHeight ? globalHeight - 0.5 : y;
+  y = y > currentHeight ? currentHeight - 0.5 : y;
   return { x, y };
 }
 
@@ -29,14 +32,14 @@ function paintCircularText(label, ctx, angle) {
   let startAngle = angle;
   let clockwise = -1;
   let textHeight = Number(LABELFONT.slice(0, 2));
-  ctx.translate(globalWidth / 2, globalHeight / 2);
+  ctx.translate(currentWidth / 2, currentHeight / 2);
   ctx.textBaseline = "middle";
   ctx.font = LABELFONT;
 
   // rotate 50% of total angle for center alignment
   for (let j = 0; j < label.length; j++) {
     let charWid = ctx.measureText(label[j]).width;
-    startAngle += (charWid / (globalWidth / 2 - textHeight) / 2) * -clockwise;
+    startAngle += (charWid / (currentWidth / 2 - textHeight) / 2) * -clockwise;
   }
 
   ctx.rotate(startAngle);
@@ -45,20 +48,28 @@ function paintCircularText(label, ctx, angle) {
   for (let j = 0; j < label.length; j++) {
     let charWid = ctx.measureText(label[j]).width; // half letter
     // rotate half letter
-    ctx.rotate((charWid / 2 / (globalWidth / 2 - textHeight)) * clockwise);
+    ctx.rotate((charWid / 2 / (currentWidth / 2 - textHeight)) * clockwise);
     // draw the character at "top" or "bottom"
     // depending on inward or outward facing
-    ctx.fillText(label[j], 0, -1 * (0 - globalWidth / 2 + textHeight / 2));
+    ctx.fillText(label[j], 0, -1 * (0 - currentWidth / 2 + textHeight / 2));
 
-    ctx.rotate((charWid / 2 / (globalWidth / 2 - textHeight)) * clockwise); // rotate half letter
+    ctx.rotate((charWid / 2 / (currentWidth / 2 - textHeight)) * clockwise); // rotate half letter
   }
 }
 
-export function setupCanvas(cnv, chartinfo, text) {
+export function initCanvas(cnv) {
+  globalWidth = cnv.getBoundingClientRect().width;
+  globalHeight = cnv.getBoundingClientRect().height;
+
+  // have to do what is in scale canvas
+  // set the correct aspect ratio etc.
+}
+
+export function scaleCanvas(cnv, chartinfo, text, zoomValue) {
   // set the correct size of the canvas and update variables.
   // the width is always 100% by default.
   // returns the context
-
+  console.log(globalWidth, globalHeight);
   // for optimal canvas rendering on the current screen.
   let dpr = window.devicePixelRatio || 1;
   let context = cnv.getContext("2d");
@@ -66,19 +77,20 @@ export function setupCanvas(cnv, chartinfo, text) {
 
   let { width } = cnv.getBoundingClientRect();
   cnv.width = width * dpr;
-  globalWidth = cnv.width;
+  currentWidth = cnv.width;
 
   let unitY = chartinfo.plotSizeY;
   let unitX = chartinfo.plotSizeX;
   let pxPerUnitX = cnv.width / unitX; // pixel to size ratio
   let newHeight = pxPerUnitX * unitY;
   cnv.height = newHeight;
-  globalHeight = cnv.height;
+  currentHeight = cnv.height;
 
   if (text) {
     // calculate how much we should shrink the canvas in order to fit the LABELFONT and NUMBERFONT nicely on the outside.
     // we base the calculation on whichever axis has the least pixels.
-    let smllstSide = globalHeight < globalWidth ? globalHeight : globalWidth;
+    let smllstSide =
+      currentHeight < currentWidth ? currentHeight : currentWidth;
     // then we find how many % the the font and labels are of the axis with the least pixels.
     let spaceRequired =
       Number(LABELFONT.slice(0, 2)) +
@@ -95,15 +107,15 @@ export function setupCanvas(cnv, chartinfo, text) {
 export function paintBg(ctx) {
   // paint background
   ctx.fillStyle = "#000000"; //"#138496";
-  ctx.fillRect(0, 0, globalWidth, globalHeight);
+  ctx.fillRect(0, 0, currentWidth, currentHeight);
 }
 
 export function paintOnSquare(ctx, chartinfo, text, grid) {
-  let offsetHeight = (globalHeight / 100) * LABELOFFSET;
-  let offsetWidth = (globalWidth / 100) * LABELOFFSET;
+  let offsetHeight = (currentHeight / 100) * LABELOFFSET;
+  let offsetWidth = (currentWidth / 100) * LABELOFFSET;
 
-  let pxPerUnitX = (globalWidth - offsetWidth) / chartinfo.plotSizeX;
-  let pxPerUnitY = (globalHeight - offsetHeight) / chartinfo.plotSizeY;
+  let pxPerUnitX = (currentWidth - offsetWidth) / chartinfo.plotSizeX;
+  let pxPerUnitY = (currentHeight - offsetHeight) / chartinfo.plotSizeY;
 
   ctx.textAlign = "center";
   ctx.fillStyle = textColor; // text and numbers
@@ -114,7 +126,7 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
     //i = 0 and 20 to make the border
     let { x, y } = nearestHalf(
       pxPerUnitX * i + offsetWidth,
-      globalHeight - offsetHeight
+      currentHeight - offsetHeight
     );
 
     // paint X grid
@@ -144,7 +156,7 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
         ctx.fillText(
           i / chartinfo.plotDivisor,
           pxPerUnitX * i + offsetWidth,
-          globalHeight - offsetHeight + COZYOFFSET // offsett the pixel size chosen above
+          currentHeight - offsetHeight + COZYOFFSET // offsett the pixel size chosen above
         );
       }
     }
@@ -156,8 +168,8 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
     ctx.font = LABELFONT;
     ctx.fillText(
       chartinfo.axisLabel,
-      globalWidth / 2 + offsetWidth,
-      globalHeight -
+      currentWidth / 2 + offsetWidth,
+      currentHeight -
         offsetHeight +
         COZYOFFSET +
         Number(NUMBERFONT.slice(0, 2)) +
@@ -170,7 +182,7 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
     ctx.font = LABELFONT;
     ctx.translate(
       offsetWidth - COZYOFFSET - Number(NUMBERFONT.slice(0, 2)) - COZYOFFSET,
-      globalHeight / 2 - offsetHeight
+      currentHeight / 2 - offsetHeight
     );
     ctx.rotate(Math.PI / -2);
     ctx.fillText(chartinfo.axisLabel, 0, 0);
@@ -180,7 +192,7 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
   // paint Y axis grid and numbers
   for (let i = 0; i <= chartinfo.plotSizeY; i++) {
     // include 0 and 20 to make the border
-    let { x, y } = nearestHalf(globalWidth + offsetWidth, pxPerUnitY * i);
+    let { x, y } = nearestHalf(currentWidth + offsetWidth, pxPerUnitY * i);
 
     // paint Y grid
     ctx.beginPath();
@@ -209,7 +221,7 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
         ctx.save();
         ctx.translate(
           offsetWidth - COZYOFFSET,
-          globalHeight - pxPerUnitY * i - offsetHeight
+          currentHeight - pxPerUnitY * i - offsetHeight
         );
         ctx.rotate(Math.PI / -2);
         ctx.fillText(i / chartinfo.plotDivisor, 0, 0);
@@ -220,8 +232,8 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
 }
 
 export function paintOnCircle(ctx, chartinfo, text, grid) {
-  let pxPerUnitX = globalWidth / chartinfo.plotSizeX;
-  let pxPerUnitY = globalHeight / chartinfo.plotSizeY;
+  let pxPerUnitX = currentWidth / chartinfo.plotSizeX;
+  let pxPerUnitY = currentHeight / chartinfo.plotSizeY;
 
   ctx.textAlign = "center";
   ctx.fillStyle = textColor; // text and numbers
@@ -235,7 +247,7 @@ export function paintOnCircle(ctx, chartinfo, text, grid) {
 
     if (grid) {
       ctx.beginPath();
-      ctx.moveTo(x, globalHeight);
+      ctx.moveTo(x, currentHeight);
       ctx.lineTo(x, y);
       ctx.stroke();
     }
@@ -253,7 +265,7 @@ export function paintOnCircle(ctx, chartinfo, text, grid) {
         ctx.fillText(
           i / chartinfo.plotDivisor,
           pxPerUnitX * i + COZYOFFSET * 2,
-          globalHeight / 2 + COZYOFFSET // offsett the pixel size chosen above
+          currentHeight / 2 + COZYOFFSET // offsett the pixel size chosen above
         );
       }
     }
@@ -276,7 +288,7 @@ export function paintOnCircle(ctx, chartinfo, text, grid) {
     if (grid) {
       ctx.beginPath();
       ctx.moveTo(x, y);
-      ctx.lineTo(globalWidth, y);
+      ctx.lineTo(currentWidth, y);
       ctx.stroke();
     }
   }
