@@ -64,6 +64,13 @@ const Info = (props) => {
       return ["Magnification", mag];
     };
 
+    const getMaxMagnification = () => {
+      let flength = Number(props.menustate.formdata.focallength.value);
+      let aperture = Number(props.menustate.formdata.aperture.value);
+      if (flength <= 0 || aperture <= 0) return ["Focal Ratio", ""];
+      return ["Max Magnification", aperture * 2];
+    };
+
     const getCamResolution = () => {
       if (!props.menustate.submit) {
         return ["Px per square", ""];
@@ -81,17 +88,18 @@ const Info = (props) => {
       return ["Px per square", res];
     };
 
-    let newState = [];
-    newState.push(getFocalRatio());
+    let infoBar = [];
+    infoBar.push(getFocalRatio());
+    infoBar.push(getMaxMagnification());
     if (props.menustate.formswitch) {
       // eyepiece mode
-      newState.push(getMagnification());
+      infoBar.push(getMagnification());
     } else {
       // cameras mode
-      newState.push(getAspectRatio());
-      newState.push(getCamResolution());
+      infoBar.push(getAspectRatio());
+      infoBar.push(getCamResolution());
     }
-    setState(newState);
+    setState(infoBar);
   }, [
     props.menustate.formdata,
     props.menustate.formswitch,
@@ -129,18 +137,5 @@ const Info = (props) => {
     </div>
   );
 };
-
-//   let unitLabel = "";
-//   switch (props.menustate.chartinfo.axisLabel) {
-//     case "Seconds of Arc":
-//       unitLabel = "′′";
-//       break;
-//     case "Minutes of Arc":
-//       unitLabel = "′";
-//       break;
-//     case "Degrees":
-//       unitLabel = "°";
-//       break;
-//   }
 
 export default Info;
