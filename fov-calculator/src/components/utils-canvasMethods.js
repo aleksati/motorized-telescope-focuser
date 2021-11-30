@@ -76,8 +76,9 @@ function getLabelOffset(label) {
 
 export function updateCanvasSize(cnv, chartinfo, text, dpr) {
   // for optimal canvas rendering on the current screen.
-  //   console.log(cnv.parentNode.getBoundingClientRect().width);
-  currentWidth = cnv.parentNode.getBoundingClientRect().width * dpr;
+  currentWidth = cnv.getBoundingClientRect().width * dpr;
+
+  console.log(currentWidth);
 
   let unitY = chartinfo.plotSizeY;
   let unitX = chartinfo.plotSizeX;

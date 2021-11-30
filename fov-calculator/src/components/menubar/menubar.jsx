@@ -5,7 +5,7 @@ import Info from "./info";
 import CanvasOptions from "./canvasoptions";
 
 const Menubar = (props) => (
-  <div className="container">
+  <div className="container p-0">
     <BootstrapSwitchButton
       checked={props.menustate.formswitch}
       onlabel="Camera"

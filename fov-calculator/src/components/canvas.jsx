@@ -23,13 +23,15 @@ import {
 
 const Canvas = (props) => {
   const canvasRef = useRef(null);
-  const divRef = useRef(null);
-  const [canvasWidth, setCanvasWidth] = useState(200);
-  const [update, forceUpdate] = useReducer((x) => x + 1, 0);
+  const canvasDivRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(null);
+  const [canvasWidth, setCanvasWidth] = useState(null);
+  const [onUpdate, forceUpdate] = useReducer((x) => x + 1, 0);
 
   // on mount, attach event listner.
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (canvasRef.current) {
+      console.log("addEventListener");
       window.addEventListener("resize", forceUpdate);
       return () => {
         window.removeEventListener("resize", forceUpdate);
@@ -37,9 +39,28 @@ const Canvas = (props) => {
     }
   }, [canvasRef]);
 
-  // on all renders
-  useLayoutEffect(() => {
+  // Store the container width when the DIV mounts
+  // and whenever we resize the window.
+  useEffect(() => {
+    if (canvasDivRef.current) {
+      console.log("setContainerWidth");
+      setContainerWidth(canvasDivRef.current.parentNode.clientWidth);
+    }
+  }, [canvasDivRef, onUpdate]);
+
+  // If the container width OR a new zoom value is registered:
+  // we update the canvasWidth.
+  useEffect(() => {
+    if (containerWidth) {
+      console.log("setCanvasWidth");
+      setCanvasWidth((containerWidth / 100) * props.zoomValue);
+    }
+  }, [containerWidth, props.zoomValue]);
+
+  // Paint the canvas.
+  useEffect(() => {
     if (canvasRef.current) {
+      console.log("paint canvas");
       const canvas = canvasRef.current;
       const dpr = window.devicePixelRatio || 1;
       const label = true;
@@ -56,18 +77,12 @@ const Canvas = (props) => {
         paintOnCircle(context, props.chartinfo, label, props.displayGrid);
       }
     }
-  }, [update, props]);
-
-  useEffect(() => {
-    if (divRef.current) {
-      setCanvasWidth(divRef.current.clientWidth);
-    }
-  }, [divRef]);
+  }, [canvasRef, props, canvasWidth]);
 
   return (
-    <div className="container d-flex justify-content-center">
-      {console.log(canvasWidth)}
-      <div style={{ width: canvasWidth }} ref={divRef}>
+    <div className="container d-flex justify-content-center p-0">
+      {console.log("dom:", canvasWidth)}
+      <div ref={canvasDivRef} style={{ width: canvasWidth }}>
         <canvas
           ref={canvasRef}
           className={props.formSwitch ? "w-100 border rounded-circle" : "w-100"}

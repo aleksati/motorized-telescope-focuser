@@ -67,7 +67,7 @@ const Info = (props) => {
     const getMaxMagnification = () => {
       let flength = Number(props.menustate.formdata.focallength.value);
       let aperture = Number(props.menustate.formdata.aperture.value);
-      if (flength <= 0 || aperture <= 0) return ["Focal Ratio", ""];
+      if (flength <= 0 || aperture <= 0) return ["Max Magnification", ""];
       return ["Max Magnification", aperture * 2];
     };
 
