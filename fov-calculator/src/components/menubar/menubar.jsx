@@ -13,7 +13,7 @@ const Menubar = (props) => (
       offlabel="Eyepiece"
       offstyle="success"
       onChange={props.onFormSwitch}
-      style="w-100 ml-1 mb-1 mr-1 mt-2"
+      style="w-100 mb-1 mt-2"
     />
     <Form
       formswitch={props.menustate.formswitch}
@@ -23,11 +23,13 @@ const Menubar = (props) => (
     />
     <Info menustate={props.menustate} />
     <CanvasOptions
-      menustate={props.menustate}
-      onGridSwitch={props.onGridSwitch}
+      zoomValue={props.menustate.zoomValue}
+      canvasLabels={props.menustate.canvasLabels}
       formswitch={props.menustate.formswitch}
-      onCanvasZoom={props.onCanvasZoom}
-      zoomValue={props.zoomValue}
+      gridswitch={props.menustate.gridswitch}
+      onZoomSwitch={props.onZoomSwitch}
+      onGridSwitch={props.onGridSwitch}
+      onLabelSwitch={props.onLabelSwitch}
     />
   </div>
 );

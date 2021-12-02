@@ -114,7 +114,7 @@ const Info = (props) => {
   };
 
   return (
-    <div className="border border-white rounded ml-1 mb-1 bg-gradient-dark">
+    <div className="border border-white rounded mb-1 bg-gradient-dark">
       <div className="d-flex justify-content-around">
         {state.map((item) => {
           const [name, value] = item;

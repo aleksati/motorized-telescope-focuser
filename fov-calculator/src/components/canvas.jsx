@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useReducer,
-  useLayoutEffect,
-  useEffect,
-} from "react";
+import React, { useRef, useState, useReducer, useEffect } from "react";
 import {
   paintOnSquare,
   paintOnCircle,
@@ -31,7 +25,6 @@ const Canvas = (props) => {
   // on mount, attach event listner.
   useEffect(() => {
     if (canvasRef.current) {
-      console.log("addEventListener");
       window.addEventListener("resize", forceUpdate);
       return () => {
         window.removeEventListener("resize", forceUpdate);
@@ -43,7 +36,6 @@ const Canvas = (props) => {
   // and whenever we resize the window.
   useEffect(() => {
     if (canvasDivRef.current) {
-      console.log("setContainerWidth");
       setContainerWidth(canvasDivRef.current.parentNode.clientWidth);
     }
   }, [canvasDivRef, onUpdate]);
@@ -52,36 +44,47 @@ const Canvas = (props) => {
   // we update the canvasWidth.
   useEffect(() => {
     if (containerWidth) {
-      console.log("setCanvasWidth");
       setCanvasWidth((containerWidth / 100) * props.zoomValue);
     }
   }, [containerWidth, props.zoomValue]);
 
-  // Paint the canvas.
+  // Paint the canvas on most renders.
   useEffect(() => {
-    if (canvasRef.current) {
-      console.log("paint canvas");
-      const canvas = canvasRef.current;
-      const dpr = window.devicePixelRatio || 1;
-      const label = true;
-
-      updateCanvasSize(canvas, props.chartinfo, label, dpr);
-
+    if (canvasRef.current && canvasWidth) {
+      let canvas = canvasRef.current;
       let context = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      let scaledCanvasWidth = canvasWidth * dpr;
+
+      updateCanvasSize(
+        canvas,
+        scaledCanvasWidth,
+        props.chartinfo,
+        props.canvasLabels
+      );
 
       paintBg(context);
 
       if (!props.formSwitch) {
-        paintOnSquare(context, props.chartinfo, label, props.displayGrid);
+        paintOnSquare(
+          context,
+          props.chartinfo,
+          props.canvasLabels,
+          props.displayGrid
+        );
       } else {
-        paintOnCircle(context, props.chartinfo, label, props.displayGrid);
+        paintOnCircle(
+          context,
+          props.chartinfo,
+          props.canvasLabels,
+          props.displayGrid
+        );
       }
     }
   }, [canvasRef, props, canvasWidth]);
 
   return (
     <div className="container d-flex justify-content-center p-0">
-      {console.log("dom:", canvasWidth)}
       <div ref={canvasDivRef} style={{ width: canvasWidth }}>
         <canvas
           ref={canvasRef}

@@ -12,7 +12,10 @@ class App extends Component {
     this.state = {
       menustate: {
         // or change name to form. also have a plot.
-        // then just "data", "switch".
+        // then just "data", instead of formdata.
+        // should actually be canvas.hasGrid
+        // and, canvas.plotSize
+        //
         formdata: {
           aperture: {
             ref: "aperture",
@@ -79,24 +82,26 @@ class App extends Component {
             unit: "°",
           },
         },
-        formswitch: true, // change name to "eyepiecemode"
-        gridswitch: true, // canvasgrid
-        canvaslabels: true, // canvaslabels
+        formswitch: true, // change name to eyepieceMode" canvas.isEyepieceMode
+        gridswitch: true, // canvas.hasGrid
+        canvasLabels: true, // canvas.hasLabels
+        hasReduGrid: false, // reduced gridlines.
+        submit: false, // should be form.hasSubmit
+        zoomValue: 100,
         chartinfo: {
           plotSizeX: 20,
           plotSizeY: 20,
           plotDivisor: 6,
           axisLabel: "Minutes of Arc",
         },
-        submit: false, // hasSubmit
-        zoomValue: 100,
       },
     };
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleGridChange = this.handleGridChange.bind(this);
+    this.handleLabelChange = this.handleLabelChange.bind(this);
     this.handleMenuChange = this.handleMenuChange.bind(this);
     this.handleMenuSubmit = this.handleMenuSubmit.bind(this);
-    this.handleCanvasZoom = this.handleCanvasZoom.bind(this);
+    this.handleZoomSwitch = this.handleZoomSwitch.bind(this);
   }
 
   handleFormChange(bool) {
@@ -114,6 +119,15 @@ class App extends Component {
       menustate: {
         ...prevState.menustate,
         gridswitch: bool,
+      },
+    }));
+  }
+
+  handleLabelChange(bool) {
+    this.setState((prevState) => ({
+      menustate: {
+        ...prevState.menustate,
+        canvasLabels: bool,
       },
     }));
   }
@@ -152,7 +166,7 @@ class App extends Component {
     }));
   }
 
-  handleCanvasZoom(e) {
+  handleZoomSwitch(e) {
     this.setState((prevState) => ({
       menustate: {
         ...prevState.menustate,
@@ -160,6 +174,7 @@ class App extends Component {
       },
     }));
   }
+  s;
 
   render() {
     return (
@@ -169,15 +184,16 @@ class App extends Component {
           onSubmit={this.handleMenuSubmit}
           onFormSwitch={this.handleFormChange}
           onGridSwitch={this.handleGridChange}
+          onLabelSwitch={this.handleLabelChange}
+          onZoomSwitch={this.handleZoomSwitch}
           menustate={this.state.menustate}
-          onCanvasZoom={this.handleCanvasZoom}
-          zoomValue={this.state.menustate.zoomValue}
         />
         <Canvas
           chartinfo={this.state.menustate.chartinfo}
           displayGrid={this.state.menustate.gridswitch}
           formSwitch={this.state.menustate.formswitch}
           zoomValue={this.state.menustate.zoomValue}
+          canvasLabels={this.state.menustate.canvasLabels}
         />
       </div>
     );

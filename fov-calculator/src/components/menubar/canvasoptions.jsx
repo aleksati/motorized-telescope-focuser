@@ -6,15 +6,14 @@ import CanvasZoom from "./canvaszoom";
 
 const CanvasOptions = (props) => {
   return (
-    <div className="border border-white rounded ml-1 mb-3 bg-gradient-dark">
-      {/* <h2 className="m-1">Canvas</h2> */}
+    <div className="border border-white rounded mb-3 bg-gradient-dark">
       <FormGroup className="text-light justify-content-around" row>
         <FormControlLabel
           control={
             <Switch
-              inputProps={{ "aria-label": "controlled" }}
+              inputProps={{ "aria-label": "Gridswitch" }}
               color={props.formswitch ? "info" : "success"}
-              checked={props.menustate.gridswitch}
+              checked={props.gridswitch}
               onChange={(event) => {
                 props.onGridSwitch(event.target.checked);
               }}
@@ -26,7 +25,7 @@ const CanvasOptions = (props) => {
         <FormControlLabel
           control={
             <Switch
-              inputProps={{ "aria-label": "controlled" }}
+              inputProps={{ "aria-label": "Reduce Gridlines" }}
               color={props.formswitch ? "info" : "success"}
             />
           }
@@ -36,8 +35,12 @@ const CanvasOptions = (props) => {
         <FormControlLabel
           control={
             <Switch
-              inputProps={{ "aria-label": "controlled" }}
+              inputProps={{ "aria-label": "Labels" }}
               color={props.formswitch ? "info" : "success"}
+              checked={props.canvasLabels}
+              onChange={(event) => {
+                props.onLabelSwitch(event.target.checked);
+              }}
             />
           }
           label="Labels"
@@ -45,7 +48,7 @@ const CanvasOptions = (props) => {
         />
         <CanvasZoom
           formswitch={props.formswitch}
-          onCanvasZoom={props.onCanvasZoom}
+          onZoomSwitch={props.onZoomSwitch}
           zoomValue={props.zoomValue}
         />
       </FormGroup>

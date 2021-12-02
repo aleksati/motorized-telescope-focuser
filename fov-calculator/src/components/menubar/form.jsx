@@ -47,7 +47,7 @@ const Form = (props) => {
 
   return (
     <form className="d-flex" onSubmit={props.onSubmit}>
-      <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
+      <div className="form-group border border-white rounded mb-1 bg-gradient-dark col">
         <h2 className="ml-2 mt-1 text-light">Telescope</h2>
         <FormInput
           title="Telescope"
