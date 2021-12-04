@@ -6,12 +6,11 @@ let currentHeight = 0;
 const LABELFONT = "30px Arial";
 const NUMBERFONT = "15px Arial";
 const COZYOFFSET = 3;
+const reducedGridFactor = 6;
 
 const textColor = "#9C9C9C";
 const borderColor = "#9C9C9C";
 const gridColor = "#4c4c4c";
-
-// I need to translate a 1.25 "world" into a 1 world.
 
 function nearestHalf(orgX, orgY) {
   // round to nearest 0.5
@@ -95,7 +94,7 @@ export function paintBg(ctx) {
   ctx.fillRect(0, 0, currentWidth, currentHeight);
 }
 
-export function paintOnSquare(ctx, chartinfo, text, grid) {
+export function paintOnSquare(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
   let offsetHeight = (currentHeight / 100) * LABELOFFSET;
   let offsetWidth = (currentWidth / 100) * LABELOFFSET;
 
@@ -113,7 +112,6 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
       pxPerUnitX * i + offsetWidth,
       currentHeight - offsetHeight
     );
-
     // paint X grid
     ctx.beginPath();
     if (i === 0 || i === chartinfo.plotSizeX) {
@@ -121,15 +119,22 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
       ctx.strokeStyle = borderColor;
       ctx.moveTo(x, y);
       ctx.lineTo(x, 0.5);
-    } else if (grid) {
+    } else if (hasGrid) {
       ctx.strokeStyle = gridColor;
-      ctx.moveTo(x, y);
-      ctx.lineTo(x, 0.5);
+      if (hasRedGrid) {
+        if (i % reducedGridFactor === 0) {
+          ctx.moveTo(x, y);
+          ctx.lineTo(x, 0.5);
+        }
+      } else {
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, 0.5);
+      }
     }
     ctx.stroke();
 
     // paint numbers
-    if (text) {
+    if (hasLabel) {
       if (
         i !== 0 &&
         i % chartinfo.plotDivisor === 0 &&
@@ -148,7 +153,7 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
   }
 
   // paint X and Y axis labels
-  if (text) {
+  if (hasLabel) {
     // X label
     ctx.font = LABELFONT;
     ctx.fillText(
@@ -186,15 +191,22 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
       ctx.strokeStyle = borderColor;
       ctx.moveTo(0 + offsetWidth, y);
       ctx.lineTo(x, y);
-    } else if (grid) {
+    } else if (hasGrid) {
       ctx.strokeStyle = gridColor;
-      ctx.moveTo(0 + offsetWidth, y);
-      ctx.lineTo(x, y);
+      if (hasRedGrid) {
+        if ((chartinfo.plotSizeY - i) % reducedGridFactor === 0) {
+          ctx.moveTo(0 + offsetWidth, y);
+          ctx.lineTo(x, y);
+        }
+      } else {
+        ctx.moveTo(0 + offsetWidth, y);
+        ctx.lineTo(x, y);
+      }
     }
     ctx.stroke();
 
     // paint numbers
-    if (text) {
+    if (hasLabel) {
       if (
         i !== 0 &&
         i % chartinfo.plotDivisor === 0 &&
@@ -216,7 +228,7 @@ export function paintOnSquare(ctx, chartinfo, text, grid) {
   }
 }
 
-export function paintOnCircle(ctx, chartinfo, text, grid) {
+export function paintOnCircle(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
   let pxPerUnitX = currentWidth / chartinfo.plotSizeX;
   let pxPerUnitY = currentHeight / chartinfo.plotSizeY;
 
@@ -230,34 +242,46 @@ export function paintOnCircle(ctx, chartinfo, text, grid) {
     //i = 0 and 20 to make the border
     let { x, y } = nearestHalf(pxPerUnitX * i, 0);
 
-    if (grid) {
+    if (hasGrid) {
       ctx.beginPath();
-      ctx.moveTo(x, currentHeight);
-      ctx.lineTo(x, y);
+      if (hasRedGrid) {
+        if (i % reducedGridFactor === 0) {
+          ctx.moveTo(x, currentHeight);
+          ctx.lineTo(x, y);
+        }
+      } else {
+        ctx.moveTo(x, currentHeight);
+        ctx.lineTo(x, y);
+      }
       ctx.stroke();
     }
 
     // paint numbers
-    if (text) {
+    if (hasLabel) {
       if (
         i !== 0 &&
         i % chartinfo.plotDivisor === 0 &&
         i !== chartinfo.plotSizeX
       ) {
         // draw numbers along axis
+        let textHeight = hasRedGrid
+          ? currentHeight - pxPerUnitY * reducedGridFactor
+          : currentHeight / 2;
+
+        console.log(textHeight);
         ctx.font = NUMBERFONT;
         ctx.textBaseline = "top";
         ctx.fillText(
           i / chartinfo.plotDivisor,
           pxPerUnitX * i + COZYOFFSET * 2,
-          currentHeight / 2 + COZYOFFSET // offsett the pixel size chosen above
+          textHeight + COZYOFFSET // offsett the pixel size chosen above
         );
       }
     }
   }
 
   // paint X and Y axis labels
-  if (text) {
+  if (hasLabel) {
     // X labels
     ctx.save();
     paintCircularText(chartinfo.axisLabel, ctx, 45);
@@ -270,10 +294,17 @@ export function paintOnCircle(ctx, chartinfo, text, grid) {
     let { x, y } = nearestHalf(0, pxPerUnitY * i);
 
     // paint grid
-    if (grid) {
+    if (hasGrid) {
       ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(currentWidth, y);
+      if (hasRedGrid) {
+        if ((i - chartinfo.plotSizeY) % reducedGridFactor === 0) {
+          ctx.moveTo(x, y);
+          ctx.lineTo(currentWidth, y);
+        }
+      } else {
+        ctx.moveTo(x, y);
+        ctx.lineTo(currentWidth, y);
+      }
       ctx.stroke();
     }
   }

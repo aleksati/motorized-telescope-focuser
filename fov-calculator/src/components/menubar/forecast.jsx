@@ -110,7 +110,7 @@ const Forecast = (props) => {
   }, [YRdata.timeseries]);
 
   const borderColor = () => {
-    let css = "d-flex text-light text-center border rounded ";
+    let css = "d-flex text-light col-auto border rounded ";
     let bg = props.formswitch ? "border-info" : "border-success";
     return css + bg;
   };

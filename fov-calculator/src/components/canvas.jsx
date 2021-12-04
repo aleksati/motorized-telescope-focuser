@@ -70,22 +70,24 @@ const Canvas = (props) => {
           context,
           props.chartinfo,
           props.canvasLabels,
-          props.displayGrid
+          props.displayGrid,
+          props.hasRedGrid
         );
       } else {
         paintOnCircle(
           context,
           props.chartinfo,
           props.canvasLabels,
-          props.displayGrid
+          props.displayGrid,
+          props.hasRedGrid
         );
       }
     }
   }, [canvasRef, props, canvasWidth]);
 
-  useEffect(() => {
-    console.log(props.hasRedGrid);
-  }, [props.hasRedGrid]);
+  //   useEffect(() => {
+  //     console.log(props.hasRedGrid);
+  //   }, [props.hasRedGrid]);
 
   return (
     <div className="container d-flex justify-content-center p-0">
