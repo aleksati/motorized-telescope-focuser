@@ -84,7 +84,7 @@ class App extends Component {
         formswitch: true, // change name to eyepieceMode" canvas.isEyepieceMode
         gridswitch: true, // canvas.hasGrid
         canvasLabels: true, // canvas.hasLabels
-        hasReduGrid: false, // reduced gridlines.
+        hasRedGrid: false, // reduced gridlines.
         submit: false, // should be form.hasSubmit
         zoomValue: 100,
         chartinfo: {
@@ -101,6 +101,7 @@ class App extends Component {
     this.handleMenuChange = this.handleMenuChange.bind(this);
     this.handleMenuSubmit = this.handleMenuSubmit.bind(this);
     this.handleZoomSwitch = this.handleZoomSwitch.bind(this);
+    this.handleRedGridChange = this.handleRedGridChange.bind(this);
   }
 
   handleFormChange(bool) {
@@ -127,6 +128,15 @@ class App extends Component {
       menustate: {
         ...prevState.menustate,
         canvasLabels: bool,
+      },
+    }));
+  }
+
+  handleRedGridChange(bool) {
+    this.setState((prevState) => ({
+      menustate: {
+        ...prevState.menustate,
+        hasRedGrid: bool,
       },
     }));
   }
@@ -173,7 +183,6 @@ class App extends Component {
       },
     }));
   }
-  s;
 
   render() {
     return (
@@ -185,6 +194,7 @@ class App extends Component {
           onGridSwitch={this.handleGridChange}
           onLabelSwitch={this.handleLabelChange}
           onZoomSwitch={this.handleZoomSwitch}
+          onRedGridSwitch={this.handleRedGridChange}
           menustate={this.state.menustate}
         />
         <Canvas
@@ -193,6 +203,7 @@ class App extends Component {
           formSwitch={this.state.menustate.formswitch}
           zoomValue={this.state.menustate.zoomValue}
           canvasLabels={this.state.menustate.canvasLabels}
+          hasRedGrid={this.state.menustate.hasRedGrid}
         />
       </div>
     );

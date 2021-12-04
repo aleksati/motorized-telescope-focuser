@@ -12,7 +12,6 @@ const Forecast = (props) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
-  const test = true;
 
   // request to use user location through the browser
   function getLocation() {

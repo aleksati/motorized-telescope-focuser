@@ -83,6 +83,10 @@ const Canvas = (props) => {
     }
   }, [canvasRef, props, canvasWidth]);
 
+  useEffect(() => {
+    console.log(props.hasRedGrid);
+  }, [props.hasRedGrid]);
+
   return (
     <div className="container d-flex justify-content-center p-0">
       <div ref={canvasDivRef} style={{ width: canvasWidth }}>

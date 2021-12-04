@@ -32,9 +32,11 @@ const Menubar = (props) => (
       canvasLabels={props.menustate.canvasLabels}
       formswitch={props.menustate.formswitch}
       gridswitch={props.menustate.gridswitch}
+      hasRedGrid={props.menustate.hasRedGrid}
       onZoomSwitch={props.onZoomSwitch}
       onGridSwitch={props.onGridSwitch}
       onLabelSwitch={props.onLabelSwitch}
+      onRedGridSwitch={props.onRedGridSwitch}
     />
   </div>
 );

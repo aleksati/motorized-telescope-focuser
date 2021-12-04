@@ -27,6 +27,10 @@ const CanvasOptions = (props) => {
             <Switch
               inputProps={{ "aria-label": "Reduce Gridlines" }}
               color={props.formswitch ? "info" : "success"}
+              checked={props.hasRedGrid}
+              onChange={(event) => {
+                props.onRedGridSwitch(event.target.checked);
+              }}
             />
           }
           label="Reduce Gridlines"
@@ -52,9 +56,6 @@ const CanvasOptions = (props) => {
           zoomValue={props.zoomValue}
         />
       </FormGroup>
-      {/* <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
-        <h2 className="m-1 text-light">Presets</h2>
-      </div> */}
     </div>
   );
 };
