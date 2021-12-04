@@ -15,7 +15,6 @@ class App extends Component {
         // then just "data", instead of formdata.
         // should actually be canvas.hasGrid
         // and, canvas.plotSize
-        //
         formdata: {
           aperture: {
             ref: "aperture",

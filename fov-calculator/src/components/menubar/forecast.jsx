@@ -12,6 +12,7 @@ const Forecast = (props) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
+  const test = true;
 
   // request to use user location through the browser
   function getLocation() {
@@ -109,28 +110,36 @@ const Forecast = (props) => {
     }
   }, [YRdata.timeseries]);
 
+  const borderColor = () => {
+    let css = "d-flex text-light text-center border rounded ";
+    let bg = props.formswitch ? "border-info" : "border-success";
+    return css + bg;
+  };
+
   return (
-    <div>
+    <div className="form-label-group mb-0 mt-2" key="forecast">
+      <p className="text-light mr-2">
+        <small>Forecast</small>
+      </p>
       {isError ? (
-        <div className="d-flex justify-content-left">
-          <img src={error} alt="ERROR..." width="40px" height="40px" />
-        </div>
+        <p className={borderColor()}>
+          <img src={error} alt="ERROR..." width="25px" height="25px" />
+        </p>
       ) : isLoading ? (
-        <div className="d-flex justify-content-center">
-          <img src={loading} alt="loading..." width="40px" height="40px" />
-        </div>
+        <p className={borderColor()}>
+          <img src={loading} alt="loading..." width="25px" height="25px" />
+        </p>
       ) : (
-        <div className="d-flex">
+        <p className={borderColor()}>
           <img
             src={YRdata.next6h_img}
             alt="Specification Drawing"
-            width="40px"
-            height="40px"
+            width="25px"
+            height="25px"
+            className="mr-2"
           />
-          <p className="ml-2 mt-2 text-light">
-            <small>{YRdata.next6h_temp}°C</small>
-          </p>
-        </div>
+          {YRdata.next6h_temp}°
+        </p>
       )}
     </div>
   );

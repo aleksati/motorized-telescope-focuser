@@ -21,7 +21,12 @@ const Menubar = (props) => (
       onChange={props.onChange}
       onSubmit={props.onSubmit}
     />
-    <Info menustate={props.menustate} />
+    <Info
+      formswitch={props.menustate.formswitch}
+      submit={props.menustate.submit}
+      formdata={props.menustate.formdata}
+      chartinfo={props.menustate.chartinfo}
+    />
     <CanvasOptions
       zoomValue={props.menustate.zoomValue}
       canvasLabels={props.menustate.canvasLabels}

@@ -6,9 +6,9 @@ const Info = (props) => {
 
   useEffect(() => {
     const getFocalRatio = () => {
-      let barlow = Number(props.menustate.formdata.barlow.value);
-      let flength = Number(props.menustate.formdata.focallength.value);
-      let aperture = Number(props.menustate.formdata.aperture.value);
+      let barlow = Number(props.formdata.barlow.value);
+      let flength = Number(props.formdata.focallength.value);
+      let aperture = Number(props.formdata.aperture.value);
 
       if (flength <= 0 || aperture <= 0) return ["Focal Ratio", ""];
       if (barlow !== 0) flength *= barlow;
@@ -21,8 +21,8 @@ const Info = (props) => {
     const getAspectRatio = () => {
       let aspectX = 10000;
       let aspectY =
-        (Number(props.menustate.formdata.resolutiony.value) /
-          Number(props.menustate.formdata.resolutionx.value)) *
+        (Number(props.formdata.resolutiony.value) /
+          Number(props.formdata.resolutionx.value)) *
         10000;
 
       if (Number.isNaN(aspectX) || aspectX <= 0) return ["Aspect Ratio", ""];
@@ -48,50 +48,48 @@ const Info = (props) => {
 
     const getMagnification = () => {
       let mag = 0;
-      let flength = Number(props.menustate.formdata.focallength.value);
+      let flength = Number(props.formdata.focallength.value);
 
       // if barlow
-      let barlow = Number(props.menustate.formdata.barlow.value);
+      let barlow = Number(props.formdata.barlow.value);
       if (barlow !== 0) flength *= barlow;
 
       // eyepiece
-      let eyeflength = Number(
-        props.menustate.formdata.eyepiecefocallength.value
-      );
+      let eyeflength = Number(props.formdata.eyepiecefocallength.value);
 
       mag = eyeflength !== 0 && flength !== 0 ? flength / eyeflength : "";
 
-      return ["Magnification", mag];
+      return ["Mag", mag];
     };
 
     const getMaxMagnification = () => {
-      let flength = Number(props.menustate.formdata.focallength.value);
-      let aperture = Number(props.menustate.formdata.aperture.value);
-      if (flength <= 0 || aperture <= 0) return ["Max Magnification", ""];
-      return ["Max Magnification", aperture * 2];
+      let flength = Number(props.formdata.focallength.value);
+      let aperture = Number(props.formdata.aperture.value);
+      if (flength <= 0 || aperture <= 0) return ["Max Mag", ""];
+      return ["Max Mag", aperture * 2];
     };
 
     const getCamResolution = () => {
-      if (!props.menustate.submit) {
-        return ["Px per square", ""];
+      if (!props.submit) {
+        return ["Px/square", ""];
       }
-      let resX = Number(props.menustate.formdata.resolutionx.value);
-      let resY = Number(props.menustate.formdata.resolutiony.value);
-      let plotX = Number(props.menustate.chartinfo.plotSizeX);
-      let plotY = Number(props.menustate.chartinfo.plotSizeY);
+      let resX = Number(props.formdata.resolutionx.value);
+      let resY = Number(props.formdata.resolutiony.value);
+      let plotX = Number(props.chartinfo.plotSizeX);
+      let plotY = Number(props.chartinfo.plotSizeY);
 
-      if (resX === 0 || resY === 0) return ["Px per canvas square²", ""];
+      if (resX === 0 || resY === 0) return ["Px/square", ""];
       let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
       let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
 
       let res = pixelsPerUnitX + " x " + pixelsPerUnitY;
-      return ["Px per square", res];
+      return ["Px/square", res];
     };
 
     let infoBar = [];
     infoBar.push(getFocalRatio());
     infoBar.push(getMaxMagnification());
-    if (props.menustate.formswitch) {
+    if (props.formswitch) {
       // eyepiece mode
       infoBar.push(getMagnification());
     } else {
@@ -100,16 +98,11 @@ const Info = (props) => {
       infoBar.push(getCamResolution());
     }
     setState(infoBar);
-  }, [
-    props.menustate.formdata,
-    props.menustate.formswitch,
-    props.menustate.submit,
-    props.menustate.chartinfo,
-  ]);
+  }, [props.formdata, props.formswitch, props.submit, props.chartinfo]);
 
-  const bgColor = () => {
-    let css = "text-light text-center col-auto bg-black border rounded ";
-    let bg = props.menustate.formswitch ? "border-info" : "border-success";
+  const borderColor = () => {
+    let css = "text-light text-center col-auto border rounded ";
+    let bg = props.formswitch ? "border-info" : "border-success";
     return css + bg;
   };
 
@@ -123,16 +116,11 @@ const Info = (props) => {
               <p className="text-light mr-2">
                 <small>{name}</small>
               </p>
-              <p className={bgColor()}>{value}</p>
+              <p className={borderColor()}>{value}</p>
             </div>
           );
         })}
-        <div className="form-label-group mb-0" key={"forecast"}>
-          <p className="text-light mr-2 mt-2">
-            <small>Forecast</small>
-          </p>
-          <Forecast />
-        </div>
+        <Forecast formswitch={props.formswitch} />
       </div>
     </div>
   );
