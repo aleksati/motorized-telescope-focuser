@@ -29,7 +29,7 @@ class App extends Component {
             value: "",
             required: true,
             type: "number",
-            name: "Focal Length",
+            name: "Flength",
             unit: "mm",
           },
           barlow: {
@@ -69,7 +69,7 @@ class App extends Component {
             value: "",
             required: true,
             type: "number",
-            name: "Focal Length",
+            name: "Flength",
             unit: "mm",
           },
           eyepieceafov: {

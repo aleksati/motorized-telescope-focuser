@@ -14,6 +14,7 @@ import {
 // labelswitch={bool}
 // formswitch={bool}
 // zoomValue={value}
+// hasRedGrid={bool}
 
 const Canvas = (props) => {
   const canvasRef = useRef(null);
@@ -84,10 +85,6 @@ const Canvas = (props) => {
       }
     }
   }, [canvasRef, props, canvasWidth]);
-
-  //   useEffect(() => {
-  //     console.log(props.hasRedGrid);
-  //   }, [props.hasRedGrid]);
 
   return (
     <div className="container d-flex justify-content-center p-0">

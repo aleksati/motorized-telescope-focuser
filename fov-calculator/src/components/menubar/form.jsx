@@ -9,7 +9,7 @@ const Form = (props) => {
   };
 
   const inputAddonColor = () => {
-    let className = "input-group-text text-light mr-1 bg-";
+    let className = "input-group-text text-light bg-";
     className += props.formswitch ? "gradient-info" : "gradient-success";
     return className;
   };

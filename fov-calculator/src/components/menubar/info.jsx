@@ -101,7 +101,7 @@ const Info = (props) => {
   }, [props.formdata, props.formswitch, props.submit, props.chartinfo]);
 
   const borderColor = () => {
-    let css = "text-light text-center col-auto border rounded ";
+    let css = "info-items text-light text-center col-auto border rounded ";
     let bg = props.formswitch ? "border-info" : "border-success";
     return css + bg;
   };
@@ -113,14 +113,14 @@ const Info = (props) => {
           const [name, value] = item;
           return (
             <div className="form-label-group mb-0 mt-2" key={name}>
-              <p className="text-light mr-2">
+              <p className="text-light mr-1">
                 <small>{name}</small>
               </p>
               <p className={borderColor()}>{value}</p>
             </div>
           );
         })}
-        <Forecast formswitch={props.formswitch} />
+        <Forecast formswitch={props.formswitch} borderColor={borderColor()} />
       </div>
     </div>
   );

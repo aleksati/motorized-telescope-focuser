@@ -109,27 +109,21 @@ const Forecast = (props) => {
     }
   }, [YRdata.timeseries]);
 
-  const borderColor = () => {
-    let css = "d-flex text-light col-auto border rounded ";
-    let bg = props.formswitch ? "border-info" : "border-success";
-    return css + bg;
-  };
-
   return (
     <div className="form-label-group mb-0 mt-2" key="forecast">
-      <p className="text-light mr-2">
+      <p className="text-light mr-1">
         <small>Forecast</small>
       </p>
       {isError ? (
-        <p className={borderColor()}>
+        <p className={props.borderColor}>
           <img src={error} alt="ERROR..." width="25px" height="25px" />
         </p>
       ) : isLoading ? (
-        <p className={borderColor()}>
+        <p className={props.borderColor}>
           <img src={loading} alt="loading..." width="25px" height="25px" />
         </p>
       ) : (
-        <p className={borderColor()}>
+        <p className={props.borderColor}>
           <img
             src={YRdata.next6h_img}
             alt="Specification Drawing"
