@@ -25,7 +25,7 @@ const Form = (props) => {
           props.formdata.resolutiony,
         ]}
         addoncolor={inputAddonColor()}
-        onChange={props.onChange}
+        onFormChange={props.onFormChange}
       />
     </div>
   );
@@ -40,13 +40,13 @@ const Form = (props) => {
           props.formdata.eyepieceafov,
         ]}
         addoncolor={inputAddonColor()}
-        onChange={props.onChange}
+        onFormChange={props.onFormChange}
       />
     </div>
   );
 
   return (
-    <form className="d-flex" onSubmit={props.onSubmit}>
+    <form className="d-flex" onSubmit={props.onFormSubmit}>
       <div className="form-group border border-white rounded mb-1 bg-gradient-dark col">
         <h2 className="ml-2 mt-1 text-light">Telescope</h2>
         <FormInput
@@ -56,7 +56,7 @@ const Form = (props) => {
             props.formdata.focallength,
             props.formdata.barlow,
           ]}
-          onChange={props.onChange}
+          onFormChange={props.onFormChange}
           addoncolor={inputAddonColor()}
         />
       </div>

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Menubar from "./components/menubar/menubar";
 import Canvas from "./components/canvas";
 import {
-  camChartSize,
-  eyepieceChartSize,
+  camCanvasSize,
+  eyepieceCanvasSize,
 } from "./components/utils-formdata2chartsize.js";
 
 class App extends Component {
@@ -81,7 +81,7 @@ class App extends Component {
             unit: "°",
           },
         },
-        formswitch: true, // change name to eyepieceMode" canvas.isEyepieceMode
+        formswitch: true, // change name to eyepieceMode" data.isEyepieceMode
         gridswitch: true, // canvas.hasGrid
         canvasLabels: true, // canvas.hasLabels
         hasRedGrid: false, // reduced gridlines.
@@ -95,16 +95,16 @@ class App extends Component {
         },
       },
     };
-    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleModeChange = this.handleModeChange.bind(this);
     this.handleGridChange = this.handleGridChange.bind(this);
     this.handleLabelChange = this.handleLabelChange.bind(this);
-    this.handleMenuChange = this.handleMenuChange.bind(this);
-    this.handleMenuSubmit = this.handleMenuSubmit.bind(this);
-    this.handleZoomSwitch = this.handleZoomSwitch.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleZoomChange = this.handleZoomChange.bind(this);
     this.handleRedGridChange = this.handleRedGridChange.bind(this);
   }
 
-  handleFormChange(bool) {
+  handleModeChange(bool) {
     this.setState((prevState) => ({
       menustate: {
         ...prevState.menustate,
@@ -141,7 +141,7 @@ class App extends Component {
     }));
   }
 
-  handleMenuChange(e) {
+  handleFormChange(e) {
     let newValue = e.target.value;
     let keyRef = e.target.id;
     let formdataCopy = { ...this.state.menustate.formdata };
@@ -158,13 +158,13 @@ class App extends Component {
     }));
   }
 
-  handleMenuSubmit(e) {
+  handleFormSubmit(e) {
     e.preventDefault();
 
     // update the chart size and config
     let newchartinfo = this.state.menustate.formswitch
-      ? eyepieceChartSize(this.state.menustate.formdata)
-      : camChartSize(this.state.menustate.formdata);
+      ? eyepieceCanvasSize(this.state.menustate.formdata)
+      : camCanvasSize(this.state.menustate.formdata);
 
     this.setState((prevState) => ({
       menustate: {
@@ -175,7 +175,7 @@ class App extends Component {
     }));
   }
 
-  handleZoomSwitch(e) {
+  handleZoomChange(e) {
     this.setState((prevState) => ({
       menustate: {
         ...prevState.menustate,
@@ -188,22 +188,23 @@ class App extends Component {
     return (
       <div className="App">
         <Menubar
-          onChange={this.handleMenuChange}
-          onSubmit={this.handleMenuSubmit}
-          onFormSwitch={this.handleFormChange}
-          onGridSwitch={this.handleGridChange}
-          onLabelSwitch={this.handleLabelChange}
-          onZoomSwitch={this.handleZoomSwitch}
-          onRedGridSwitch={this.handleRedGridChange}
-          menustate={this.state.menustate}
+          onFormChange={this.handleFormChange}
+          onFormSubmit={this.handleFormSubmit}
+          onModeChange={this.handleModeChange}
+          onGridChange={this.handleGridChange}
+          onRedGridChange={this.handleRedGridChange}
+          onLabelChange={this.handleLabelChange}
+          onZoomChange={this.handleZoomChange}
+          menustate={this.state.menustate} //should pass form and canvas
         />
         <Canvas
-          chartinfo={this.state.menustate.chartinfo}
-          displayGrid={this.state.menustate.gridswitch}
-          formSwitch={this.state.menustate.formswitch}
-          zoomValue={this.state.menustate.zoomValue}
-          canvasLabels={this.state.menustate.canvasLabels}
+          // dette er akkurat hva som er i den nye "canvas"
+          chartinfo={this.state.menustate.chartinfo} // change to canvas and form
+          hasGrid={this.state.menustate.gridswitch}
+          hasLabels={this.state.menustate.canvasLabels}
           hasRedGrid={this.state.menustate.hasRedGrid}
+          isEyepieceMode={this.state.menustate.formswitch}
+          zoomValue={this.state.menustate.zoomValue}
         />
       </div>
     );

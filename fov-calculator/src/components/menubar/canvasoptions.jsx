@@ -15,7 +15,7 @@ const CanvasOptions = (props) => {
               color={props.formswitch ? "info" : "success"}
               checked={props.gridswitch}
               onChange={(event) => {
-                props.onGridSwitch(event.target.checked);
+                props.onGridChange(event.target.checked);
               }}
             />
           }
@@ -29,7 +29,7 @@ const CanvasOptions = (props) => {
               color={props.formswitch ? "info" : "success"}
               checked={props.hasRedGrid}
               onChange={(event) => {
-                props.onRedGridSwitch(event.target.checked);
+                props.onRedGridChange(event.target.checked);
               }}
             />
           }
@@ -43,7 +43,7 @@ const CanvasOptions = (props) => {
               color={props.formswitch ? "info" : "success"}
               checked={props.canvasLabels}
               onChange={(event) => {
-                props.onLabelSwitch(event.target.checked);
+                props.onLabelChange(event.target.checked);
               }}
             />
           }
@@ -52,7 +52,7 @@ const CanvasOptions = (props) => {
         />
         <CanvasZoom
           formswitch={props.formswitch}
-          onZoomSwitch={props.onZoomSwitch}
+          onZoomChange={props.onZoomChange}
           zoomValue={props.zoomValue}
         />
       </FormGroup>

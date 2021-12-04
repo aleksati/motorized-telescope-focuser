@@ -10,9 +10,9 @@ import {
 
 // The props are:
 // chartinfo= {plotSizeX(num), plotSizeY(num), plotDivisor(num), axisLabel(string)}
-// gridswitch={bool}
+// hasGrid={bool}
 // labelswitch={bool}
-// formswitch={bool}
+// isEyepieceMode={bool}
 // zoomValue={value}
 // hasRedGrid={bool}
 
@@ -61,25 +61,25 @@ const Canvas = (props) => {
         canvas,
         scaledCanvasWidth,
         props.chartinfo,
-        props.canvasLabels
+        props.hasLabels
       );
 
       paintBg(context);
 
-      if (!props.formSwitch) {
+      if (!props.isEyepieceMode) {
         paintOnSquare(
           context,
           props.chartinfo,
-          props.canvasLabels,
-          props.displayGrid,
+          props.hasLabels,
+          props.hasGrid,
           props.hasRedGrid
         );
       } else {
         paintOnCircle(
           context,
           props.chartinfo,
-          props.canvasLabels,
-          props.displayGrid,
+          props.hasLabels,
+          props.hasGrid,
           props.hasRedGrid
         );
       }
@@ -91,7 +91,9 @@ const Canvas = (props) => {
       <div ref={canvasDivRef} style={{ width: canvasWidth }}>
         <canvas
           ref={canvasRef}
-          className={props.formSwitch ? "w-100 border rounded-circle" : "w-100"}
+          className={
+            props.isEyepieceMode ? "w-100 border rounded-circle" : "w-100"
+          }
         />
       </div>
     </div>

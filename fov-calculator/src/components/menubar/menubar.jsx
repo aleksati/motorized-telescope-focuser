@@ -12,14 +12,14 @@ const Menubar = (props) => (
       onstyle="info"
       offlabel="Eyepiece"
       offstyle="success"
-      onChange={props.onFormSwitch}
+      onChange={props.onModeChange}
       style="w-100 mb-1 mt-2"
     />
     <Form
       formswitch={props.menustate.formswitch}
       formdata={props.menustate.formdata}
-      onChange={props.onChange}
-      onSubmit={props.onSubmit}
+      onFormChange={props.onFormChange}
+      onFormSubmit={props.onSubmit}
     />
     <Info
       formswitch={props.menustate.formswitch}
@@ -33,10 +33,10 @@ const Menubar = (props) => (
       formswitch={props.menustate.formswitch}
       gridswitch={props.menustate.gridswitch}
       hasRedGrid={props.menustate.hasRedGrid}
-      onZoomSwitch={props.onZoomSwitch}
-      onGridSwitch={props.onGridSwitch}
-      onLabelSwitch={props.onLabelSwitch}
-      onRedGridSwitch={props.onRedGridSwitch}
+      onZoomChange={props.onZoomChange}
+      onGridChange={props.onGridChange}
+      onLabelChange={props.onLabelChange}
+      onRedGridChange={props.onRedGridChange}
     />
   </div>
 );

@@ -268,7 +268,6 @@ export function paintOnCircle(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
           ? currentHeight - pxPerUnitY * reducedGridFactor
           : currentHeight / 2;
 
-        console.log(textHeight);
         ctx.font = NUMBERFONT;
         ctx.textBaseline = "top";
         ctx.fillText(

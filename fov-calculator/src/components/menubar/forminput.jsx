@@ -10,7 +10,7 @@ const FormInput = (props) => (
             placeholder={item.name}
             id={item.ref}
             name={item.ref}
-            onChange={props.onChange}
+            onChange={props.onFormChange}
             value={item.value}
             required={item.required}
             className="form-control ml-2"

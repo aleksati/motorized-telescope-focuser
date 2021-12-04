@@ -17,7 +17,7 @@ const CanvasZoom = (props) => {
       >
         <Button
           onClick={() => {
-            props.onZoomSwitch(
+            props.onZoomChange(
               props.zoomValue - INC <= 10 ? 10 : props.zoomValue - INC
             );
           }}
@@ -26,7 +26,7 @@ const CanvasZoom = (props) => {
         </Button>
         <Button
           onClick={() => {
-            props.onZoomSwitch(
+            props.onZoomChange(
               props.zoomValue + INC > 100 ? 100 : props.zoomValue + INC
             );
           }}
