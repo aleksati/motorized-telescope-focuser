@@ -1,11 +1,20 @@
-export function camCanvasSize(formData) {
-  // Calculate the size of the sensor (X and Y) in mm
+export function microns2milimeter(formData) {
+  // Calculate the size of the sensor (X and Y) in mm from the microns input
   let sensorXsizeMM =
-    (Number(formData.pixelsize.value) / 1000) *
+    (Number(Math.sqrt(formData.pixelsize.value)) / 1000) *
     Number(formData.resolutionx.value);
   let sensorYsizeMM =
-    (Number(formData.pixelsize.value) / 1000) *
+    (Number(Math.sqrt(formData.pixelsize.value)) / 1000) *
     Number(formData.resolutiony.value);
+
+  sensorXsizeMM = Math.round(sensorXsizeMM * 10) / 10;
+  sensorYsizeMM = Math.round(sensorYsizeMM * 10) / 10;
+
+  return { sensorXsizeMM, sensorYsizeMM };
+}
+
+export function camCanvasSize(formData) {
+  let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(formData);
 
   // We take the Barlow into account
   let flength = Number(formData.focallength.value);

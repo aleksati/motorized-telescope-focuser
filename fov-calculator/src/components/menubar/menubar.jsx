@@ -19,7 +19,7 @@ const Menubar = (props) => (
       formswitch={props.menustate.formswitch}
       formdata={props.menustate.formdata}
       onFormChange={props.onFormChange}
-      onFormSubmit={props.onSubmit}
+      onFormSubmit={props.onFormSubmit}
     />
     <Info
       formswitch={props.menustate.formswitch}

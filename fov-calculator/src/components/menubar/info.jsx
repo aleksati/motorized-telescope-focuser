@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Forecast from "./forecast";
+import { microns2milimeter } from "../utils-formdata2chartsize.js";
 
 const Info = (props) => {
   const [state, setState] = useState([]);
+  // get the hasRedGrid prop and the redgridvalue
 
   useEffect(() => {
     const getFocalRatio = () => {
@@ -10,12 +12,12 @@ const Info = (props) => {
       let flength = Number(props.formdata.focallength.value);
       let aperture = Number(props.formdata.aperture.value);
 
-      if (flength <= 0 || aperture <= 0) return ["Focal Ratio", ""];
+      if (flength <= 0 || aperture <= 0) return ["F", ""];
       if (barlow !== 0) flength *= barlow;
       let focalRatio = Math.floor((flength / aperture) * 10) / 10;
-      if (focalRatio <= 0) return ["Focal Ratio", ""];
+      if (focalRatio <= 0) return ["F", ""];
 
-      return ["Focal Ratio", focalRatio];
+      return ["F", focalRatio];
     };
 
     const getAspectRatio = () => {
@@ -25,8 +27,8 @@ const Info = (props) => {
           Number(props.formdata.resolutionx.value)) *
         10000;
 
-      if (Number.isNaN(aspectX) || aspectX <= 0) return ["Aspect Ratio", ""];
-      if (Number.isNaN(aspectY) || aspectY <= 0) return ["Aspect Ratio", ""];
+      if (Number.isNaN(aspectX) || aspectX <= 0) return ["AR", ""];
+      if (Number.isNaN(aspectY) || aspectY <= 0) return ["AR", ""];
 
       let factorX = [];
       let factorY = [];
@@ -35,7 +37,7 @@ const Info = (props) => {
         if (aspectY % i === 0) factorY.push(i);
       }
 
-      if (!factorY.length || !factorX.length) return ["Aspect Ratio", ""];
+      if (!factorY.length || !factorX.length) return ["AR", ""];
 
       let commonFactors = factorX.filter((n) => factorY.indexOf(n) !== -1);
       let greatestCommonFactor = Math.max(...commonFactors);
@@ -43,7 +45,7 @@ const Info = (props) => {
       aspectY /= greatestCommonFactor;
       let aspectRatio = aspectX + ":" + aspectY;
 
-      return ["Aspect Ratio", aspectRatio];
+      return ["AR", aspectRatio];
     };
 
     const getMagnification = () => {
@@ -69,33 +71,42 @@ const Info = (props) => {
       return ["Max Mag", aperture * 2];
     };
 
-    const getCamResolution = () => {
-      if (!props.submit) {
-        return ["Px/square", ""];
-      }
+    const getPxPerSquare = () => {
+      if (!props.submit) return ["Grid □", ""];
+
       let resX = Number(props.formdata.resolutionx.value);
       let resY = Number(props.formdata.resolutiony.value);
       let plotX = Number(props.chartinfo.plotSizeX);
       let plotY = Number(props.chartinfo.plotSizeY);
 
-      if (resX === 0 || resY === 0) return ["Px/square", ""];
       let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
       let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
 
-      let res = pixelsPerUnitX + " x " + pixelsPerUnitY;
-      return ["Px/square", res];
+      let res = Math.round(pixelsPerUnitX * pixelsPerUnitY * 10) / 10; // pixelsPerUnitX + " x " + pixelsPerUnitY;
+      return ["Grid □", res + "px²"];
+    };
+
+    const getChipSize = () => {
+      let resX = Number(props.formdata.resolutionx.value);
+      let resY = Number(props.formdata.resolutiony.value);
+      let pixelSize = Number(props.formdata.pixelsize.value);
+      if (resX === 0 || resY === 0 || pixelSize === 0) return ["Chip", ""];
+      let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(props.formdata);
+      let result = Math.round(sensorXsizeMM * sensorYsizeMM * 10) / 10 + "mm²";
+      return ["Chip", result];
     };
 
     let infoBar = [];
     infoBar.push(getFocalRatio());
-    infoBar.push(getMaxMagnification());
     if (props.formswitch) {
       // eyepiece mode
+      infoBar.push(getMaxMagnification());
       infoBar.push(getMagnification());
     } else {
       // cameras mode
+      infoBar.push(getChipSize());
       infoBar.push(getAspectRatio());
-      infoBar.push(getCamResolution());
+      infoBar.push(getPxPerSquare());
     }
     setState(infoBar);
   }, [props.formdata, props.formswitch, props.submit, props.chartinfo]);
