@@ -1,3 +1,8 @@
+// depedencies for microns2milimeter
+// pixelsize.value
+// resolutionx.value
+// resolutiony.value
+
 export function microns2milimeter(formData) {
   // Calculate the size of the sensor (X and Y) in mm from the microns input
   let sensorXsizeMM =
@@ -12,6 +17,13 @@ export function microns2milimeter(formData) {
 
   return { sensorXsizeMM, sensorYsizeMM };
 }
+
+// depedencies for camCanvasSize
+// pixelsize.value
+// resolutionx.value
+// resolutiony.value
+// focallength.value
+// barlow.value
 
 export function camCanvasSize(formData) {
   let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(formData);
@@ -55,6 +67,12 @@ export function camCanvasSize(formData) {
     axisLabel: "Seconds of Arc",
   };
 }
+
+// dependencies for eyepieceCanvasSize
+// eyepieceafov.value
+// eyepiecefocallength.value
+// focallength.value
+// barlow.value
 
 export function eyepieceCanvasSize(formData) {
   let afov = Number(formData.eyepieceafov.value);
