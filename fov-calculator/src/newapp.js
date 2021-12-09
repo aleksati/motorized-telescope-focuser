@@ -85,6 +85,10 @@ const App = () => {
     plotDivisor: 6,
     axisLabel: "Minutes of Arc",
   });
+  const [color, setColor] = useState({
+    eyepieceMode: "info",
+    cameraMode: "success",
+  });
 
   const handleModeChange = (bool) => {
     setCanvasData((prevCanvas) => ({
@@ -160,7 +164,7 @@ const App = () => {
         onRedGridChange={handleRedGridChange}
         onLabelChange={handleLabelChange}
         onZoomChange={handleZoomChange}
-        menustate={state.menustate}
+        //menustate={state.menustate}
         formData={formData}
         canvasData={canvasData}
       />

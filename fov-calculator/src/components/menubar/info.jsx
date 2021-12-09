@@ -6,11 +6,35 @@ const Info = (props) => {
   const [state, setState] = useState([]);
   // get the hasRedGrid prop and the redgridvalue
 
+  // the central state should have:
+  // aspectRatio
+  // name :
+  // value :
+  // isEyepieceInfo: bool
+  // focalRatio
+  // magnification
+  // maxMagnification
+
+  // Object.values(main).map((item) => {})
+  // check if eyepiecemode, then print only those wh
+
+  // formData:
+  // focallength
+  // barlow
+  // aperture
+  // resolutionx and y
+  // eyepiecefocallength
+
+  // canvasData:
+  // plotsizeX
+  // plotsizeY
+  // pixelsize
+
   useEffect(() => {
     const getFocalRatio = () => {
-      let barlow = Number(props.formdata.barlow.value);
-      let flength = Number(props.formdata.focallength.value);
-      let aperture = Number(props.formdata.aperture.value);
+      let barlow = Number(props.formData.barlow.value);
+      let flength = Number(props.formData.focallength.value);
+      let aperture = Number(props.formData.aperture.value);
 
       if (flength <= 0 || aperture <= 0) return ["F", ""];
       if (barlow !== 0) flength *= barlow;
@@ -23,8 +47,8 @@ const Info = (props) => {
     const getAspectRatio = () => {
       let aspectX = 10000;
       let aspectY =
-        (Number(props.formdata.resolutiony.value) /
-          Number(props.formdata.resolutionx.value)) *
+        (Number(props.formData.resolutiony.value) /
+          Number(props.formData.resolutionx.value)) *
         10000;
 
       if (Number.isNaN(aspectX) || aspectX <= 0) return ["AR", ""];
@@ -50,14 +74,14 @@ const Info = (props) => {
 
     const getMagnification = () => {
       let mag = 0;
-      let flength = Number(props.formdata.focallength.value);
+      let flength = Number(props.formData.focallength.value);
 
       // if barlow
-      let barlow = Number(props.formdata.barlow.value);
+      let barlow = Number(props.formData.barlow.value);
       if (barlow !== 0) flength *= barlow;
 
       // eyepiece
-      let eyeflength = Number(props.formdata.eyepiecefocallength.value);
+      let eyeflength = Number(props.formData.eyepiecefocallength.value);
 
       mag = eyeflength !== 0 && flength !== 0 ? flength / eyeflength : "";
 
@@ -65,17 +89,17 @@ const Info = (props) => {
     };
 
     const getMaxMagnification = () => {
-      let flength = Number(props.formdata.focallength.value);
-      let aperture = Number(props.formdata.aperture.value);
+      let flength = Number(props.formData.focallength.value);
+      let aperture = Number(props.formData.aperture.value);
       if (flength <= 0 || aperture <= 0) return ["Max Mag", ""];
       return ["Max Mag", aperture * 2];
     };
 
     const getPxPerSquare = () => {
-      if (!props.submit) return ["Grid □", ""];
+      if (!props.submitFlag) return ["Grid □", ""];
 
-      let resX = Number(props.formdata.resolutionx.value);
-      let resY = Number(props.formdata.resolutiony.value);
+      let resX = Number(props.formData.resolutionx.value);
+      let resY = Number(props.formData.resolutiony.value);
       let plotX = Number(props.chartinfo.plotSizeX);
       let plotY = Number(props.chartinfo.plotSizeY);
 
@@ -87,21 +111,21 @@ const Info = (props) => {
     };
 
     const getChipSize = () => {
-      let resX = Number(props.formdata.resolutionx.value);
-      let resY = Number(props.formdata.resolutiony.value);
-      let pixelSize = Number(props.formdata.pixelsize.value);
+      let resX = Number(props.formData.resolutionx.value);
+      let resY = Number(props.formData.resolutiony.value);
+      let pixelSize = Number(props.formData.pixelsize.value);
       if (resX === 0 || resY === 0 || pixelSize === 0) return ["Chip", ""];
-      let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(props.formdata);
+      let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(props.formData);
       let result = Math.round(sensorXsizeMM * sensorYsizeMM * 10) / 10 + "mm²";
       return ["Chip", result];
     };
 
     let infoBar = [];
     infoBar.push(getFocalRatio());
-    if (props.formswitch) {
+    if (props.isEyepieceMode) {
       // eyepiece mode
-      infoBar.push(getMaxMagnification());
       infoBar.push(getMagnification());
+      infoBar.push(getMaxMagnification());
     } else {
       // cameras mode
       infoBar.push(getChipSize());
@@ -109,11 +133,11 @@ const Info = (props) => {
       infoBar.push(getPxPerSquare());
     }
     setState(infoBar);
-  }, [props.formdata, props.formswitch, props.submit, props.chartinfo]);
+  }, [props.formData, props.isEyepieceMode, props.submitFlag, props.chartinfo]);
 
   const borderColor = () => {
     let css = "info-items text-light text-center col-auto border rounded ";
-    let bg = props.formswitch ? "border-info" : "border-success";
+    let bg = props.isEyepieceMode ? "border-info" : "border-success";
     return css + bg;
   };
 
@@ -131,7 +155,10 @@ const Info = (props) => {
             </div>
           );
         })}
-        <Forecast formswitch={props.formswitch} borderColor={borderColor()} />
+        <Forecast
+          isEyepieceMode={props.isEyepieceMode}
+          borderColor={borderColor()}
+        />
       </div>
     </div>
   );

@@ -16,15 +16,15 @@ const Menubar = (props) => (
       style="w-100 mb-1 mt-2"
     />
     <Form
-      formswitch={props.menustate.formswitch}
-      formdata={props.menustate.formdata}
+      isEyepieceMode={props.menustate.formswitch}
+      formData={props.menustate.formdata}
       onFormChange={props.onFormChange}
       onFormSubmit={props.onFormSubmit}
     />
     <Info
-      formswitch={props.menustate.formswitch}
-      submit={props.menustate.submit}
-      formdata={props.menustate.formdata}
+      isEyepieceMode={props.menustate.formswitch}
+      submitFlag={props.menustate.submit}
+      formData={props.menustate.formdata}
       chartinfo={props.menustate.chartinfo}
     />
     <CanvasOptions

@@ -4,13 +4,13 @@ import FormInput from "./forminput";
 const Form = (props) => {
   const SubmitBtnColor = () => {
     let className = "btn text-light ml-1 mb-1 bg-";
-    className += props.formswitch ? "gradient-info" : "gradient-success";
+    className += props.isEyepieceMode ? "gradient-info" : "gradient-success";
     return className;
   };
 
   const inputAddonColor = () => {
     let className = "input-group-text text-light bg-";
-    className += props.formswitch ? "gradient-info" : "gradient-success";
+    className += props.isEyepieceMode ? "gradient-info" : "gradient-success";
     return className;
   };
 
@@ -20,9 +20,9 @@ const Form = (props) => {
       <FormInput
         title="Camera"
         items={[
-          props.formdata.pixelsize,
-          props.formdata.resolutionx,
-          props.formdata.resolutiony,
+          props.formData.pixelsize,
+          props.formData.resolutionx,
+          props.formData.resolutiony,
         ]}
         addoncolor={inputAddonColor()}
         onFormChange={props.onFormChange}
@@ -36,8 +36,8 @@ const Form = (props) => {
       <FormInput
         title="Eyepiece"
         items={[
-          props.formdata.eyepiecefocallength,
-          props.formdata.eyepieceafov,
+          props.formData.eyepiecefocallength,
+          props.formData.eyepieceafov,
         ]}
         addoncolor={inputAddonColor()}
         onFormChange={props.onFormChange}
@@ -52,15 +52,15 @@ const Form = (props) => {
         <FormInput
           title="Telescope"
           items={[
-            props.formdata.aperture,
-            props.formdata.focallength,
-            props.formdata.barlow,
+            props.formData.aperture,
+            props.formData.focallength,
+            props.formData.barlow,
           ]}
           onFormChange={props.onFormChange}
           addoncolor={inputAddonColor()}
         />
       </div>
-      {props.formswitch ? getEyeSection() : getCamSection()}
+      {props.isEyepieceMode ? getEyeSection() : getCamSection()}
       <input className={SubmitBtnColor()} type="submit" value="Plot!" />
     </form>
   );
