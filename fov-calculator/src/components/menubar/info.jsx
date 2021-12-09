@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Forecast from "./forecast";
+import InfoInput from "./infoinput";
 import { microns2milimeter } from "../utils-formdata2chartsize.js";
 
 const Info = (props) => {
@@ -15,8 +16,10 @@ const Info = (props) => {
   // magnification
   // maxMagnification
 
+  // in main return:
   // Object.values(main).map((item) => {})
-  // check if eyepiecemode, then print only those wh
+  // if (props.isEyepieceMode && item.isEyepieceInfo) {return the item with item.name , item.value etc..}
+  // if (!props.isEyepieceMode && !item.isEyepieceInfo) {return the item}
 
   // formData:
   // focallength
@@ -135,7 +138,7 @@ const Info = (props) => {
     setState(infoBar);
   }, [props.formData, props.isEyepieceMode, props.submitFlag, props.chartinfo]);
 
-  const borderColor = () => {
+  const borderStyle = () => {
     let css = "info-items text-light text-center col-auto border rounded ";
     let bg = props.isEyepieceMode ? "border-info" : "border-success";
     return css + bg;
@@ -147,17 +150,17 @@ const Info = (props) => {
         {state.map((item) => {
           const [name, value] = item;
           return (
-            <div className="form-label-group mb-0 mt-2" key={name}>
-              <p className="text-light mr-1">
-                <small>{name}</small>
-              </p>
-              <p className={borderColor()}>{value}</p>
-            </div>
+            <InfoInput
+              borderStyle={borderStyle()}
+              key={name}
+              name={name}
+              value={value}
+            />
           );
         })}
         <Forecast
           isEyepieceMode={props.isEyepieceMode}
-          borderColor={borderColor()}
+          borderStyle={borderStyle()}
         />
       </div>
     </div>

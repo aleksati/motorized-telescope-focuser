@@ -115,15 +115,15 @@ const Forecast = (props) => {
         <small>Forecast</small>
       </p>
       {isError ? (
-        <p className={props.borderColor}>
+        <p className={props.borderStyle}>
           <img src={error} alt="ERROR..." width="25px" height="25px" />
         </p>
       ) : isLoading ? (
-        <p className={props.borderColor}>
+        <p className={props.borderStyle}>
           <img src={loading} alt="loading..." width="25px" height="25px" />
         </p>
       ) : (
-        <p className={props.borderColor}>
+        <p className={props.borderStyle}>
           <img
             src={YRdata.next6h_img}
             alt="Specification Drawing"
