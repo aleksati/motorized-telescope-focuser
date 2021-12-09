@@ -22,10 +22,19 @@ const Menubar = (props) => (
       onFormSubmit={props.onFormSubmit}
     />
     <Info
-      isEyepieceMode={props.menustate.formswitch}
-      submitFlag={props.menustate.submit}
-      formData={props.menustate.formdata}
-      chartinfo={props.menustate.chartinfo}
+      isEyepieceMode={props.menustate.formswitch} //canvasData
+      submitFlag={props.menustate.submit} // submitFlag
+      formData={props.menustate.formdata} // formData
+      chartinfo={props.menustate.chartinfo} // canvasData
+      focallength={props.menustate.formdata.focallength}
+      barlow={props.menustate.formdata.barlow}
+      aperture={props.menustate.formdata.aperture}
+      resolutionx={props.menustate.formdata.resolutionx}
+      resolutiony={props.menustate.formdata.resolutiony}
+      pixelsize={props.menustate.formdata.pixelsize}
+      eyepiecefocallength={props.menustate.formdata.eyepiecefocallength}
+      plotsizex={props.menustate.chartinfo.plotsizex}
+      plotsizey={props.menustate.chartinfo.plotsizey}
     />
     <CanvasOptions
       zoomValue={props.menustate.zoomValue}

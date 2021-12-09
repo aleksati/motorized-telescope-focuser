@@ -7,37 +7,178 @@ const Info = (props) => {
   const [state, setState] = useState([]);
   // get the hasRedGrid prop and the redgridvalue
 
-  // the central state should have:
-  // aspectRatio
-  // name :
-  // value :
-  // isEyepieceInfo: bool
-  // focalRatio
-  // magnification
-  // maxMagnification
+  const [newState, setNewState] = useState();
+
+  // on Mount and new eyePiecemode change .. maybe this works as a way to reset the state when switching between modeS?
+  useEffect(() => {
+    setNewState({
+      aspectRatio: { name: "AR", value: "", isEyepieceInfo: false },
+      focalRatio: { name: "F", value: "", isEyepieceInfo: true },
+      magnification: { name: "Mag", value: "", isEyepieceInfo: true },
+      maxMagnification: { name: "MaxMag", value: "", isEyepieceInfo: true },
+      pxPerSquare: { name: "Grid □", value: "", isEyepieceInfo: false },
+      chipSize: { name: "Chip", value: "", isEyepieceInfo: false },
+    });
+  }, [props.isEyepieceMode]);
+
+  // get Focal Ratio (F number)
+  useEffect(() => {
+    let barlow = Number(props.barlow.value);
+    let flength = Number(props.focallength.value);
+    let aperture = Number(props.aperture.value);
+
+    if (flength <= 0 || aperture <= 0) return;
+    if (barlow !== 0) flength *= barlow;
+    let focalRatio = Math.floor((flength / aperture) * 10) / 10;
+    if (focalRatio <= 0) return;
+
+    setNewState((prevState) => ({
+      ...prevState,
+      focalRatio: {
+        ...prevState.focalRatio,
+        value: focalRatio,
+      },
+    }));
+  }, [props.barlow, props.focallength, props.aperture]);
+
+  // get Aspect Ratio (Ar)
+  useEffect(() => {
+    let aspectX = 10000;
+    let aspectY =
+      (Number(props.resolutiony.value) / Number(props.resolutionx.value)) *
+      10000;
+
+    if (Number.isNaN(aspectX) || aspectX <= 0) return;
+    if (Number.isNaN(aspectY) || aspectY <= 0) return;
+
+    let factorX = [];
+    let factorY = [];
+    for (let i = 1; i <= aspectX; i++) {
+      if (aspectX % i === 0) factorX.push(i);
+      if (aspectY % i === 0) factorY.push(i);
+    }
+
+    if (!factorY.length || !factorX.length) return;
+
+    let commonFactors = factorX.filter((n) => factorY.indexOf(n) !== -1);
+    let greatestCommonFactor = Math.max(...commonFactors);
+    aspectX /= greatestCommonFactor;
+    aspectY /= greatestCommonFactor;
+
+    let aspectRatio = aspectX + ":" + aspectY;
+
+    setNewState((prevState) => ({
+      ...prevState,
+      aspectRatio: {
+        ...prevState.aspectRatio,
+        value: aspectRatio,
+      },
+    }));
+  }, [props.resolutionx, props.resolutiony]);
+
+  // get Magnification (Mag)
+  useEffect(() => {
+    let mag = 0;
+    let flength = Number(props.focallength.value);
+
+    // if barlow
+    let barlow = Number(props.barlow.value);
+    if (barlow !== 0) flength *= barlow;
+
+    // eyepiece
+    let eyeflength = Number(props.eyepiecefocallength.value);
+
+    mag = eyeflength !== 0 && flength !== 0 ? flength / eyeflength : "";
+
+    setNewState((prevState) => ({
+      ...prevState,
+      magnification: {
+        ...prevState.magnification,
+        value: mag,
+      },
+    }));
+  }, [props.barlow, props.focallength, props.eyepiecefocallength]);
+
+  // get Max Magnification (Max Mag)
+  useEffect(() => {
+    let flength = Number(props.focallength.value);
+    let aperture = Number(props.aperture.value);
+    if (flength <= 0 || aperture <= 0) return;
+
+    setNewState((prevState) => ({
+      ...prevState,
+      maxMagnification: {
+        ...prevState.maxMagnification,
+        value: aperture * 2,
+      },
+    }));
+  }, [props.focallength, props.aperture]);
+
+  // get pxPerSquare (Grid)
+  useEffect(() => {
+    if (!props.submitFlag) return;
+
+    let resX = Number(props.resolutionx.value);
+    let resY = Number(props.resolutiony.value);
+    let plotX = Number(props.plotsizex);
+    let plotY = Number(props.plotsizey);
+
+    let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
+    let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
+
+    let res = Math.round(pixelsPerUnitX * pixelsPerUnitY * 10) / 10; // pixelsPerUnitX + " x " + pixelsPerUnitY;
+
+    setNewState((prevState) => ({
+      ...prevState,
+      pxPerSquare: {
+        ...prevState.pxPerSquare,
+        value: res + "px²",
+      },
+    }));
+  }, [
+    props.submitFlag,
+    props.resolutionx,
+    props.resolutiony,
+    props.plotsizex,
+    props.plotsizey,
+  ]);
+
+  // get Chip Size (Chip) THIS STILL NEEDS WORK ..
+  useEffect(() => {
+    let resX = Number(props.resolutionx.value);
+    let resY = Number(props.resolutiony.value);
+    let pixelSize = Number(props.pixelsize.value);
+
+    if (resX === 0 || resY === 0 || pixelSize === 0) return;
+    let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(props.formData);
+    let result = Math.round(sensorXsizeMM * sensorYsizeMM * 10) / 10 + "mm²";
+
+    setNewState((prevState) => ({
+      ...prevState,
+      chipSize: {
+        ...prevState.chipSize,
+        value: result,
+      },
+    }));
+  }, [
+    props.resolutiony,
+    props.resolutiony,
+    props.pixelsize,
+    microns2milimeter,
+    props.formData,
+  ]);
 
   // in main return:
-  // Object.values(main).map((item) => {})
-  // if (props.isEyepieceMode && item.isEyepieceInfo) {return the item with item.name , item.value etc..}
-  // if (!props.isEyepieceMode && !item.isEyepieceInfo) {return the item}
-
-  // formData:
-  // focallength
-  // barlow
-  // aperture
-  // resolutionx and y
-  // eyepiecefocallength
-
-  // canvasData:
-  // plotsizeX
-  // plotsizeY
-  // pixelsize
+  // Object.values(main).map((item) => {
+  // if (props.isEyepieceMode && item.isEyepieceInfo) return <InfoInput borderStyle={borderStyle()} key={item.name} name={item.name} value={item.value} />
+  // if (!props.isEyepieceMode && !item.isEyepieceInfo) return <InfoInput borderStyle={borderStyle()} key={item.name} name={item.name} value={item.value} />
+  // })
 
   useEffect(() => {
     const getFocalRatio = () => {
-      let barlow = Number(props.formData.barlow.value);
-      let flength = Number(props.formData.focallength.value);
-      let aperture = Number(props.formData.aperture.value);
+      let barlow = Number(props.barlow.value);
+      let flength = Number(props.focallength.value);
+      let aperture = Number(props.aperture.value);
 
       if (flength <= 0 || aperture <= 0) return ["F", ""];
       if (barlow !== 0) flength *= barlow;
@@ -50,8 +191,7 @@ const Info = (props) => {
     const getAspectRatio = () => {
       let aspectX = 10000;
       let aspectY =
-        (Number(props.formData.resolutiony.value) /
-          Number(props.formData.resolutionx.value)) *
+        (Number(props.resolutiony.value) / Number(props.resolutionx.value)) *
         10000;
 
       if (Number.isNaN(aspectX) || aspectX <= 0) return ["AR", ""];
@@ -77,14 +217,14 @@ const Info = (props) => {
 
     const getMagnification = () => {
       let mag = 0;
-      let flength = Number(props.formData.focallength.value);
+      let flength = Number(props.focallength.value);
 
       // if barlow
-      let barlow = Number(props.formData.barlow.value);
+      let barlow = Number(props.barlow.value);
       if (barlow !== 0) flength *= barlow;
 
       // eyepiece
-      let eyeflength = Number(props.formData.eyepiecefocallength.value);
+      let eyeflength = Number(props.eyepiecefocallength.value);
 
       mag = eyeflength !== 0 && flength !== 0 ? flength / eyeflength : "";
 
@@ -92,8 +232,8 @@ const Info = (props) => {
     };
 
     const getMaxMagnification = () => {
-      let flength = Number(props.formData.focallength.value);
-      let aperture = Number(props.formData.aperture.value);
+      let flength = Number(props.focallength.value);
+      let aperture = Number(props.aperture.value);
       if (flength <= 0 || aperture <= 0) return ["Max Mag", ""];
       return ["Max Mag", aperture * 2];
     };
@@ -101,10 +241,10 @@ const Info = (props) => {
     const getPxPerSquare = () => {
       if (!props.submitFlag) return ["Grid □", ""];
 
-      let resX = Number(props.formData.resolutionx.value);
-      let resY = Number(props.formData.resolutiony.value);
-      let plotX = Number(props.chartinfo.plotSizeX);
-      let plotY = Number(props.chartinfo.plotSizeY);
+      let resX = Number(props.resolutionx.value);
+      let resY = Number(props.resolutiony.value);
+      let plotX = Number(props.plotsizex);
+      let plotY = Number(props.plotsizey);
 
       let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
       let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
@@ -114,9 +254,9 @@ const Info = (props) => {
     };
 
     const getChipSize = () => {
-      let resX = Number(props.formData.resolutionx.value);
-      let resY = Number(props.formData.resolutiony.value);
-      let pixelSize = Number(props.formData.pixelsize.value);
+      let resX = Number(props.resolutionx.value);
+      let resY = Number(props.resolutiony.value);
+      let pixelSize = Number(props.pixelsize.value);
       if (resX === 0 || resY === 0 || pixelSize === 0) return ["Chip", ""];
       let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(props.formData);
       let result = Math.round(sensorXsizeMM * sensorYsizeMM * 10) / 10 + "mm²";
@@ -136,7 +276,20 @@ const Info = (props) => {
       infoBar.push(getPxPerSquare());
     }
     setState(infoBar);
-  }, [props.formData, props.isEyepieceMode, props.submitFlag, props.chartinfo]);
+  }, [
+    props.formData,
+    props.isEyepieceMode,
+    props.submitFlag,
+    props.focallength,
+    props.barlow,
+    props.aperture,
+    props.resolutionx,
+    props.resolutiony,
+    props.eyepiecefocallength,
+    props.plotsizex,
+    props.plotsizey,
+    props.pixelsize,
+  ]);
 
   const borderStyle = () => {
     let css = "info-items text-light text-center col-auto border rounded ";
@@ -146,6 +299,7 @@ const Info = (props) => {
 
   return (
     <div className="border border-white rounded mb-1 bg-gradient-dark">
+      {console.log(newState)}
       <div className="d-flex justify-content-around">
         {state.map((item) => {
           const [name, value] = item;
