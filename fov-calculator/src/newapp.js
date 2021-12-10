@@ -73,7 +73,7 @@ const App = () => {
       unit: "°",
     },
   });
-  const [submit, regSubmit] = useState(false);
+  const [submitFlag, regSubmitFlag] = useState(false);
   const [canvasData, setCanvasData] = useState({
     isEyepieceMode: true,
     hasGrid: true,
@@ -143,15 +143,26 @@ const App = () => {
 
     // update the chart size and config
     let newchartinfo = canvas.isEyepieceMode
-      ? eyepieceCanvasSize(formData)
-      : camCanvasSize(formData);
+      ? eyepieceCanvasSize(
+          formData.eyepieceafov.value,
+          formData.eyepiecefocallength.value,
+          formData.focallength.value,
+          formData.barlow.value
+        )
+      : camCanvasSize(
+          formData.pixelsize.value,
+          formData.resolutionx.value,
+          formData.resolutiony.value,
+          formData.focallength.value,
+          formData.barlow.value
+        );
 
     // hope this works :/
     setCanvasData((prevCanvas) => ({
       ...prevCanvas,
       ...newchartinfo,
     }));
-    regSubmit(true);
+    regSubmitFlag(true);
   };
 
   return (
@@ -164,9 +175,9 @@ const App = () => {
         onRedGridChange={handleRedGridChange}
         onLabelChange={handleLabelChange}
         onZoomChange={handleZoomChange}
-        //menustate={state.menustate}
         formData={formData}
         canvasData={canvasData}
+        submitFlag={submitFlag}
       />
       <Canvas
         canvasData={canvasData}

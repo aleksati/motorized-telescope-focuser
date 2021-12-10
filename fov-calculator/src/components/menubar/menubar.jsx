@@ -24,8 +24,6 @@ const Menubar = (props) => (
     <Info
       isEyepieceMode={props.menustate.formswitch} //canvasData
       submitFlag={props.menustate.submit} // submitFlag
-      formData={props.menustate.formdata} // formData
-      chartinfo={props.menustate.chartinfo} // canvasData
       focallength={props.menustate.formdata.focallength}
       barlow={props.menustate.formdata.barlow}
       aperture={props.menustate.formdata.aperture}
@@ -33,14 +31,14 @@ const Menubar = (props) => (
       resolutiony={props.menustate.formdata.resolutiony}
       pixelsize={props.menustate.formdata.pixelsize}
       eyepiecefocallength={props.menustate.formdata.eyepiecefocallength}
-      plotsizex={props.menustate.chartinfo.plotsizex}
-      plotsizey={props.menustate.chartinfo.plotsizey}
+      plotsizex={props.menustate.chartinfo.plotSizeX}
+      plotsizey={props.menustate.chartinfo.plotSizeY}
     />
     <CanvasOptions
       zoomValue={props.menustate.zoomValue}
-      canvasLabels={props.menustate.canvasLabels}
-      formswitch={props.menustate.formswitch}
-      gridswitch={props.menustate.gridswitch}
+      hasLabels={props.menustate.canvasLabels}
+      isEyepieceMode={props.menustate.formswitch}
+      hasGrid={props.menustate.gridswitch}
       hasRedGrid={props.menustate.hasRedGrid}
       onZoomChange={props.onZoomChange}
       onGridChange={props.onGridChange}

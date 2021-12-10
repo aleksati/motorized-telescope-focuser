@@ -1,16 +1,13 @@
-// depedencies for microns2milimeter
-// pixelsize.value
-// resolutionx.value
-// resolutiony.value
-
-export function microns2milimeter(formData) {
+export function microns2milimeter(
+  resolutionxvalue,
+  resolutionyvalue,
+  pixelsizevalue
+) {
   // Calculate the size of the sensor (X and Y) in mm from the microns input
   let sensorXsizeMM =
-    (Number(Math.sqrt(formData.pixelsize.value)) / 1000) *
-    Number(formData.resolutionx.value);
+    (Number(Math.sqrt(pixelsizevalue)) / 1000) * Number(resolutionxvalue);
   let sensorYsizeMM =
-    (Number(Math.sqrt(formData.pixelsize.value)) / 1000) *
-    Number(formData.resolutiony.value);
+    (Number(Math.sqrt(pixelsizevalue)) / 1000) * Number(resolutionyvalue);
 
   sensorXsizeMM = Math.round(sensorXsizeMM * 10) / 10;
   sensorYsizeMM = Math.round(sensorYsizeMM * 10) / 10;
@@ -18,19 +15,22 @@ export function microns2milimeter(formData) {
   return { sensorXsizeMM, sensorYsizeMM };
 }
 
-// depedencies for camCanvasSize
-// pixelsize.value
-// resolutionx.value
-// resolutiony.value
-// focallength.value
-// barlow.value
-
-export function camCanvasSize(formData) {
-  let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(formData);
+export function camCanvasSize(
+  pixelsizevalue,
+  resolutionxvalue,
+  resolutionyvalue,
+  focallenghtvalue,
+  barlowvalue
+) {
+  let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(
+    resolutionxvalue,
+    resolutionyvalue,
+    pixelsizevalue
+  );
 
   // We take the Barlow into account
-  let flength = Number(formData.focallength.value);
-  let barlow = Number(formData.barlow.value);
+  let flength = Number(focallenghtvalue);
+  let barlow = Number(barlowvalue);
   if (barlow !== 0) flength *= barlow;
 
   // the unit FOV is the sensor size divided by the focal length.
@@ -68,20 +68,19 @@ export function camCanvasSize(formData) {
   };
 }
 
-// dependencies for eyepieceCanvasSize
-// eyepieceafov.value
-// eyepiecefocallength.value
-// focallength.value
-// barlow.value
+export function eyepieceCanvasSize(
+  eyepieceafovvalue,
+  eyepiecefocallengthvalue,
+  focallenghtvalue,
+  barlowvalue
+) {
+  let afov = Number(eyepieceafovvalue);
+  let flength_scope = Number(focallenghtvalue);
 
-export function eyepieceCanvasSize(formData) {
-  let afov = Number(formData.eyepieceafov.value);
-  let flength_scope = Number(formData.focallength.value);
-
-  let barlow = Number(formData.barlow.value);
+  let barlow = Number(barlowvalue);
   if (barlow !== 0) flength_scope *= barlow;
 
-  let flength_eye = Number(formData.eyepiecefocallength.value);
+  let flength_eye = Number(eyepiecefocallengthvalue);
   let mag = flength_scope / flength_eye;
 
   let tfov = afov / mag; // This output is a FOV unit in degrees.

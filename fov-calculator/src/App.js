@@ -163,8 +163,19 @@ class App extends Component {
 
     // update the chart size and config
     let newchartinfo = this.state.menustate.formswitch
-      ? eyepieceCanvasSize(this.state.menustate.formdata)
-      : camCanvasSize(this.state.menustate.formdata);
+      ? eyepieceCanvasSize(
+          this.state.menustate.formdata.eyepieceafov.value,
+          this.state.menustate.formdata.eyepiecefocallength.value,
+          this.state.menustate.formdata.focallength.value,
+          this.state.menustate.formdata.barlow.value
+        )
+      : camCanvasSize(
+          this.state.menustate.formdata.pixelsize.value,
+          this.state.menustate.formdata.resolutionx.value,
+          this.state.menustate.formdata.resolutiony.value,
+          this.state.menustate.formdata.focallength.value,
+          this.state.menustate.formdata.barlow.value
+        );
 
     this.setState((prevState) => ({
       menustate: {

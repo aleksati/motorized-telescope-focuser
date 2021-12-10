@@ -11,9 +11,9 @@ const CanvasOptions = (props) => {
         <FormControlLabel
           control={
             <Switch
-              inputProps={{ "aria-label": "Gridswitch" }}
-              color={props.formswitch ? "info" : "success"}
-              checked={props.gridswitch}
+              inputProps={{ "aria-label": "hasGrid" }}
+              color={props.isEyepieceMode ? "info" : "success"}
+              checked={props.hasGrid}
               onChange={(event) => {
                 props.onGridChange(event.target.checked);
               }}
@@ -26,7 +26,7 @@ const CanvasOptions = (props) => {
           control={
             <Switch
               inputProps={{ "aria-label": "Reduce Gridlines" }}
-              color={props.formswitch ? "info" : "success"}
+              color={props.isEyepieceMode ? "info" : "success"}
               checked={props.hasRedGrid}
               onChange={(event) => {
                 props.onRedGridChange(event.target.checked);
@@ -40,8 +40,8 @@ const CanvasOptions = (props) => {
           control={
             <Switch
               inputProps={{ "aria-label": "Labels" }}
-              color={props.formswitch ? "info" : "success"}
-              checked={props.canvasLabels}
+              color={props.isEyepieceMode ? "info" : "success"}
+              checked={props.hasLabels}
               onChange={(event) => {
                 props.onLabelChange(event.target.checked);
               }}
@@ -51,7 +51,7 @@ const CanvasOptions = (props) => {
           labelPlacement="start"
         />
         <CanvasZoom
-          formswitch={props.formswitch}
+          isEyepieceMode={props.isEyepieceMode}
           onZoomChange={props.onZoomChange}
           zoomValue={props.zoomValue}
         />
