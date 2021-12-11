@@ -55,8 +55,8 @@ function paintCircularText(label, ctx, angle) {
   }
 }
 
-function getLabelOffset(label) {
-  if (label && currentHeight && currentWidth) {
+function getLabelOffset(hasLabel) {
+  if (hasLabel && currentHeight && currentWidth) {
     // calculate how much we should shrink the canvas in order to fit the LABELFONT and NUMBERFONT nicely on the outside.
     // we base the calculation on whichever axis has the least pixels.
     let smllstSide =
@@ -73,19 +73,25 @@ function getLabelOffset(label) {
   }
 }
 
-export function updateCanvasSize(cnv, cnvWidth, chartinfo, text) {
+export function updateCanvasSize(
+  cnv,
+  cnvWidth,
+  plotsizex,
+  plotsizey,
+  hasLabel
+) {
   // for optimal canvas rendering on the current screen.
   currentWidth = cnvWidth;
 
-  let unitY = chartinfo.plotSizeY;
-  let unitX = chartinfo.plotSizeX;
+  let unitY = plotsizey;
+  let unitX = plotsizex;
   let pxPerUnitX = currentWidth / unitX; // pixel to size ratio
   currentHeight = pxPerUnitX * unitY;
 
   cnv.width = currentWidth;
   cnv.height = currentHeight;
 
-  getLabelOffset(text);
+  getLabelOffset(hasLabel);
 }
 
 export function paintBg(ctx) {
@@ -94,19 +100,28 @@ export function paintBg(ctx) {
   ctx.fillRect(0, 0, currentWidth, currentHeight);
 }
 
-export function paintOnSquare(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
+export function paintOnSquare(
+  ctx,
+  plotsizex,
+  plotsizey,
+  plotdivisor,
+  axislabel,
+  hasLabel,
+  hasGrid,
+  hasRedGrid
+) {
   let offsetHeight = (currentHeight / 100) * LABELOFFSET;
   let offsetWidth = (currentWidth / 100) * LABELOFFSET;
 
-  let pxPerUnitX = (currentWidth - offsetWidth) / chartinfo.plotSizeX;
-  let pxPerUnitY = (currentHeight - offsetHeight) / chartinfo.plotSizeY;
+  let pxPerUnitX = (currentWidth - offsetWidth) / plotsizex;
+  let pxPerUnitY = (currentHeight - offsetHeight) / plotsizey;
 
   ctx.textAlign = "center";
   ctx.fillStyle = textColor; // text and numbers
   ctx.lineWidth = 1;
 
   // paint X axis grid and numbers
-  for (let i = 0; i <= chartinfo.plotSizeX; i++) {
+  for (let i = 0; i <= plotsizex; i++) {
     //i = 0 and 20 to make the border
     let { x, y } = nearestHalf(
       pxPerUnitX * i + offsetWidth,
@@ -114,7 +129,7 @@ export function paintOnSquare(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
     );
     // paint X grid
     ctx.beginPath();
-    if (i === 0 || i === chartinfo.plotSizeX) {
+    if (i === 0 || i === plotsizex) {
       // the border
       ctx.strokeStyle = borderColor;
       ctx.moveTo(x, y);
@@ -135,16 +150,12 @@ export function paintOnSquare(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
 
     // paint numbers
     if (hasLabel) {
-      if (
-        i !== 0 &&
-        i % chartinfo.plotDivisor === 0 &&
-        i !== chartinfo.plotSizeX
-      ) {
+      if (i !== 0 && i % plotdivisor === 0 && i !== plotsizex) {
         // draw numbers along X axis
         ctx.textBaseline = "top";
         ctx.font = NUMBERFONT;
         ctx.fillText(
-          i / chartinfo.plotDivisor,
+          i / plotdivisor,
           pxPerUnitX * i + offsetWidth,
           currentHeight - offsetHeight + COZYOFFSET // offsett the pixel size chosen above
         );
@@ -157,7 +168,7 @@ export function paintOnSquare(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
     // X label
     ctx.font = LABELFONT;
     ctx.fillText(
-      chartinfo.axisLabel,
+      axislabel,
       currentWidth / 2 + offsetWidth,
       currentHeight -
         offsetHeight +
@@ -175,18 +186,18 @@ export function paintOnSquare(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
       currentHeight / 2 - offsetHeight
     );
     ctx.rotate(Math.PI / -2);
-    ctx.fillText(chartinfo.axisLabel, 0, 0);
+    ctx.fillText(axislabel, 0, 0);
     ctx.restore();
   }
 
   // paint Y axis grid and numbers
-  for (let i = 0; i <= chartinfo.plotSizeY; i++) {
+  for (let i = 0; i <= plotsizey; i++) {
     // include 0 and 20 to make the border
     let { x, y } = nearestHalf(currentWidth + offsetWidth, pxPerUnitY * i);
 
     // paint Y grid
     ctx.beginPath();
-    if (i === 0 || i === chartinfo.plotSizeY) {
+    if (i === 0 || i === plotsizey) {
       // border
       ctx.strokeStyle = borderColor;
       ctx.moveTo(0 + offsetWidth, y);
@@ -194,7 +205,7 @@ export function paintOnSquare(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
     } else if (hasGrid) {
       ctx.strokeStyle = gridColor;
       if (hasRedGrid) {
-        if ((chartinfo.plotSizeY - i) % reducedGridFactor === 0) {
+        if ((plotsizey - i) % reducedGridFactor === 0) {
           ctx.moveTo(0 + offsetWidth, y);
           ctx.lineTo(x, y);
         }
@@ -207,11 +218,7 @@ export function paintOnSquare(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
 
     // paint numbers
     if (hasLabel) {
-      if (
-        i !== 0 &&
-        i % chartinfo.plotDivisor === 0 &&
-        i !== chartinfo.plotSizeY
-      ) {
+      if (i !== 0 && i % plotdivisor === 0 && i !== plotsizey) {
         // draw numbers along Y axis
         ctx.font = NUMBERFONT;
         ctx.textBaseline = "bottom"; // hmmmm
@@ -221,16 +228,25 @@ export function paintOnSquare(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
           currentHeight - pxPerUnitY * i - offsetHeight
         );
         ctx.rotate(Math.PI / -2);
-        ctx.fillText(i / chartinfo.plotDivisor, 0, 0);
+        ctx.fillText(i / plotdivisor, 0, 0);
         ctx.restore();
       }
     }
   }
 }
 
-export function paintOnCircle(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
-  let pxPerUnitX = currentWidth / chartinfo.plotSizeX;
-  let pxPerUnitY = currentHeight / chartinfo.plotSizeY;
+export function paintOnCircle(
+  ctx,
+  plotsizex,
+  plotsizey,
+  plotdivisor,
+  axislabel,
+  hasLabel,
+  hasGrid,
+  hasRedGrid
+) {
+  let pxPerUnitX = currentWidth / plotsizex;
+  let pxPerUnitY = currentHeight / plotsizey;
 
   ctx.textAlign = "center";
   ctx.fillStyle = textColor; // text and numbers
@@ -238,7 +254,7 @@ export function paintOnCircle(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
   ctx.lineWidth = 1;
 
   // paint X axis grid and numbers
-  for (let i = 0; i <= chartinfo.plotSizeX; i++) {
+  for (let i = 0; i <= plotsizex; i++) {
     //i = 0 and 20 to make the border
     let { x, y } = nearestHalf(pxPerUnitX * i, 0);
 
@@ -258,11 +274,7 @@ export function paintOnCircle(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
 
     // paint numbers
     if (hasLabel) {
-      if (
-        i !== 0 &&
-        i % chartinfo.plotDivisor === 0 &&
-        i !== chartinfo.plotSizeX
-      ) {
+      if (i !== 0 && i % plotdivisor === 0 && i !== plotsizex) {
         // draw numbers along axis
         let textHeight = hasRedGrid
           ? currentHeight - pxPerUnitY * reducedGridFactor
@@ -271,7 +283,7 @@ export function paintOnCircle(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
         ctx.font = NUMBERFONT;
         ctx.textBaseline = "top";
         ctx.fillText(
-          i / chartinfo.plotDivisor,
+          i / plotdivisor,
           pxPerUnitX * i + COZYOFFSET * 2,
           textHeight + COZYOFFSET // offsett the pixel size chosen above
         );
@@ -283,12 +295,12 @@ export function paintOnCircle(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
   if (hasLabel) {
     // X labels
     ctx.save();
-    paintCircularText(chartinfo.axisLabel, ctx, 45);
+    paintCircularText(axislabel, ctx, 45);
     ctx.restore();
   }
 
   // paint Y axis grid and numbers
-  for (let i = 0; i <= chartinfo.plotSizeY; i++) {
+  for (let i = 0; i <= plotsizey; i++) {
     // include 0 and 20 to make the border
     let { x, y } = nearestHalf(0, pxPerUnitY * i);
 
@@ -296,7 +308,7 @@ export function paintOnCircle(ctx, chartinfo, hasLabel, hasGrid, hasRedGrid) {
     if (hasGrid) {
       ctx.beginPath();
       if (hasRedGrid) {
-        if ((i - chartinfo.plotSizeY) % reducedGridFactor === 0) {
+        if ((i - plotsizey) % reducedGridFactor === 0) {
           ctx.moveTo(x, y);
           ctx.lineTo(currentWidth, y);
         }

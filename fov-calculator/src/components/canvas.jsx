@@ -4,18 +4,9 @@ import {
   paintOnCircle,
   paintBg,
   updateCanvasSize,
-} from "./utils-canvasMethods.js";
+} from "./utils-canvas.js";
 
 // layouteffect runs before the DOM initally renders. A good place to update/get size of DOM elements to avoid flickering.
-
-// The props are:
-// chartinfo= {plotSizeX(num), plotSizeY(num), plotDivisor(num), axisLabel(string)}
-// hasGrid={bool}
-// labelswitch={bool}
-// isEyepieceMode={bool}
-// zoomValue={value}
-// hasRedGrid={bool}
-
 const Canvas = (props) => {
   const canvasRef = useRef(null);
   const canvasDivRef = useRef(null);
@@ -45,9 +36,9 @@ const Canvas = (props) => {
   // we update the canvasWidth.
   useEffect(() => {
     if (containerWidth) {
-      setCanvasWidth((containerWidth / 100) * props.zoomValue);
+      setCanvasWidth((containerWidth / 100) * props.canvasData.zoomValue);
     }
-  }, [containerWidth, props.zoomValue]);
+  }, [containerWidth, props.canvasData.zoomValue]);
 
   // Paint the canvas on most renders.
   useEffect(() => {
@@ -60,31 +51,38 @@ const Canvas = (props) => {
       updateCanvasSize(
         canvas,
         scaledCanvasWidth,
-        props.chartinfo,
-        props.hasLabels
+        props.canvasData.plotSizeX,
+        props.canvasData.plotSizeY,
+        props.canvasData.hasLabels
       );
 
       paintBg(context);
 
-      if (!props.isEyepieceMode) {
+      if (!props.canvasData.isEyepieceMode) {
         paintOnSquare(
           context,
-          props.chartinfo,
-          props.hasLabels,
-          props.hasGrid,
-          props.hasRedGrid
+          props.canvasData.plotSizeX,
+          props.canvasData.plotSizeY,
+          props.canvasData.plotDivisor,
+          props.canvasData.axisLabel,
+          props.canvasData.hasLabels,
+          props.canvasData.hasGrid,
+          props.canvasData.hasRedGrid
         );
       } else {
         paintOnCircle(
           context,
-          props.chartinfo,
-          props.hasLabels,
-          props.hasGrid,
-          props.hasRedGrid
+          props.canvasData.plotSizeX,
+          props.canvasData.plotSizeY,
+          props.canvasData.plotDivisor,
+          props.canvasData.axisLabel,
+          props.canvasData.hasLabels,
+          props.canvasData.hasGrid,
+          props.canvasData.hasRedGrid
         );
       }
     }
-  }, [canvasRef, props, canvasWidth]);
+  }, [canvasRef, props.canvasData, canvasWidth]);
 
   return (
     <div className="container d-flex justify-content-center p-0">
@@ -92,7 +90,9 @@ const Canvas = (props) => {
         <canvas
           ref={canvasRef}
           className={
-            props.isEyepieceMode ? "w-100 border rounded-circle" : "w-100"
+            props.canvasData.isEyepieceMode
+              ? "w-100 border rounded-circle"
+              : "w-100"
           }
         />
       </div>
