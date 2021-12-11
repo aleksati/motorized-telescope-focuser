@@ -79,6 +79,7 @@ const App = () => {
     hasGrid: true,
     hasLabels: true,
     hasRedGrid: false,
+    redGridFactor: 6,
     zoomValue: 100,
     plotSizeX: 20,
     plotSizeY: 20,

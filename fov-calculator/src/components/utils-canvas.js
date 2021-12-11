@@ -6,7 +6,6 @@ let currentHeight = 0;
 const LABELFONT = "30px Arial";
 const NUMBERFONT = "15px Arial";
 const COZYOFFSET = 3;
-const reducedGridFactor = 6;
 
 const textColor = "#9C9C9C";
 const borderColor = "#9C9C9C";
@@ -108,7 +107,8 @@ export function paintOnSquare(
   axislabel,
   hasLabel,
   hasGrid,
-  hasRedGrid
+  hasRedGrid,
+  redGridFactor
 ) {
   let offsetHeight = (currentHeight / 100) * LABELOFFSET;
   let offsetWidth = (currentWidth / 100) * LABELOFFSET;
@@ -137,7 +137,7 @@ export function paintOnSquare(
     } else if (hasGrid) {
       ctx.strokeStyle = gridColor;
       if (hasRedGrid) {
-        if (i % reducedGridFactor === 0) {
+        if (i % redGridFactor === 0) {
           ctx.moveTo(x, y);
           ctx.lineTo(x, 0.5);
         }
@@ -205,7 +205,7 @@ export function paintOnSquare(
     } else if (hasGrid) {
       ctx.strokeStyle = gridColor;
       if (hasRedGrid) {
-        if ((plotsizey - i) % reducedGridFactor === 0) {
+        if ((plotsizey - i) % redGridFactor === 0) {
           ctx.moveTo(0 + offsetWidth, y);
           ctx.lineTo(x, y);
         }
@@ -243,7 +243,8 @@ export function paintOnCircle(
   axislabel,
   hasLabel,
   hasGrid,
-  hasRedGrid
+  hasRedGrid,
+  redGridFactor
 ) {
   let pxPerUnitX = currentWidth / plotsizex;
   let pxPerUnitY = currentHeight / plotsizey;
@@ -261,7 +262,7 @@ export function paintOnCircle(
     if (hasGrid) {
       ctx.beginPath();
       if (hasRedGrid) {
-        if (i % reducedGridFactor === 0) {
+        if (i % redGridFactor === 0) {
           ctx.moveTo(x, currentHeight);
           ctx.lineTo(x, y);
         }
@@ -277,7 +278,7 @@ export function paintOnCircle(
       if (i !== 0 && i % plotdivisor === 0 && i !== plotsizex) {
         // draw numbers along axis
         let textHeight = hasRedGrid
-          ? currentHeight - pxPerUnitY * reducedGridFactor
+          ? currentHeight - pxPerUnitY * redGridFactor
           : currentHeight / 2;
 
         ctx.font = NUMBERFONT;
@@ -308,7 +309,7 @@ export function paintOnCircle(
     if (hasGrid) {
       ctx.beginPath();
       if (hasRedGrid) {
-        if ((i - plotsizey) % reducedGridFactor === 0) {
+        if ((i - plotsizey) % redGridFactor === 0) {
           ctx.moveTo(x, y);
           ctx.lineTo(currentWidth, y);
         }

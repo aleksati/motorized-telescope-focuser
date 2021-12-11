@@ -67,7 +67,8 @@ const Canvas = (props) => {
           props.canvasData.axisLabel,
           props.canvasData.hasLabels,
           props.canvasData.hasGrid,
-          props.canvasData.hasRedGrid
+          props.canvasData.hasRedGrid,
+          props.canvasData.redGridFactor
         );
       } else {
         paintOnCircle(
@@ -78,7 +79,8 @@ const Canvas = (props) => {
           props.canvasData.axisLabel,
           props.canvasData.hasLabels,
           props.canvasData.hasGrid,
-          props.canvasData.hasRedGrid
+          props.canvasData.hasRedGrid,
+          props.canvasData.redGridFactor
         );
       }
     }

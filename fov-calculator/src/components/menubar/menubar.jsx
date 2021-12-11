@@ -23,6 +23,8 @@ const Menubar = (props) => (
     />
     <Info
       isEyepieceMode={props.canvasData.isEyepieceMode}
+      hasRedGrid={props.canvasData.hasRedGrid}
+      redGridFactor={props.canvasData.redGridFactor}
       submitFlag={props.submitFlag}
       focallength={props.formData.focallength}
       barlow={props.formData.barlow}

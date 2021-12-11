@@ -4,12 +4,10 @@ import InfoInput from "./infoinput";
 import { microns2milimeter } from "../utils-menubar.js";
 
 const Info = (props) => {
-  // get the hasRedGrid prop and the redgridvalue
-
   const [state, setState] = useState({
     focalRatio: { name: "FR", value: "", isEyepieceInfo: true },
     aspectRatio: { name: "AR", value: "", isEyepieceInfo: false },
-    magnification: { name: "Mag", value: "", isEyepieceInfo: true },
+    magnification: { name: "CurrMag", value: "", isEyepieceInfo: true },
     maxMagnification: { name: "MaxMag", value: "", isEyepieceInfo: true },
     pxPerSquare: { name: "Grid □", value: "", isEyepieceInfo: false },
     chipSize: { name: "Chip", value: "", isEyepieceInfo: false },
@@ -120,13 +118,18 @@ const Info = (props) => {
     let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
     let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
 
-    let res = Math.round(pixelsPerUnitX * pixelsPerUnitY * 10) / 10; // pixelsPerUnitX + " x " + pixelsPerUnitY;
+    let result = Math.round(pixelsPerUnitX * pixelsPerUnitY * 10) / 10;
+
+    // if hasRedGrid, then the px² should be the: result * redGridFactor²?
+    result = props.hasRedGrid
+      ? result * (props.redGridFactor * props.redGridFactor)
+      : result;
 
     setState((prevState) => ({
       ...prevState,
       pxPerSquare: {
         ...prevState.pxPerSquare,
-        value: res + "px²",
+        value: result + "px²",
       },
     }));
   }, [
@@ -135,6 +138,8 @@ const Info = (props) => {
     props.resolutiony,
     props.plotsizex,
     props.plotsizey,
+    props.hasRedGrid,
+    props.redGridFactor,
   ]);
 
   // get Chip Size (Chip)
