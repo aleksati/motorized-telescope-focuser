@@ -4,7 +4,7 @@ import Canvas from "./components/canvas";
 import {
   camCanvasSize,
   eyepieceCanvasSize,
-} from "./components/utils-menubar.js";
+} from "./components/menubar/utils-menubar.js";
 
 const App = () => {
   const [formData, addFormData] = useState({
