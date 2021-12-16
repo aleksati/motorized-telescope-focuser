@@ -6,13 +6,21 @@ import CanvasZoom from "./canvaszoom";
 
 const CanvasOptions = (props) => {
   return (
-    <div className="border border-white rounded mb-3 bg-gradient-dark">
-      <FormGroup className="text-light justify-content-around" row>
+    <div
+      className={
+        "border border-white rounded mb-3 bg-" + props.colors.background
+      }
+    >
+      <FormGroup className={"justify-content-around " + props.colors.text} row>
         <FormControlLabel
           control={
             <Switch
               inputProps={{ "aria-label": "hasGrid" }}
-              color={props.isEyepieceMode ? "info" : "success"}
+              color={
+                props.isEyepieceMode
+                  ? props.colors.eyepieceMode
+                  : props.colors.cameraMode
+              }
               checked={props.hasGrid}
               onChange={(event) => {
                 props.onGridChange(event.target.checked);
@@ -26,7 +34,11 @@ const CanvasOptions = (props) => {
           control={
             <Switch
               inputProps={{ "aria-label": "Reduce Gridlines" }}
-              color={props.isEyepieceMode ? "info" : "success"}
+              color={
+                props.isEyepieceMode
+                  ? props.colors.eyepieceMode
+                  : props.colors.cameraMode
+              }
               checked={props.hasRedGrid}
               onChange={(event) => {
                 props.onRedGridChange(event.target.checked);
@@ -40,7 +52,11 @@ const CanvasOptions = (props) => {
           control={
             <Switch
               inputProps={{ "aria-label": "Labels" }}
-              color={props.isEyepieceMode ? "info" : "success"}
+              color={
+                props.isEyepieceMode
+                  ? props.colors.eyepieceMode
+                  : props.colors.cameraMode
+              }
               checked={props.hasLabels}
               onChange={(event) => {
                 props.onLabelChange(event.target.checked);
@@ -54,6 +70,7 @@ const CanvasOptions = (props) => {
           isEyepieceMode={props.isEyepieceMode}
           onZoomChange={props.onZoomChange}
           zoomValue={props.zoomValue}
+          colors={props.colors}
         />
       </FormGroup>
     </div>

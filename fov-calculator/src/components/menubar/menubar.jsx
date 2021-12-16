@@ -9,14 +9,15 @@ const Menubar = (props) => (
     <BootstrapSwitchButton
       checked={props.canvasData.isEyepieceMode}
       onlabel="Camera"
-      onstyle="info"
+      onstyle={props.colors.eyepieceMode}
       offlabel="Eyepiece"
-      offstyle="success"
+      offstyle={props.colors.cameraMode}
       onChange={props.onModeChange}
       style="w-100 mb-1 mt-2"
     />
     <Form
       isEyepieceMode={props.canvasData.isEyepieceMode}
+      colors={props.colors}
       formData={props.formData}
       onFormChange={props.onFormChange}
       onFormSubmit={props.onFormSubmit}
@@ -35,8 +36,10 @@ const Menubar = (props) => (
       eyepiecefocallength={props.formData.eyepiecefocallength}
       plotsizex={props.canvasData.plotSizeX}
       plotsizey={props.canvasData.plotSizeY}
+      colors={props.colors}
     />
     <CanvasOptions
+      colors={props.colors}
       zoomValue={props.canvasData.zoomValue}
       hasLabels={props.canvasData.hasLabels}
       isEyepieceMode={props.canvasData.isEyepieceMode}

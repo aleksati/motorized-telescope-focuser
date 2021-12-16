@@ -12,7 +12,11 @@ const CanvasZoom = (props) => {
       <ButtonGroup
         variant="contained"
         size="small"
-        color={props.isEyepieceMode ? "info" : "success"}
+        color={
+          props.isEyepieceMode
+            ? props.colors.eyepieceMode
+            : props.colors.cameraMode
+        }
         className="mb-2 mt-1"
       >
         <Button

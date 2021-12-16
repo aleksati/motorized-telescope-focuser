@@ -7,10 +7,6 @@ const LABELFONT = "30px Arial";
 const NUMBERFONT = "15px Arial";
 const COZYOFFSET = 3;
 
-const textColor = "#9C9C9C";
-const borderColor = "#9C9C9C";
-const gridColor = "#4c4c4c";
-
 function nearestHalf(orgX, orgY) {
   // round to nearest 0.5
   // to light of single pixels instead of 2.
@@ -108,7 +104,8 @@ export function paintOnSquare(
   hasLabel,
   hasGrid,
   hasRedGrid,
-  redGridFactor
+  redGridFactor,
+  colors
 ) {
   let offsetHeight = (currentHeight / 100) * LABELOFFSET;
   let offsetWidth = (currentWidth / 100) * LABELOFFSET;
@@ -117,7 +114,7 @@ export function paintOnSquare(
   let pxPerUnitY = (currentHeight - offsetHeight) / plotsizey;
 
   ctx.textAlign = "center";
-  ctx.fillStyle = textColor; // text and numbers
+  ctx.fillStyle = colors.canvasText; // text and numbers
   ctx.lineWidth = 1;
 
   // paint X axis grid and numbers
@@ -131,11 +128,11 @@ export function paintOnSquare(
     ctx.beginPath();
     if (i === 0 || i === plotsizex) {
       // the border
-      ctx.strokeStyle = borderColor;
+      ctx.strokeStyle = colors.canvasBorder;
       ctx.moveTo(x, y);
       ctx.lineTo(x, 0.5);
     } else if (hasGrid) {
-      ctx.strokeStyle = gridColor;
+      ctx.strokeStyle = colors.canvasGrid;
       if (hasRedGrid) {
         if (i % redGridFactor === 0) {
           ctx.moveTo(x, y);
@@ -199,11 +196,11 @@ export function paintOnSquare(
     ctx.beginPath();
     if (i === 0 || i === plotsizey) {
       // border
-      ctx.strokeStyle = borderColor;
+      ctx.strokeStyle = colors.canvasBorder;
       ctx.moveTo(0 + offsetWidth, y);
       ctx.lineTo(x, y);
     } else if (hasGrid) {
-      ctx.strokeStyle = gridColor;
+      ctx.strokeStyle = colors.canvasGrid;
       if (hasRedGrid) {
         if ((plotsizey - i) % redGridFactor === 0) {
           ctx.moveTo(0 + offsetWidth, y);
@@ -244,14 +241,15 @@ export function paintOnCircle(
   hasLabel,
   hasGrid,
   hasRedGrid,
-  redGridFactor
+  redGridFactor,
+  colors
 ) {
   let pxPerUnitX = currentWidth / plotsizex;
   let pxPerUnitY = currentHeight / plotsizey;
 
   ctx.textAlign = "center";
-  ctx.fillStyle = textColor; // text and numbers
-  ctx.strokeStyle = gridColor;
+  ctx.fillStyle = colors.canvasText; // text and numbers
+  ctx.strokeStyle = colors.canvasGrid;
   ctx.lineWidth = 1;
 
   // paint X axis grid and numbers

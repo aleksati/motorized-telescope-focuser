@@ -111,7 +111,7 @@ const Forecast = (props) => {
 
   return (
     <div className="form-label-group mb-0 mt-2" key="forecast">
-      <p className="text-light mr-1">
+      <p className={"mr-1 " + props.colors.text}>
         <small>Forecast</small>
       </p>
       {isError ? (

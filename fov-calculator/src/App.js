@@ -7,6 +7,16 @@ import {
 } from "./components/menubar/utils-menubar.js";
 
 const App = () => {
+  // Bootstrap colors
+  const [colors, setColors] = useState({
+    eyepieceMode: "info",
+    cameraMode: "success",
+    background: "gradient-dark",
+    text: "text-white",
+    canvasBorder: "#9C9C9C",
+    canvasText: "#9C9C9C",
+    canvasGrid: "#4c4c4c",
+  });
   const [formData, addFormData] = useState({
     aperture: {
       ref: "aperture",
@@ -85,10 +95,6 @@ const App = () => {
     plotSizeY: 20,
     plotDivisor: 6,
     axisLabel: "Minutes of Arc",
-  });
-  const [color, setColor] = useState({
-    eyepieceMode: "info",
-    cameraMode: "success",
   });
 
   const handleModeChange = (bool) => {
@@ -179,8 +185,9 @@ const App = () => {
         formData={formData}
         canvasData={canvasData}
         submitFlag={submitFlag}
+        colors={colors}
       />
-      <Canvas canvasData={canvasData} />
+      <Canvas canvasData={canvasData} colors={colors} />
     </div>
   );
 };

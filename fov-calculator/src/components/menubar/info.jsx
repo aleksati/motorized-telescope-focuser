@@ -80,7 +80,10 @@ const Info = (props) => {
     // eyepiece
     let eyeflength = Number(props.eyepiecefocallength.value);
 
-    mag = eyeflength !== 0 && flength !== 0 ? flength / eyeflength : "";
+    mag =
+      eyeflength !== 0 && flength !== 0
+        ? Math.round((flength / eyeflength) * 10) / 10
+        : "";
 
     setState((prevState) => ({
       ...prevState,
@@ -97,11 +100,13 @@ const Info = (props) => {
     let aperture = Number(props.aperture.value);
     if (flength <= 0 || aperture <= 0) return;
 
+    let maxMag = Math.round(aperture * 2 * 10) / 10;
+
     setState((prevState) => ({
       ...prevState,
       maxMagnification: {
         ...prevState.maxMagnification,
-        value: aperture * 2,
+        value: maxMag,
       },
     }));
   }, [props.focallength, props.aperture]);
@@ -168,19 +173,29 @@ const Info = (props) => {
 
   // style of the borders around the text
   const borderStyle = () => {
-    let css = "info-items text-light text-center col-auto border rounded ";
-    let bg = props.isEyepieceMode ? "border-info" : "border-success";
+    let css =
+      "info-items text-center " +
+      props.colors.text +
+      " col-auto border rounded border-";
+    let bg = props.isEyepieceMode
+      ? props.colors.eyepieceMode
+      : props.colors.cameraMode;
     return css + bg;
   };
 
   return (
-    <div className="border border-white rounded mb-1 bg-gradient-dark">
+    <div
+      className={
+        "border border-white rounded mb-1 bg-" + props.colors.background
+      }
+    >
       <div className="d-flex justify-content-around">
         {Object.values(state).map((item) => {
           if (props.isEyepieceMode && item.isEyepieceInfo) {
             return (
               <InfoInput
                 borderStyle={borderStyle()}
+                colors={props.colors}
                 key={item.name}
                 name={item.name}
                 value={item.value}
@@ -194,6 +209,7 @@ const Info = (props) => {
             return (
               <InfoInput
                 borderStyle={borderStyle()}
+                colors={props.colors}
                 key={item.name}
                 name={item.name}
                 value={item.value}
@@ -204,6 +220,7 @@ const Info = (props) => {
         <Forecast
           isEyepieceMode={props.isEyepieceMode}
           borderStyle={borderStyle()}
+          colors={props.colors}
         />
       </div>
     </div>

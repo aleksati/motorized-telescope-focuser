@@ -3,20 +3,29 @@ import FormInput from "./forminput";
 
 const Form = (props) => {
   const SubmitBtnColor = () => {
-    let className = "btn text-light ml-1 mb-1 bg-";
-    className += props.isEyepieceMode ? "gradient-info" : "gradient-success";
+    let className = "btn ml-1 mb-1 " + props.colors.text + " bg-";
+    className += props.isEyepieceMode
+      ? props.colors.eyepieceMode
+      : props.colors.cameraMode;
     return className;
   };
 
   const inputAddonColor = () => {
-    let className = "input-group-text text-light bg-";
-    className += props.isEyepieceMode ? "gradient-info" : "gradient-success";
+    let className = "input-group-text " + props.colors.text + " bg-";
+    className += props.isEyepieceMode
+      ? props.colors.eyepieceMode
+      : props.colors.cameraMode;
     return className;
   };
 
   const getCamSection = () => (
-    <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
-      <h2 className="ml-2 mt-1 text-light">Camera</h2>
+    <div
+      className={
+        "form-group border border-white rounded ml-1 mb-1 col bg-" +
+        props.colors.background
+      }
+    >
+      <h2 className={"ml-2 mt-1 " + props.colors.text}>Camera</h2>
       <FormInput
         title="Camera"
         items={[
@@ -31,8 +40,13 @@ const Form = (props) => {
   );
 
   const getEyeSection = () => (
-    <div className="form-group border border-white rounded ml-1 mb-1 bg-gradient-dark col">
-      <h2 className="ml-2 mt-1 text-light">Eyepiece</h2>
+    <div
+      className={
+        "form-group border border-white rounded ml-1 mb-1 col bg-" +
+        props.colors.background
+      }
+    >
+      <h2 className={"ml-2 mt-1 " + props.colors.text}>Eyepiece</h2>
       <FormInput
         title="Eyepiece"
         items={[
@@ -47,8 +61,13 @@ const Form = (props) => {
 
   return (
     <form className="d-flex" onSubmit={props.onFormSubmit}>
-      <div className="form-group border border-white rounded mb-1 bg-gradient-dark col">
-        <h2 className="ml-2 mt-1 text-light">Telescope</h2>
+      <div
+        className={
+          "form-group border border-white rounded mb-1 col bg-" +
+          props.colors.background
+        }
+      >
+        <h2 className={"ml-2 mt-1 " + props.colors.text}>Telescope</h2>
         <FormInput
           title="Telescope"
           items={[

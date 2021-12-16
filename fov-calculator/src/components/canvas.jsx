@@ -68,7 +68,8 @@ const Canvas = (props) => {
           props.canvasData.hasLabels,
           props.canvasData.hasGrid,
           props.canvasData.hasRedGrid,
-          props.canvasData.redGridFactor
+          props.canvasData.redGridFactor,
+          props.colors
         );
       } else {
         paintOnCircle(
@@ -80,11 +81,12 @@ const Canvas = (props) => {
           props.canvasData.hasLabels,
           props.canvasData.hasGrid,
           props.canvasData.hasRedGrid,
-          props.canvasData.redGridFactor
+          props.canvasData.redGridFactor,
+          props.colors
         );
       }
     }
-  }, [canvasRef, props.canvasData, canvasWidth]);
+  }, [canvasRef, props.canvasData, props.colors, canvasWidth]);
 
   return (
     <div className="container d-flex justify-content-center p-0">
