@@ -4,105 +4,26 @@ import Canvas from "./components/canvas";
 import {
   camCanvasSize,
   eyepieceCanvasSize,
+  initFormData,
+  initCanvasData,
+  initColorData,
 } from "./components/menubar/utils-menubar.js";
 
 const App = () => {
-  // Bootstrap colors
-  const [colors, setColors] = useState({
-    eyepieceMode: "info",
-    cameraMode: "success",
-    background: "gradient-dark",
-    text: "text-white",
-    canvasBorder: "#9C9C9C",
-    canvasText: "#9C9C9C",
-    canvasGrid: "#4c4c4c",
-  });
-  const [formData, addFormData] = useState({
-    aperture: {
-      ref: "aperture",
-      value: "",
-      required: true,
-      type: "number",
-      name: "Aperture",
-      unit: "mm",
-    },
-    focallength: {
-      ref: "focallength",
-      value: "",
-      required: true,
-      type: "number",
-      name: "Flength",
-      unit: "mm",
-    },
-    barlow: {
-      ref: "barlow",
-      value: "",
-      required: false,
-      type: "number",
-      name: "Barlow",
-      unit: "x",
-    },
-    pixelsize: {
-      ref: "pixelsize",
-      value: "",
-      required: true,
-      type: "number",
-      name: "Pixel Size",
-      unit: "μm²",
-    },
-    resolutionx: {
-      ref: "resolutionx",
-      value: "",
-      required: true,
-      type: "number",
-      name: "Res (X)",
-      unit: "px",
-    },
-    resolutiony: {
-      ref: "resolutiony",
-      value: "",
-      required: true,
-      type: "number",
-      name: "Res (Y)",
-      unit: "px",
-    },
-    eyepiecefocallength: {
-      ref: "eyepiecefocallength",
-      value: "",
-      required: true,
-      type: "number",
-      name: "Flength",
-      unit: "mm",
-    },
-    eyepieceafov: {
-      ref: "eyepieceafov",
-      value: "",
-      required: true,
-      type: "number",
-      name: "AFOV",
-      unit: "°",
-    },
-  });
-  const [submitFlag, regSubmitFlag] = useState(false);
-  const [canvasData, setCanvasData] = useState({
-    isEyepieceMode: true,
-    hasGrid: true,
-    hasLabels: true,
-    hasRedGrid: false,
-    redGridFactor: 6,
-    zoomValue: 100,
-    plotSizeX: 20,
-    plotSizeY: 20,
-    plotDivisor: 6,
-    axisLabel: "Minutes of Arc",
-  });
+  const colors = initColorData;
+  const [formData, setFormData] = useState(initFormData);
+  // When changing the mode and adding any new form info,
+  // the subitflag goes to false.
+  const [isSubmit, setSubmit] = useState(false);
+  const [canvasData, setCanvasData] = useState(initCanvasData);
 
   const handleModeChange = (bool) => {
-    setCanvasData((prevCanvas) => ({
-      ...prevCanvas,
+    setFormData(initFormData);
+    setCanvasData({
+      ...initCanvasData,
       isEyepieceMode: bool,
-    }));
-    regSubmitFlag(false);
+    });
+    if (isSubmit) setSubmit(false);
   };
 
   const handleGridChange = (bool) => {
@@ -139,10 +60,11 @@ const App = () => {
     let formDataCopy = { ...formData };
     let keyCopy = { ...formDataCopy[keyRef] };
     keyCopy.value = newValue;
+
     formDataCopy[keyRef] = keyCopy;
 
-    addFormData(formDataCopy);
-    regSubmitFlag(false);
+    setFormData(formDataCopy);
+    if (isSubmit) setSubmit(false);
   };
 
   const handleFormSubmit = (e) => {
@@ -164,12 +86,12 @@ const App = () => {
           formData.barlow.value
         );
 
-    // hope this works :/
     setCanvasData((prevCanvas) => ({
       ...prevCanvas,
       ...newchartinfo,
     }));
-    regSubmitFlag(true);
+
+    if (!isSubmit) setSubmit(true);
   };
 
   return (
@@ -184,8 +106,8 @@ const App = () => {
         onZoomChange={handleZoomChange}
         formData={formData}
         canvasData={canvasData}
-        submitFlag={submitFlag}
         colors={colors}
+        isSubmit={isSubmit}
       />
       <Canvas canvasData={canvasData} colors={colors} />
     </div>

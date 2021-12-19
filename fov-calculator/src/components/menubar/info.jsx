@@ -5,13 +5,52 @@ import { microns2milimeter } from "./utils-menubar.js";
 
 const Info = (props) => {
   const [state, setState] = useState({
-    focalRatio: { name: "FR", value: "", isEyepieceInfo: true },
-    aspectRatio: { name: "AR", value: "", isEyepieceInfo: false },
-    magnification: { name: "CurrMag", value: "", isEyepieceInfo: true },
-    maxMagnification: { name: "MaxMag", value: "", isEyepieceInfo: true },
-    pxPerSquare: { name: "Grid □", value: "", isEyepieceInfo: false },
-    chipSize: { name: "Chip", value: "", isEyepieceInfo: false },
+    focalRatio: {
+      name: "FR",
+      value: "",
+      isEyepieceInfo: true,
+      isChanged: true,
+    },
+    aspectRatio: {
+      name: "AR",
+      value: "",
+      isEyepieceInfo: false,
+      isChanged: true,
+    },
+    magnification: {
+      name: "CurrMag",
+      value: "",
+      isEyepieceInfo: true,
+      isChanged: false,
+    },
+    maxMagnification: {
+      name: "MaxMag",
+      value: "",
+      isEyepieceInfo: true,
+      isChanged: false,
+    },
+    pxPerSquare: {
+      name: "Grid □",
+      value: "",
+      isEyepieceInfo: false,
+      isChanged: false,
+    },
+    chipSize: {
+      name: "Chip",
+      value: "",
+      isEyepieceInfo: false,
+      isChanged: false,
+    },
   });
+
+  // When I submit, I reset the isChanged flag
+  useEffect(() => {
+    let stateCopy = JSON.parse(JSON.stringify(state));
+    Object.keys(stateCopy).forEach((key) => {
+      stateCopy[key].isChanged = false;
+    });
+    setState(stateCopy);
+  }, [props.isSubmit]);
 
   // get Focal Ratio (F number)
   useEffect(() => {
@@ -29,6 +68,7 @@ const Info = (props) => {
       focalRatio: {
         ...prevState.focalRatio,
         value: focalRatio,
+        isChanged: true,
       },
     }));
   }, [props.barlow, props.focallength, props.aperture]);
@@ -64,6 +104,7 @@ const Info = (props) => {
       aspectRatio: {
         ...prevState.aspectRatio,
         value: aspectRatio,
+        isChanged: true,
       },
     }));
   }, [props.resolutionx, props.resolutiony]);
@@ -90,6 +131,7 @@ const Info = (props) => {
       magnification: {
         ...prevState.magnification,
         value: mag,
+        isChanged: true,
       },
     }));
   }, [props.barlow, props.focallength, props.eyepiecefocallength]);
@@ -107,18 +149,20 @@ const Info = (props) => {
       maxMagnification: {
         ...prevState.maxMagnification,
         value: maxMag,
+        isChanged: true,
       },
     }));
   }, [props.focallength, props.aperture]);
 
   // get pxPerSquare (Grid)
   useEffect(() => {
-    if (!props.submitFlag) return;
-
     let resX = Number(props.resolutionx.value);
     let resY = Number(props.resolutiony.value);
     let plotX = Number(props.plotsizex);
     let plotY = Number(props.plotsizey);
+
+    // if any of these numbers are 0, we return
+    if ([resX, resY, plotX, plotY].indexOf(0) > -1) return;
 
     let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
     let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
@@ -135,10 +179,10 @@ const Info = (props) => {
       pxPerSquare: {
         ...prevState.pxPerSquare,
         value: result + "px²",
+        isChanged: true,
       },
     }));
   }, [
-    props.submitFlag,
     props.resolutionx,
     props.resolutiony,
     props.plotsizex,
@@ -167,21 +211,10 @@ const Info = (props) => {
       chipSize: {
         ...prevState.chipSize,
         value: result,
+        isChanged: true,
       },
     }));
   }, [props.resolutionx, props.resolutiony, props.pixelsize]);
-
-  // style of the borders around the text
-  const borderStyle = () => {
-    let css =
-      "info-items text-center " +
-      props.colors.text +
-      " col-auto border rounded border-";
-    let bg = props.isEyepieceMode
-      ? props.colors.eyepieceMode
-      : props.colors.cameraMode;
-    return css + bg;
-  };
 
   return (
     <div
@@ -194,11 +227,16 @@ const Info = (props) => {
           if (props.isEyepieceMode && item.isEyepieceInfo) {
             return (
               <InfoInput
-                borderStyle={borderStyle()}
                 colors={props.colors}
+                borderColor={
+                  props.isEyepieceMode
+                    ? props.colors.eyepieceMode
+                    : props.colors.cameraMode
+                }
                 key={item.name}
                 name={item.name}
                 value={item.value}
+                isChanged={item.isChanged}
               />
             );
           }
@@ -208,20 +246,21 @@ const Info = (props) => {
           ) {
             return (
               <InfoInput
-                borderStyle={borderStyle()}
                 colors={props.colors}
+                borderColor={
+                  props.isEyepieceMode
+                    ? props.colors.eyepieceMode
+                    : props.colors.cameraMode
+                }
                 key={item.name}
                 name={item.name}
                 value={item.value}
+                isChanged={item.isChanged}
               />
             );
           }
         })}
-        <Forecast
-          isEyepieceMode={props.isEyepieceMode}
-          borderStyle={borderStyle()}
-          colors={props.colors}
-        />
+        <Forecast isEyepieceMode={props.isEyepieceMode} colors={props.colors} />
       </div>
     </div>
   );

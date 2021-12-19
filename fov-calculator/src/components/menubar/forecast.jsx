@@ -109,21 +109,32 @@ const Forecast = (props) => {
     }
   }, [YRdata.timeseries]);
 
+  const borderStyle = () => {
+    let css =
+      "info-items text-center " +
+      props.colors.text +
+      " col-auto border rounded border-";
+    let bg = props.isEyepieceMode
+      ? props.colors.eyepieceMode
+      : props.colors.cameraMode;
+    return css + bg;
+  };
+
   return (
     <div className="form-label-group mb-0 mt-2" key="forecast">
       <p className={"mr-1 " + props.colors.text}>
         <small>Forecast</small>
       </p>
       {isError ? (
-        <p className={props.borderStyle}>
+        <p className={borderStyle()}>
           <img src={error} alt="ERROR..." width="25px" height="25px" />
         </p>
       ) : isLoading ? (
-        <p className={props.borderStyle}>
+        <p className={borderStyle()}>
           <img src={loading} alt="loading..." width="25px" height="25px" />
         </p>
       ) : (
-        <p className={props.borderStyle}>
+        <p className={borderStyle()}>
           <img
             src={YRdata.next6h_img}
             alt="Specification Drawing"
