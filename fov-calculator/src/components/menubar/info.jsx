@@ -43,7 +43,8 @@ const Info = (props) => {
     },
   });
 
-  // When I submit, I reset the isChanged flag
+  // When I submit, I set the isChanged fla to false
+  // Whenever the info boxes is changed after submit, the text color changes.
   useEffect(() => {
     let stateCopy = JSON.parse(JSON.stringify(state));
     Object.keys(stateCopy).forEach((key) => {
