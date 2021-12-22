@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Forecast from "./forecast";
 import InfoInput from "./infoinput";
 import { microns2milimeter } from "./utils-menubar.js";
@@ -177,6 +177,8 @@ const Info = (props) => {
   }, [props.focallength, props.aperture]);
 
   // get pxPerSquare (Grid)
+  const prevRedGridState = useRef(props.hasRedGrid);
+  const prevGridState = useRef(props.hasGrid);
   useEffect(() => {
     let resX =
       Number(props.resolutionx.value) <= 0
@@ -209,11 +211,15 @@ const Info = (props) => {
         ...prevState.pxPerSquare,
         value: result,
         isChanged:
-          result === prevState.pxPerSquare.value
+          props.hasRedGrid !== prevRedGridState.current ||
+          props.hasGrid !== prevGridState.current
             ? prevState.pxPerSquare.isChanged
             : true,
       },
     }));
+
+    prevRedGridState.current = props.hasRedGrid;
+    prevGridState.current = props.hasGrid;
   }, [
     props.resolutionx,
     props.resolutiony,
@@ -224,29 +230,28 @@ const Info = (props) => {
     props.redGridFactor,
   ]);
 
-  // hasredgrid should not change the isChanged at all.
-  // its only a problem when the isChanged value is false.
-
-  // sooo. if the isChanged is false, and the props.hasRedGrid is true... we should ignore it.
-
-  // change the values based on the canvasOption seletion
-  // Keep the color of "grid" when changing the canvasOption labels
-  // if the isChanged parameter is false, keep it false, if its true
-
   // get Chip Size (Chip)
   useEffect(() => {
-    let resX = Number(props.resolutionx.value);
-    let resY = Number(props.resolutiony.value);
-    let pixelSize = Number(props.pixelsize.value);
-
-    if (resX === 0 || resY === 0 || pixelSize === 0) return;
-
-    let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(
-      props.resolutionx.value,
-      props.resolutiony.value,
-      props.pixelsize.value
-    );
-    let result = Math.round(sensorXsizeMM * sensorYsizeMM * 10) / 10 + "mm²";
+    let resX =
+      Number(props.resolutionx.value) <= 0
+        ? 0
+        : Number(props.resolutionx.value);
+    let resY =
+      Number(props.resolutiony.value) <= 0
+        ? 0
+        : Number(props.resolutiony.value);
+    let pixelSize =
+      Number(props.pixelsize.value) <= 0 ? 0 : Number(props.pixelsize.value);
+    let result = "";
+    // any none of the the var above are 0.
+    if ([resX, resY, pixelSize].indexOf(0) === -1) {
+      let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(
+        resX,
+        resY,
+        pixelSize
+      );
+      result = Math.round(sensorXsizeMM * sensorYsizeMM * 10) / 10 + "mm²";
+    }
 
     setState((prevState) => ({
       ...prevState,
