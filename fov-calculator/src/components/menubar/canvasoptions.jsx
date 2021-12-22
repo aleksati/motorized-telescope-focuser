@@ -33,7 +33,11 @@ const CanvasOptions = (props) => {
         <FormControlLabel
           control={
             <Switch
-              inputProps={{ "aria-label": "Reduce Gridlines" }}
+              disabled
+              inputProps={{
+                "aria-label": "Reduce Gridlines",
+                disabled: props.hasGrid ? false : true,
+              }}
               color={
                 props.isEyepieceMode
                   ? props.colors.eyepieceMode
