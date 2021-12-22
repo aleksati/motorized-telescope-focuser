@@ -55,14 +55,19 @@ const Info = (props) => {
 
   // get Focal Ratio (F number)
   useEffect(() => {
-    let barlow = Number(props.barlow.value);
-    let flength = Number(props.focallength.value);
-    let aperture = Number(props.aperture.value);
+    let barlow =
+      Number(props.barlow.value) <= 0 ? 1 : Number(props.barlow.value);
+    let flength =
+      Number(props.focallength.value) <= 0
+        ? 0
+        : Number(props.focallength.value) * barlow;
+    let aperture =
+      Number(props.aperture.value) <= 0 ? 0 : Number(props.aperture.value);
 
-    if (flength <= 0 || aperture <= 0) return;
-    if (barlow !== 0) flength *= barlow;
-    let focalRatio = Math.floor((flength / aperture) * 10) / 10;
-    if (focalRatio <= 0) return;
+    let focalRatio =
+      aperture !== 0 && flength !== 0
+        ? Math.floor((flength / aperture) * 10) / 10
+        : "";
 
     setState((prevState) => ({
       ...prevState,
@@ -76,29 +81,40 @@ const Info = (props) => {
 
   // get Aspect Ratio (Ar)
   useEffect(() => {
+    let aspectRatio = "";
+
+    let resX =
+      Number(props.resolutionx.value) <= 0
+        ? 0
+        : Number(props.resolutionx.value);
+    let resY =
+      Number(props.resolutiony.value) <= 0
+        ? 0
+        : Number(props.resolutiony.value);
+
     let aspectX = 10000;
     let aspectY =
-      (Number(props.resolutiony.value) / Number(props.resolutionx.value)) *
-      10000;
+      resX === 0 || resY === 0
+        ? 0
+        : (Number(props.resolutiony.value) / Number(props.resolutionx.value)) *
+          10000;
 
-    if (Number.isNaN(aspectX) || aspectX <= 0) return;
-    if (Number.isNaN(aspectY) || aspectY <= 0) return;
+    if (aspectY !== 0) {
+      let factorX = [];
+      let factorY = [];
+      for (let i = 1; i <= aspectX; i++) {
+        if (aspectX % i === 0) factorX.push(i);
+        if (aspectY % i === 0) factorY.push(i);
+      }
 
-    let factorX = [];
-    let factorY = [];
-    for (let i = 1; i <= aspectX; i++) {
-      if (aspectX % i === 0) factorX.push(i);
-      if (aspectY % i === 0) factorY.push(i);
+      if (factorY.length && factorX.length) {
+        let commonFactors = factorX.filter((n) => factorY.indexOf(n) !== -1);
+        let greatestCommonFactor = Math.max(...commonFactors);
+        aspectX /= greatestCommonFactor;
+        aspectY /= greatestCommonFactor;
+        aspectRatio = aspectX + ":" + aspectY;
+      }
     }
-
-    if (!factorY.length || !factorX.length) return;
-
-    let commonFactors = factorX.filter((n) => factorY.indexOf(n) !== -1);
-    let greatestCommonFactor = Math.max(...commonFactors);
-    aspectX /= greatestCommonFactor;
-    aspectY /= greatestCommonFactor;
-
-    let aspectRatio = aspectX + ":" + aspectY;
 
     setState((prevState) => ({
       ...prevState,
@@ -112,17 +128,18 @@ const Info = (props) => {
 
   // get Magnification (Mag)
   useEffect(() => {
-    let mag = 0;
-    let flength = Number(props.focallength.value);
+    let barlow =
+      Number(props.barlow.value) <= 0 ? 1 : Number(props.barlow.value);
+    let flength =
+      Number(props.focallength.value) <= 0
+        ? 0
+        : Number(props.focallength.value) * barlow;
+    let eyeflength =
+      Number(props.eyepiecefocallength.value) <= 0
+        ? 0
+        : Number(props.eyepiecefocallength.value);
 
-    // if barlow
-    let barlow = Number(props.barlow.value);
-    if (barlow !== 0) flength *= barlow;
-
-    // eyepiece
-    let eyeflength = Number(props.eyepiecefocallength.value);
-
-    mag =
+    let mag =
       eyeflength !== 0 && flength !== 0
         ? Math.round((flength / eyeflength) * 10) / 10
         : "";
@@ -139,11 +156,15 @@ const Info = (props) => {
 
   // get Max Magnification (Max Mag)
   useEffect(() => {
-    let flength = Number(props.focallength.value);
-    let aperture = Number(props.aperture.value);
-    if (flength <= 0 || aperture <= 0) return;
+    let flength =
+      Number(props.focallength.value) <= 0
+        ? 0
+        : Number(props.focallength.value);
+    let aperture =
+      Number(props.aperture.value) <= 0 ? 0 : Number(props.aperture.value);
 
-    let maxMag = Math.round(aperture * 2 * 10) / 10;
+    let maxMag =
+      flength !== 0 && aperture !== 0 ? Math.round(aperture * 2 * 10) / 10 : "";
 
     setState((prevState) => ({
       ...prevState,
@@ -157,30 +178,40 @@ const Info = (props) => {
 
   // get pxPerSquare (Grid)
   useEffect(() => {
-    let resX = Number(props.resolutionx.value);
-    let resY = Number(props.resolutiony.value);
-    let plotX = Number(props.plotsizex);
-    let plotY = Number(props.plotsizey);
+    let resX =
+      Number(props.resolutionx.value) <= 0
+        ? 0
+        : Number(props.resolutionx.value);
+    let resY =
+      Number(props.resolutiony.value) <= 0
+        ? 0
+        : Number(props.resolutiony.value);
+    let plotX = Number(props.plotsizex) <= 0 ? 1 : Number(props.plotsizex);
+    let plotY = Number(props.plotsizey) <= 0 ? 1 : Number(props.plotsizey);
+    let result = "";
 
-    // if any of these numbers are 0, we return
-    if ([resX, resY, plotX, plotY].indexOf(0) > -1) return;
+    // if the grid switch is ON and none of the numbers above are 0, we calcuate the grid pixel size.
+    if (props.hasGrid && [resX, resY, plotX, plotY].indexOf(0) === -1) {
+      let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
+      let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
 
-    let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
-    let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
+      result = Math.round(pixelsPerUnitX * pixelsPerUnitY * 10) / 10;
 
-    let result = Math.round(pixelsPerUnitX * pixelsPerUnitY * 10) / 10;
-
-    // if hasRedGrid, then the px² should be the: result * redGridFactor²?
-    result = props.hasRedGrid
-      ? result * (props.redGridFactor * props.redGridFactor)
-      : result;
+      // if hasRedGrid, then the px² should be the: result * redGridFactor²?
+      result = props.hasRedGrid
+        ? result * (props.redGridFactor * props.redGridFactor) + "px²"
+        : result + "px²";
+    }
 
     setState((prevState) => ({
       ...prevState,
       pxPerSquare: {
         ...prevState.pxPerSquare,
-        value: result + "px²",
-        isChanged: true,
+        value: result,
+        isChanged:
+          result === prevState.pxPerSquare.value
+            ? prevState.pxPerSquare.isChanged
+            : true,
       },
     }));
   }, [
@@ -188,9 +219,19 @@ const Info = (props) => {
     props.resolutiony,
     props.plotsizex,
     props.plotsizey,
+    props.hasGrid,
     props.hasRedGrid,
     props.redGridFactor,
   ]);
+
+  // hasredgrid should not change the isChanged at all.
+  // its only a problem when the isChanged value is false.
+
+  // sooo. if the isChanged is false, and the props.hasRedGrid is true... we should ignore it.
+
+  // change the values based on the canvasOption seletion
+  // Keep the color of "grid" when changing the canvasOption labels
+  // if the isChanged parameter is false, keep it false, if its true
 
   // get Chip Size (Chip)
   useEffect(() => {
