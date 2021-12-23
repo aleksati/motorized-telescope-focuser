@@ -19,6 +19,10 @@ function nearestHalf(orgX, orgY) {
   let y = Math.round(orgY - 0.5) + 0.5;
   y = y > currentHeight ? currentHeight - 0.5 : y;
   return { x, y };
+
+  // let x = orgX;
+  // let y = orgY;
+  // return { x, y };
 }
 
 function paintCircularText(label, ctx, angle) {
@@ -191,6 +195,7 @@ export function paintOnSquare(
   for (let i = 0; i <= plotsizey; i++) {
     // include 0 and 20 to make the border
     let { x, y } = nearestHalf(currentWidth + offsetWidth, pxPerUnitY * i);
+    console.log(x, y);
 
     // paint Y grid
     ctx.beginPath();

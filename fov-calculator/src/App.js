@@ -13,7 +13,10 @@ const App = () => {
   const colors = initColorData;
   const [formData, setFormData] = useState(initFormData);
   const [formDataInfo, setFormDataInfo] = useState(initCanvasData);
-  const [canvasData, setCanvasData] = useState(initCanvasData);
+  const [canvasData, setCanvasData] = useState(initCanvasData); // this is the same as formDataInfo, only updated less frequent
+
+  const [planetData, setPlanetData] = useState();
+
   // When changing the mode and adding any new form info,
   // the subitflag goes to false.
   const [isSubmit, setSubmit] = useState(false);
@@ -159,7 +162,20 @@ const App = () => {
         colors={colors}
         isSubmit={isSubmit}
       />
-      <Canvas canvasData={canvasData} colors={colors} />
+      <Canvas
+        canvasData={canvasData}
+        plotSizeX={canvasData.plotSizeX}
+        plotSizeY={canvasData.plotSizeY}
+        plotDivisor={canvasData.plotDivisor}
+        axisLabel={canvasData.axisLabel}
+        hasLabels={canvasData.hasLabels}
+        hasGrid={canvasData.hasGrid}
+        hasRedGrid={canvasData.hasRedGrid}
+        redGridFactor={canvasData.redGridFactor}
+        zoomValue={canvasData.zoomValue}
+        isEyepieceMode={canvasData.isEyepieceMode}
+        colors={colors}
+      />
     </div>
   );
 };
