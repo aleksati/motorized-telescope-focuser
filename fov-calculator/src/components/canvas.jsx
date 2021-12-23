@@ -36,7 +36,8 @@ const Canvas = (props) => {
   // we update the canvasWidth.
   useEffect(() => {
     if (containerWidth) {
-      setCanvasWidth((containerWidth / 100) * props.zoomValue);
+      let cw = (containerWidth / 100) * props.zoomValue;
+      setCanvasWidth(cw);
     }
   }, [containerWidth, props.zoomValue]);
 
@@ -45,8 +46,16 @@ const Canvas = (props) => {
     if (canvasRef.current && canvasWidth) {
       let canvas = canvasRef.current;
       let context = canvas.getContext("2d");
-      const dpr = window.devicePixelRatio || 1;
+
+      // change the dpr based on manual zoom?
+      let dpr = window.devicePixelRatio || 1;
+      let zoomValueFlipped = 100 - props.zoomValue;
+      let valueToAdd = (dpr / 100) * zoomValueFlipped;
+      dpr += valueToAdd;
+
       let scaledCanvasWidth = canvasWidth * dpr;
+
+      context.scale(dpr, dpr);
 
       updateCanvasSize(
         canvas,

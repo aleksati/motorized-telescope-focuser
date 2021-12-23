@@ -3,9 +3,9 @@ let LABELOFFSET = 0; // We only use 5% of the canvas size to make room for label
 let currentWidth = 0;
 let currentHeight = 0;
 
-const LABELFONT = "30px Arial";
-const NUMBERFONT = "15px Arial";
-const COZYOFFSET = 3;
+const LABELFONT = "45px Arial";
+const NUMBERFONT = "25px Arial";
+const COZYOFFSET = 5;
 
 function nearestHalf(orgX, orgY) {
   // round to nearest 0.5
@@ -15,9 +15,25 @@ function nearestHalf(orgX, orgY) {
   // http://diveintohtml5.info/canvas.html
 
   let x = Math.round(orgX - 0.5) + 0.5;
-  x = x > currentWidth ? currentWidth - 0.5 : x;
+  x =
+    x < currentWidth
+      ? x
+      : Number.isInteger(currentWidth - 0.5)
+      ? currentWidth - 1
+      : currentWidth - 0.5;
+
   let y = Math.round(orgY - 0.5) + 0.5;
-  y = y > currentHeight ? currentHeight - 0.5 : y;
+  y =
+    y < currentHeight
+      ? y
+      : Number.isInteger(currentHeight - 0.5)
+      ? currentHeight - 1
+      : currentHeight - 0.5;
+
+  console.log("current width and heigh: ", currentWidth, currentHeight);
+  console.log("orginal and scaled x: ", orgX, x);
+  console.log("orginal and scaled y: ", orgY, y);
+
   return { x, y };
 
   // let x = orgX;
@@ -195,7 +211,6 @@ export function paintOnSquare(
   for (let i = 0; i <= plotsizey; i++) {
     // include 0 and 20 to make the border
     let { x, y } = nearestHalf(currentWidth + offsetWidth, pxPerUnitY * i);
-    console.log(x, y);
 
     // paint Y grid
     ctx.beginPath();

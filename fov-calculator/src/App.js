@@ -14,7 +14,6 @@ const App = () => {
   const [formData, setFormData] = useState(initFormData);
   const [formDataInfo, setFormDataInfo] = useState(initCanvasData);
   const [canvasData, setCanvasData] = useState(initCanvasData); // this is the same as formDataInfo, only updated less frequent
-
   const [planetData, setPlanetData] = useState();
 
   // When changing the mode and adding any new form info,
@@ -100,7 +99,7 @@ const App = () => {
   useEffect(() => {
     const numberify = (val) => (Number(val) <= 0 ? 0 : Number(val));
     let newFormDataInfo = [];
-    if (newFormDataInfo.isEyepieceMode) {
+    if (formDataInfo.isEyepieceMode) {
       let epAFOV = numberify(formData.eyepieceafov.value);
       let epFL = numberify(formData.eyepiecefocallength.value);
       let FL = numberify(formData.focallength.value);
@@ -143,7 +142,7 @@ const App = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    setCanvasData(formDataInfo);
+    setCanvasData({ ...formDataInfo });
     if (!isSubmit) setSubmit(true);
   };
 
@@ -163,7 +162,6 @@ const App = () => {
         isSubmit={isSubmit}
       />
       <Canvas
-        canvasData={canvasData}
         plotSizeX={canvasData.plotSizeX}
         plotSizeY={canvasData.plotSizeY}
         plotDivisor={canvasData.plotDivisor}
