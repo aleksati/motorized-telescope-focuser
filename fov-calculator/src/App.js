@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Menubar from "./components/menubar/menubar";
-import Canvas from "./components/canvas";
+import PlanetSelector from "./components/canvas/planetSelector";
+import Canvas from "./components/canvas/canvas";
 import {
   camCanvasSize,
   eyepieceCanvasSize,
   initFormData,
   initCanvasData,
   initColorData,
+  initPlanetData,
 } from "./components/menubar/utils-menubar.js";
 
 const App = () => {
@@ -14,7 +16,7 @@ const App = () => {
   const [formData, setFormData] = useState(initFormData);
   const [formDataInfo, setFormDataInfo] = useState(initCanvasData);
   const [canvasData, setCanvasData] = useState(initCanvasData); // this is the same as formDataInfo, only updated less frequent
-  const [planetData, setPlanetData] = useState();
+  const [planetData, setPlanetData] = useState(initPlanetData);
 
   // When changing the mode and adding any new form info,
   // the subitflag goes to false.
@@ -161,6 +163,7 @@ const App = () => {
         colors={colors}
         isSubmit={isSubmit}
       />
+      <PlanetSelector />
       <Canvas
         plotSizeX={canvasData.plotSizeX}
         plotSizeY={canvasData.plotSizeY}

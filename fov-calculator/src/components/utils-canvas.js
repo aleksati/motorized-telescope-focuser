@@ -3,8 +3,8 @@ let LABELOFFSET = 0; // We only use 5% of the canvas size to make room for label
 let currentWidth = 0;
 let currentHeight = 0;
 
-const LABELFONT = "45px Arial";
-const NUMBERFONT = "25px Arial";
+const LABELFONT = "40px Arial";
+const NUMBERFONT = "20px Arial";
 const COZYOFFSET = 5;
 
 function nearestHalf(orgX, orgY) {
@@ -30,9 +30,9 @@ function nearestHalf(orgX, orgY) {
       ? currentHeight - 1
       : currentHeight - 0.5;
 
-  console.log("current width and heigh: ", currentWidth, currentHeight);
-  console.log("orginal and scaled x: ", orgX, x);
-  console.log("orginal and scaled y: ", orgY, y);
+  // console.log("current width and heigh: ", currentWidth, currentHeight);
+  // console.log("orginal and scaled x: ", orgX, x);
+  // console.log("orginal and scaled y: ", orgY, y);
 
   return { x, y };
 
@@ -70,7 +70,34 @@ function paintCircularText(label, ctx, angle) {
   }
 }
 
-function getLabelOffset(hasLabel) {
+export function setupCanvas(
+  cnv,
+  cnvWidth,
+  zoomValue,
+  plotsizex,
+  plotsizey,
+  hasLabel
+) {
+  // for optimal canvas rendering on the current screen.
+  // change the dpr based on manual zoom
+  let dpr = window.devicePixelRatio || 1;
+  let zoomValueFlipped = 100 - zoomValue;
+  let valueToAdd = (dpr / 100) * zoomValueFlipped;
+  dpr += valueToAdd;
+  currentWidth = cnvWidth * dpr;
+  console.log("scaled canvas width: ", currentWidth);
+
+  // scale height accordingly
+  let unitY = plotsizey;
+  let unitX = plotsizex;
+  let pxPerUnitX = currentWidth / unitX; // pixel to size ratio
+  currentHeight = pxPerUnitX * unitY;
+  console.log("scaled canvas height: ", currentHeight);
+
+  // init canvs with new size
+  cnv.width = currentWidth;
+  cnv.height = currentHeight;
+
   if (hasLabel && currentHeight && currentWidth) {
     // calculate how much we should shrink the canvas in order to fit the LABELFONT and NUMBERFONT nicely on the outside.
     // we base the calculation on whichever axis has the least pixels.
@@ -86,27 +113,11 @@ function getLabelOffset(hasLabel) {
   } else {
     LABELOFFSET = 0;
   }
-}
 
-export function updateCanvasSize(
-  cnv,
-  cnvWidth,
-  plotsizex,
-  plotsizey,
-  hasLabel
-) {
-  // for optimal canvas rendering on the current screen.
-  currentWidth = cnvWidth;
-
-  let unitY = plotsizey;
-  let unitX = plotsizex;
-  let pxPerUnitX = currentWidth / unitX; // pixel to size ratio
-  currentHeight = pxPerUnitX * unitY;
-
-  cnv.width = currentWidth;
-  cnv.height = currentHeight;
-
-  getLabelOffset(hasLabel);
+  // last, return the propper context
+  let ctx = cnv.getContext("2d");
+  //ctx.scale(dpr, dpr);
+  return ctx;
 }
 
 export function paintBg(ctx) {

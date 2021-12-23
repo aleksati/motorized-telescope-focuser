@@ -90,6 +90,13 @@ export const initColorData = {
   canvasGrid: "#4c4c4c",
 };
 
+export const initPlanetData = {
+  jupiter: {
+    ref: "jupiter",
+    isVisible: false,
+  },
+};
+
 export function microns2milimeter(
   resolutionxvalue,
   resolutionyvalue,
