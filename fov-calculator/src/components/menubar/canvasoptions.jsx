@@ -24,6 +24,8 @@ const CanvasOptions = (props) => {
               checked={props.hasGrid}
               onChange={(event) => {
                 props.onGridChange(event.target.checked);
+                if (!event.target.checked)
+                  props.onRedGridChange(event.target.checked);
               }}
             />
           }
@@ -33,10 +35,9 @@ const CanvasOptions = (props) => {
         <FormControlLabel
           control={
             <Switch
-              disabled
+              disabled={!props.hasGrid}
               inputProps={{
                 "aria-label": "Reduce Gridlines",
-                disabled: props.hasGrid ? false : true,
               }}
               color={
                 props.isEyepieceMode
