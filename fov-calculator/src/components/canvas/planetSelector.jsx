@@ -3,16 +3,6 @@ import { PIMAGES } from "../../img/planets/pimages";
 import PlanetSelectorInput from "./planetSelectorInput";
 
 const PlanetSelector = (props) => {
-  //   useEffect(() => {
-  //     Object.keys(props.planetData).forEach((key) => {
-  //       console.log(
-  //         props.planetData[key].string,
-  //         "is visible: ",
-  //         props.planetData[key].isVisible
-  //       );
-  //     });
-  //   }, [props.planetData]);
-
   return (
     <div className="container p-0">
       <div className="mb-4">

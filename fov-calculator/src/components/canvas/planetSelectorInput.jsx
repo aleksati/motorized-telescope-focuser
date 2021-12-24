@@ -7,7 +7,7 @@ const PlanetSelectorInput = (props) => {
         src={props.planetImg}
         alt={props.planetName}
         width={props.planetWidth}
-        title={props.planetName}
+        // title={props.planetName}
         onClick={(e) => {
           props.onPlanetSelect(e.target.alt);
         }}
