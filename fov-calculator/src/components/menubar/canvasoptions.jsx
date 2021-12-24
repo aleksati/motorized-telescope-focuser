@@ -8,7 +8,7 @@ const CanvasOptions = (props) => {
   return (
     <div
       className={
-        "border border-white rounded mb-3 bg-" + props.colors.background
+        "border border-white rounded mb-1 bg-" + props.colors.background
       }
     >
       <FormGroup className={"justify-content-around " + props.colors.text} row>

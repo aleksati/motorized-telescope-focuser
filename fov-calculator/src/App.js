@@ -8,8 +8,8 @@ import {
   initFormData,
   initCanvasData,
   initColorData,
-  initPlanetData,
 } from "./components/menubar/utils-menubar.js";
+import { initPlanetData } from "./components/canvas/utils-planets";
 
 const App = () => {
   const colors = initColorData;
@@ -32,6 +32,7 @@ const App = () => {
       ...initCanvasData,
       isEyepieceMode: bool,
     });
+    setPlanetData({ ...initPlanetData });
     if (isSubmit) setSubmit(false);
   };
 
@@ -148,6 +149,19 @@ const App = () => {
     if (!isSubmit) setSubmit(true);
   };
 
+  const handlePlanetSelect = (planetName) => {
+    setPlanetData((prevState) => {
+      let stateCopy = JSON.parse(JSON.stringify(prevState));
+      Object.keys(stateCopy).forEach((key) => {
+        stateCopy[key].isVisible =
+          String(planetName) === String(key)
+            ? !stateCopy[key].isVisible
+            : false;
+      });
+      return { ...stateCopy };
+    });
+  };
+
   return (
     <div className="App">
       <Menubar
@@ -163,7 +177,10 @@ const App = () => {
         colors={colors}
         isSubmit={isSubmit}
       />
-      <PlanetSelector />
+      <PlanetSelector
+        planetData={planetData}
+        onPlanetSelect={handlePlanetSelect}
+      />
       <Canvas
         plotSizeX={canvasData.plotSizeX}
         plotSizeY={canvasData.plotSizeY}

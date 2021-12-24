@@ -4,7 +4,7 @@ import {
   paintOnCircle,
   paintBg,
   setupCanvas,
-} from "../utils-canvas.js";
+} from "./utils-canvas.js";
 
 // layouteffect runs before the DOM initally renders. A good place to update/get size of DOM elements to avoid flickering.
 const Canvas = (props) => {
@@ -37,7 +37,6 @@ const Canvas = (props) => {
   useEffect(() => {
     if (containerWidth) {
       let cw = (containerWidth / 100) * props.zoomValue;
-      console.log("canvasWidth: ", cw);
       setCanvasWidth(cw);
     }
   }, [containerWidth, props.zoomValue]);
@@ -54,9 +53,6 @@ const Canvas = (props) => {
         props.plotSizeY,
         props.hasLabels
       );
-
-      // canvas.style.width = canvasWidth + "px";
-      // canvas.style.height = canvasWidth + "px";
 
       paintBg(context);
 
@@ -87,6 +83,9 @@ const Canvas = (props) => {
           props.colors
         );
       }
+
+      //   canvas.style.width = canvasWidth + "px";
+      //   canvas.style.height = canvasWidth + "px";
     }
   }, [
     canvasRef,
@@ -98,6 +97,7 @@ const Canvas = (props) => {
     props.hasGrid,
     props.hasRedGrid,
     props.redGridFactor,
+    props.zoomValue,
     props.colors,
     props.isEyepieceMode,
     canvasWidth,

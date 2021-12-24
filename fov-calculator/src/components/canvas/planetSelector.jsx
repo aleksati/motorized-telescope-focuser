@@ -1,12 +1,39 @@
-import React from "react";
-
-// mappe ut bilder av alle planeter
-// basert på planetData.isVisible props.
-// hvis false, så kommer en x.
-// onClick setter isVisible to true og alle andre som er true to false
+import React, { useEffect } from "react";
+import { PIMAGES } from "../../img/planets/pimages";
+import PlanetSelectorInput from "./planetSelectorInput";
 
 const PlanetSelector = (props) => {
-  return <div>Hey</div>;
+  //   useEffect(() => {
+  //     Object.keys(props.planetData).forEach((key) => {
+  //       console.log(
+  //         props.planetData[key].string,
+  //         "is visible: ",
+  //         props.planetData[key].isVisible
+  //       );
+  //     });
+  //   }, [props.planetData]);
+
+  return (
+    <div className="container p-0">
+      <div className="mb-4">
+        <div className="d-flex justify-content-around">
+          {Object.keys(props.planetData).map((key) => {
+            return (
+              <PlanetSelectorInput
+                planetName={props.planetData[key].string}
+                key={props.planetData[key].string}
+                isVisible={props.planetData[key].isVisible}
+                planetImg={props.planetData[key].img}
+                selectedX={PIMAGES.selectedX}
+                onPlanetSelect={props.onPlanetSelect}
+                planetWidth={"25px"}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default PlanetSelector;

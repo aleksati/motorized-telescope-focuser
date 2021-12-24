@@ -85,14 +85,14 @@ export function setupCanvas(
   let valueToAdd = (dpr / 100) * zoomValueFlipped;
   dpr += valueToAdd;
   currentWidth = cnvWidth * dpr;
-  console.log("scaled canvas width: ", currentWidth);
+  //console.log("scaled canvas width: ", currentWidth);
 
   // scale height accordingly
   let unitY = plotsizey;
   let unitX = plotsizex;
   let pxPerUnitX = currentWidth / unitX; // pixel to size ratio
   currentHeight = pxPerUnitX * unitY;
-  console.log("scaled canvas height: ", currentHeight);
+  //console.log("scaled canvas height: ", currentHeight);
 
   // init canvs with new size
   cnv.width = currentWidth;
