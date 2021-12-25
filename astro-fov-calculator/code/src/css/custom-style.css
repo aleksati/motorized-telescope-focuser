@@ -192,3 +192,13 @@ We first add necessary padding to the text, then we resize and show the label.*/
     color: #777;
   }
 }
+
+/* Planet input selector image zoom hover */
+/* .img-hover-zoom {
+  transition: transform 0.2s;
+    background-color: rgb(0, 0, 0);
+}
+
+.img-hover-zoom:hover {
+  transform: scale(1.4);
+} */

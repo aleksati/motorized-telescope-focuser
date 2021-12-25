@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Menubar from "./components/menubar/menubar";
-import PlanetSelector from "./components/canvas/planetSelector";
+import PlanetSelector from "./components/planetselector/planetSelector";
 import Canvas from "./components/canvas/canvas";
 import {
   camCanvasSize,
@@ -9,7 +9,7 @@ import {
   initCanvasData,
   initColorData,
 } from "./components/menubar/utils-menubar.js";
-import { initPlanetData } from "./components/canvas/utils-planets";
+import { initPlanetData } from "./components/planetselector/utils-planets";
 
 const App = () => {
   const colors = initColorData;
