@@ -84,8 +84,8 @@ const Canvas = (props) => {
         );
       }
 
-      //   canvas.style.width = canvasWidth + "px";
-      //   canvas.style.height = canvasWidth + "px";
+      // canvas.style.width = canvasWidth + "px";
+      // canvas.style.height = canvasWidth + "px";
     }
   }, [
     canvasRef,

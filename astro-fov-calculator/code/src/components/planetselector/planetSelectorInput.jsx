@@ -16,7 +16,7 @@ const PlanetSelectorInput = (props) => {
         src={props.isVisible ? props.selectedX : props.planetImg}
         alt={props.planetName}
         width={props.planetWidth}
-        style={{ opacity: props.isVisible ? 0.3 : 1 }}
+        // style={{ opacity: props.isVisible ? 0.3 : 1 }}
       />
     </motion.div>
   );
