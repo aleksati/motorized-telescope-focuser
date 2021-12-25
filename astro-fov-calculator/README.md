@@ -11,4 +11,8 @@ The application functionality is based on a series of assumptions (calculations)
 ### From camera sensor properties to degrees, arc minutes and arc seconds
 ### From eyepiece apparant fied-of-view to true field-of-view 
 
-## Dependecies
+## Stack (dependencies)
+* React v.17.0.2
+* [BootstrapSwitchButton v1.2.0](https://www.npmjs.com/package/bootstrap-switch-button-react)
+* [Mui v.5.1.1](https://mui.com/)
+* [Framer motion v.4.1.17](https://www.npmjs.com/package/framer-motion)
