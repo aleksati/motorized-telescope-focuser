@@ -1,0 +1,91 @@
+export const initFormData = {
+  aperture: {
+    ref: "aperture",
+    value: "",
+    required: true,
+    type: "number",
+    name: "Aperture",
+    unit: "mm",
+  },
+  focallength: {
+    ref: "focallength",
+    value: "",
+    required: true,
+    type: "number",
+    name: "Flength",
+    unit: "mm",
+  },
+  barlow: {
+    ref: "barlow",
+    value: "",
+    required: false,
+    type: "number",
+    name: "Barlow",
+    unit: "x",
+  },
+  pixelsize: {
+    ref: "pixelsize",
+    value: "",
+    required: true,
+    type: "number",
+    name: "Pixel Size",
+    unit: "μm²",
+  },
+  resolutionx: {
+    ref: "resolutionx",
+    value: "",
+    required: true,
+    type: "number",
+    name: "Res (X)",
+    unit: "px",
+  },
+  resolutiony: {
+    ref: "resolutiony",
+    value: "",
+    required: true,
+    type: "number",
+    name: "Res (Y)",
+    unit: "px",
+  },
+  eyepiecefocallength: {
+    ref: "eyepiecefocallength",
+    value: "",
+    required: true,
+    type: "number",
+    name: "Flength",
+    unit: "mm",
+  },
+  eyepieceafov: {
+    ref: "eyepieceafov",
+    value: "",
+    required: true,
+    type: "number",
+    name: "AFOV",
+    unit: "°",
+  },
+};
+
+export const initCanvasData = {
+  isEyepieceMode: true,
+  hasGrid: true,
+  hasLabels: true,
+  hasRedGrid: false,
+  redGridFactor: 6,
+  zoomValue: 100,
+  plotSizeX: 20,
+  plotSizeY: 20,
+  plotDivisor: 6,
+  axisLabel: "Minutes of Arc",
+};
+
+// Bootstrap colors
+export const initColorData = {
+  eyepieceMode: "info",
+  cameraMode: "success",
+  background: "gradient-dark",
+  text: "text-white",
+  textMuted: "text-muted",
+  canvasBorder: "#9C9C9C",
+  canvasText: "#9C9C9C",
+  canvasGrid: "#4c4c4c",
+};

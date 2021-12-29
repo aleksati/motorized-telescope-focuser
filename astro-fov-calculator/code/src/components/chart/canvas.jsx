@@ -7,9 +7,9 @@ import {
 } from "./utils-canvas.js";
 
 // layouteffect runs before the DOM initally renders. A good place to update/get size of DOM elements to avoid flickering.
-const Canvas = (props) => {
+const Canvas = React.forwardRef((props, ref) => {
   const canvasRef = useRef(null);
-  const canvasDivRef = useRef(null);
+  const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(null);
   const [canvasWidth, setCanvasWidth] = useState(null);
   const [onUpdate, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -27,19 +27,19 @@ const Canvas = (props) => {
   // Store the container width when the DIV mounts
   // and whenever we resize the window.
   useEffect(() => {
-    if (canvasDivRef.current) {
-      setContainerWidth(canvasDivRef.current.parentNode.clientWidth);
+    if (containerRef.current) {
+      setContainerWidth(containerRef.current.parentNode.clientWidth);
     }
-  }, [canvasDivRef, onUpdate]);
+  }, [containerRef, onUpdate]);
 
   // If the container width OR a new zoom value is registered:
   // we update the canvasWidth.
   useEffect(() => {
     if (containerWidth) {
-      let cw = (containerWidth / 100) * props.zoomValue;
+      let cw = (containerWidth / 100) * props.canvasData.zoomValue;
       setCanvasWidth(cw);
     }
-  }, [containerWidth, props.zoomValue]);
+  }, [containerWidth, props.canvasData.zoomValue]);
 
   // Paint the canvas on most renders.
   useEffect(() => {
@@ -48,38 +48,38 @@ const Canvas = (props) => {
       let context = setupCanvas(
         canvas,
         canvasWidth,
-        props.zoomValue,
-        props.plotSizeX,
-        props.plotSizeY,
-        props.hasLabels
+        props.canvasData.zoomValue,
+        props.canvasData.plotSizeX,
+        props.canvasData.plotSizeY,
+        props.canvasData.hasLabels
       );
 
       paintBg(context);
 
-      if (!props.isEyepieceMode) {
+      if (!props.canvasData.isEyepieceMode) {
         paintOnSquare(
           context,
-          props.plotSizeX,
-          props.plotSizeY,
-          props.plotDivisor,
-          props.axisLabel,
-          props.hasLabels,
-          props.hasGrid,
-          props.hasRedGrid,
-          props.redGridFactor,
+          props.canvasData.plotSizeX,
+          props.canvasData.plotSizeY,
+          props.canvasData.plotDivisor,
+          props.canvasData.axisLabel,
+          props.canvasData.hasLabels,
+          props.canvasData.hasGrid,
+          props.canvasData.hasRedGrid,
+          props.canvasData.redGridFactor,
           props.colors
         );
       } else {
         paintOnCircle(
           context,
-          props.plotSizeX,
-          props.plotSizeY,
-          props.plotDivisor,
-          props.axisLabel,
-          props.hasLabels,
-          props.hasGrid,
-          props.hasRedGrid,
-          props.redGridFactor,
+          props.canvasData.plotSizeX,
+          props.canvasData.plotSizeY,
+          props.canvasData.plotDivisor,
+          props.canvasData.axisLabel,
+          props.canvasData.hasLabels,
+          props.canvasData.hasGrid,
+          props.canvasData.hasRedGrid,
+          props.canvasData.redGridFactor,
           props.colors
         );
       }
@@ -87,34 +87,22 @@ const Canvas = (props) => {
       // canvas.style.width = canvasWidth + "px";
       // canvas.style.height = canvasWidth + "px";
     }
-  }, [
-    canvasRef,
-    props.plotSizeX,
-    props.plotSizeY,
-    props.plotDivisor,
-    props.axisLabel,
-    props.hasLabels,
-    props.hasGrid,
-    props.hasRedGrid,
-    props.redGridFactor,
-    props.zoomValue,
-    props.colors,
-    props.isEyepieceMode,
-    canvasWidth,
-  ]);
+  }, [canvasRef, props.colors, props.canvasData, canvasWidth]);
 
   return (
     <div className="container d-flex justify-content-center p-0">
-      <div ref={canvasDivRef} style={{ width: canvasWidth }}>
+      <div ref={containerRef} style={{ width: canvasWidth }}>
         <canvas
           ref={canvasRef}
           className={
-            props.isEyepieceMode ? "w-100 border rounded-circle" : "w-100"
+            props.canvasData.isEyepieceMode
+              ? "w-100 border rounded-circle"
+              : "w-100"
           }
         />
       </div>
     </div>
   );
-};
+});
 
 export default Canvas;

@@ -1,60 +1,66 @@
-import { PIMAGES } from "../../img/planets/pimages";
+import { PLANETIMAGES } from "../img/planets/planetimages";
+import { MOONIMAGES } from "../img/moons/moonimages";
 
 export const initPlanetData = {
   mercury: {
     string: "mercury",
-    img: PIMAGES.mercury,
+    img: PLANETIMAGES.mercury,
     isVisible: false,
     AU: 0,
     kmDiameter: 0,
   },
   venus: {
     string: "venus",
-    img: PIMAGES.venus,
-    isVisible: false,
-    AU: 0,
-    kmDiameter: 0,
-  },
-  moon: {
-    string: "moon",
-    img: PIMAGES.moon,
+    img: PLANETIMAGES.venus,
     isVisible: false,
     AU: 0,
     kmDiameter: 0,
   },
   mars: {
     string: "mars",
-    img: PIMAGES.mars,
+    img: PLANETIMAGES.mars,
     isVisible: false,
     AU: 0,
     kmDiameter: 0,
   },
   jupiter: {
     string: "jupiter",
-    img: PIMAGES.jupiter,
+    img: PLANETIMAGES.jupiter,
     isVisible: false,
     AU: 0,
     kmDiameter: 0,
   },
   saturn: {
     string: "saturn",
-    img: PIMAGES.saturn,
+    img: PLANETIMAGES.saturn,
     isVisible: false,
     AU: 0,
     kmDiameter: 0,
   },
   uranus: {
     string: "uranus",
-    img: PIMAGES.uranus,
+    img: PLANETIMAGES.uranus,
     isVisible: false,
     AU: 0,
     kmDiameter: 0,
   },
   neptune: {
     string: "neptune",
-    img: PIMAGES.neptune,
+    img: PLANETIMAGES.neptune,
     isVisible: false,
     AU: 0,
     kmDiameter: 0,
   },
 };
+
+export const initMoonData = {
+  moon: {
+    string: "moon",
+    img: MOONIMAGES.moon,
+    isVisible: false,
+    AU: 0,
+    kmDiameter: 0,
+  },
+};
+
+export const selectedX = require("../img/body-selection/selectedx.png").default;

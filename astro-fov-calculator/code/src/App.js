@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Menubar from "./components/menubar/menubar";
-import PlanetSelector from "./components/planetselector/planetSelector";
-import Canvas from "./components/canvas/canvas";
+import Chart from "./components/chart/chart";
 import {
   camCanvasSize,
   eyepieceCanvasSize,
-  initFormData,
+} from "./components/menubar/utils-menubar.js";
+import {
   initCanvasData,
   initColorData,
-} from "./components/menubar/utils-menubar.js";
-import { initPlanetData } from "./components/planetselector/utils-planets";
+  initFormData,
+} from "./data/menubar-data";
 
 const App = () => {
   const colors = initColorData;
   const [formData, setFormData] = useState(initFormData);
   const [formDataInfo, setFormDataInfo] = useState(initCanvasData);
   const [canvasData, setCanvasData] = useState(initCanvasData); // this is the same as formDataInfo, only updated less frequent
-  const [planetData, setPlanetData] = useState(initPlanetData);
 
   // When changing the mode and adding any new form info,
   // the subitflag goes to false.
@@ -32,7 +31,7 @@ const App = () => {
       ...initCanvasData,
       isEyepieceMode: bool,
     });
-    setPlanetData({ ...initPlanetData });
+    // setPlanetData({ ...initPlanetData });
     if (isSubmit) setSubmit(false);
   };
 
@@ -149,19 +148,6 @@ const App = () => {
     if (!isSubmit) setSubmit(true);
   };
 
-  const handlePlanetSelect = (planetName) => {
-    setPlanetData((prevState) => {
-      let stateCopy = JSON.parse(JSON.stringify(prevState));
-      Object.keys(stateCopy).forEach((key) => {
-        stateCopy[key].isVisible =
-          String(planetName) === String(key)
-            ? !stateCopy[key].isVisible
-            : false;
-      });
-      return { ...stateCopy };
-    });
-  };
-
   return (
     <div className="App">
       <Menubar
@@ -177,23 +163,7 @@ const App = () => {
         colors={colors}
         isSubmit={isSubmit}
       />
-      <PlanetSelector
-        planetData={planetData}
-        onPlanetSelect={handlePlanetSelect}
-      />
-      <Canvas
-        plotSizeX={canvasData.plotSizeX}
-        plotSizeY={canvasData.plotSizeY}
-        plotDivisor={canvasData.plotDivisor}
-        axisLabel={canvasData.axisLabel}
-        hasLabels={canvasData.hasLabels}
-        hasGrid={canvasData.hasGrid}
-        hasRedGrid={canvasData.hasRedGrid}
-        redGridFactor={canvasData.redGridFactor}
-        zoomValue={canvasData.zoomValue}
-        isEyepieceMode={canvasData.isEyepieceMode}
-        colors={colors}
-      />
+      <Chart canvasData={canvasData} colors={colors} />
     </div>
   );
 };
