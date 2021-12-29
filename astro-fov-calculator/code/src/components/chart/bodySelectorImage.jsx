@@ -8,17 +8,18 @@ const BodySelectorImage = (props) => {
     <motion.div
       initial={true}
       animate={{ x: [-100, 0] }}
-      transition={{ ease: "easeOut", duration: 0.2 }}
-      whileHover={{ scale: 1.3 }}
+      transition={{ ease: "easeOut", duration: 0.1 }}
+      whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.8 }}
       onTap={(event) => {
         props.onBodySelection(event.target.alt);
       }}
     >
       <img
-        src={props.isVisible ? props.selectedX : props.planetImg}
-        alt={props.planetName}
-        width={props.planetWidth}
+        src={props.isVisible ? props.selectedX : props.bodyImg}
+        alt={props.bodyName}
+        width={props.bodyWidth}
+        style={{ opacity: props.isVisible ? 0.4 : 1, cursor: "pointer" }}
       />
     </motion.div>
   );

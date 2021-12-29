@@ -22,26 +22,24 @@ const Chart = (props) => {
     // init currentCrowd to "planets"
   }, []);
 
-  // set new bodyData on new currentCrowd
+  // set new bodyData on new crowd selection
   useEffect(() => {
     setBodyData({ ...crowdData[currentCrowd] });
   }, [currentCrowd, crowdData]);
 
-  const handleBodySelection = (planetName) => {
+  const handleCrowdSelection = (CrowdSelection) => {
+    setCurrentCrowd(CrowdSelection);
+  };
+
+  const handleBodySelection = (bodyName) => {
     setBodyData((prevState) => {
       let stateCopy = JSON.parse(JSON.stringify(prevState));
       Object.keys(stateCopy).forEach((key) => {
         stateCopy[key].isVisible =
-          String(planetName) === String(key)
-            ? !stateCopy[key].isVisible
-            : false;
+          String(bodyName) === String(key) ? !stateCopy[key].isVisible : false;
       });
       return { ...stateCopy };
     });
-  };
-
-  const handleCrowdSelection = (crowd) => {
-    setCurrentCrowd(crowd);
   };
 
   return (
@@ -49,21 +47,17 @@ const Chart = (props) => {
       <BodySelector
         onBodySelection={handleBodySelection}
         onCrowdSelection={handleCrowdSelection}
-        bodyData={bodyData} // this for displaying the current Crowd of body images
+        bodyData={bodyData} // this for displaying the current Crowd of bodies for selection
         currentCrowd={currentCrowd}
         crowdArray={Object.keys(crowdData)} // this is for setting the names in the dropdown menu
         colors={props.colors}
         isEyepieceMode={props.canvasData.isEyepieceMode}
       />
-      <Canvas canvasData={props.canvasData} colors={props.colors}></Canvas>
+      <Canvas canvasData={props.canvasData} colors={props.colors}>
+        {/* use render props to pass context to Children! */}
+      </Canvas>
     </div>
   );
 };
 
 export default Chart;
-
-// bodySelector should change between planets and moons and etc.
-// implement a dropdown menu
-// add everything in Chart.
-// BEFORE PLANETS/BODY component
-// change the canvas utils to be more seperated.

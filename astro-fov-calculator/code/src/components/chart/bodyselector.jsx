@@ -17,13 +17,13 @@ const BodySelector = (props) => {
       {Object.keys(props.bodyData).map((key) => {
         return (
           <BodySelectorImage
-            planetName={props.bodyData[key].string}
+            bodyName={props.bodyData[key].string}
+            bodyWidth={"25px"}
             key={props.bodyData[key].string}
             isVisible={props.bodyData[key].isVisible}
-            planetImg={props.bodyData[key].img}
+            bodyImg={props.bodyData[key].img}
             selectedX={selectedX}
             onBodySelection={props.onBodySelection}
-            planetWidth={"25px"}
           />
         );
       })}

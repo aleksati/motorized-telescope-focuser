@@ -3,14 +3,12 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { makeStyles } from "@mui/styles";
 
-// prop:
+// props:
 // isEyepieceMode
 // colors
 
 const MENUPAPER_HEIGHT = 48;
-
 const style = (props) => ({
   style: {
     maxHeight: MENUPAPER_HEIGHT * 4.5,
