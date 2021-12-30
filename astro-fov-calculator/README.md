@@ -15,4 +15,6 @@ The application functionality is based on a series of assumptions (calculations)
 * React v.17.0.2
 * [BootstrapSwitchButton v1.2.0](https://www.npmjs.com/package/bootstrap-switch-button-react)
 * [Material-ui v.5.1.1](https://mui.com/)
+  * + Mui styles 
 * [Framer motion v.4.1.17](https://www.npmjs.com/package/framer-motion)
+* [Astronomy bundle v.6.9.3](https://github.com/andrmoel/astronomy-bundle-js)
