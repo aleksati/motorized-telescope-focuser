@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 // https://www.framer.com/docs/examples/
+// include some error-handling
 
 const BodySelectorImage = (props) => {
   return (

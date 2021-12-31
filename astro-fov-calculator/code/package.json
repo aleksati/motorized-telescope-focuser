@@ -8,6 +8,7 @@
     "@mui/icons-material": "^5.1.1",
     "@mui/material": "^5.1.1",
     "@mui/styles": "^5.2.3",
+    "astronomy-bundle": "^6.9.3",
     "bootstrap": "^4.6.0",
     "bootstrap-switch-button-react": "^1.2.0",
     "framer-motion": "^4.1.17",

@@ -1,34 +1,46 @@
 import React, { useEffect, useState } from "react";
 import Canvas from "./canvas";
 import BodySelector from "./bodyselector";
-import { initPlanetData, initMoonData } from "../../data/body-data";
+import { initCrowdData } from "../../data/crowd-data";
+import { getSolarSystemData } from "./getSolarSystemData";
 
 // props:
 // canvasData
 // colors
 
 const Chart = (props) => {
-  const [bodyData, setBodyData] = useState(initPlanetData);
-  const [currentCrowd, setCurrentCrowd] = useState("");
-  const [crowdData, setCrowdData] = useState({
-    planets: initPlanetData,
-    moons: initMoonData,
-  });
+  const [bodyData, setBodyData] = useState(initCrowdData["planets"]);
+  const [currentCrowd, setCurrentCrowd] = useState(null);
+  const [crowdData, setCrowdData] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   // contact API.
   useEffect(() => {
-    // get all the astronomical data from all the crowd data.
-    // set Crowdata with all new info
-    // init currentCrowd to "planets"
+    setIsLoading(true);
+    setIsError(false);
+    const fetchData = async () => {
+      try {
+        const newCrowdData = await getSolarSystemData(initCrowdData);
+        const firstCrowdName = Object.keys(newCrowdData)[0];
+        const firstCrowd = newCrowdData[firstCrowdName];
+
+        setCrowdData(newCrowdData);
+        setCurrentCrowd(firstCrowdName);
+        setBodyData(firstCrowd);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsError(true);
+      }
+    };
+    fetchData();
   }, []);
 
-  // set new bodyData on new crowd selection
-  useEffect(() => {
-    setBodyData({ ...crowdData[currentCrowd] });
-  }, [currentCrowd, crowdData]);
-
-  const handleCrowdSelection = (CrowdSelection) => {
-    setCurrentCrowd(CrowdSelection);
+  const handleCrowdSelection = (crowdSelection) => {
+    setCurrentCrowd(crowdSelection);
+    setBodyData(crowdData[crowdSelection]);
   };
 
   const handleBodySelection = (bodyName) => {
@@ -45,6 +57,8 @@ const Chart = (props) => {
   return (
     <div className="container p-0">
       <BodySelector
+        isLoading={isLoading}
+        isError={isError}
         onBodySelection={handleBodySelection}
         onCrowdSelection={handleCrowdSelection}
         bodyData={bodyData} // this for displaying the current Crowd of bodies for selection
