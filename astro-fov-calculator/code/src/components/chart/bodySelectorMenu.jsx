@@ -46,8 +46,8 @@ const BodySelectorMenu = (props) => {
   const open = Boolean(anchorEl);
 
   React.useEffect(() => {
-    setOptions(props.crowdArray);
-  }, [props.crowdArray]);
+    setOptions(props.crowdNamesArray);
+  }, [props.crowdNamesArray]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -87,7 +87,7 @@ const BodySelectorMenu = (props) => {
           <MenuItem
             key={option}
             id={option}
-            selected={option === props.currentCrowd}
+            selected={option === props.currCrowdName}
             onClick={(e) => {
               props.onCrowdSelection(e.target.id);
               handleClose();

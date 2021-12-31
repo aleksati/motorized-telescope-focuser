@@ -10,6 +10,9 @@ import {
 } from "astronomy-bundle/planets";
 import { createMoon } from "astronomy-bundle/moon";
 
+// used in component/chart/chart.jsx
+
+// crowdsObj =
 // mercury: {
 //   string: "mercury",
 //   img: PLANETIMAGES.mercury,
@@ -19,6 +22,7 @@ import { createMoon } from "astronomy-bundle/moon";
 //   angularDiameter: null, // Diameter: 0° 00' 12.065"
 //   magnitude: null,
 // },
+// ...
 
 const functionMap = {
   mercury: (e) => createMercury(e),
@@ -32,7 +36,7 @@ const functionMap = {
 };
 
 // returns a promise
-export const getSolarSystemData = async (crowdsObj) => {
+const getSolarSystemData = async (crowdsObj) => {
   let crowdsObjCopy = JSON.parse(JSON.stringify(crowdsObj));
   const date = new Date();
   const toi = createTimeOfInterest.fromDate(date);
@@ -64,3 +68,5 @@ export const getSolarSystemData = async (crowdsObj) => {
   }
   return crowdsObjCopy;
 };
+
+export default getSolarSystemData;

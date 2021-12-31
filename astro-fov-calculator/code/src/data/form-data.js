@@ -1,4 +1,4 @@
-export const initFormData = {
+const initFormData = {
   aperture: {
     ref: "aperture",
     value: "",
@@ -65,27 +65,4 @@ export const initFormData = {
   },
 };
 
-export const initCanvasData = {
-  isEyepieceMode: true,
-  hasGrid: true,
-  hasLabels: true,
-  hasRedGrid: false,
-  redGridFactor: 6,
-  zoomValue: 100,
-  plotSizeX: 20,
-  plotSizeY: 20,
-  plotDivisor: 6,
-  axisLabel: "Minutes of Arc",
-};
-
-// Bootstrap colors
-export const initColorData = {
-  eyepieceMode: "info",
-  cameraMode: "success",
-  background: "gradient-dark",
-  text: "text-white",
-  textMuted: "text-muted",
-  canvasBorder: "#9C9C9C",
-  canvasText: "#9C9C9C",
-  canvasGrid: "#4c4c4c",
-};
+export default initFormData;

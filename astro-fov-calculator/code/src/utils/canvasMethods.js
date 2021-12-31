@@ -1,5 +1,4 @@
 let LABELOFFSET = 0; // We only use 5% of the canvas size to make room for labels.
-
 let currentWidth = 0;
 let currentHeight = 0;
 
@@ -14,31 +13,30 @@ function nearestHalf(orgX, orgY) {
   // thats why every line must go from .5 something to .5 something
   // http://diveintohtml5.info/canvas.html
 
-  let x = Math.round(orgX - 0.5) + 0.5;
-  x =
-    x < currentWidth
-      ? x
-      : Number.isInteger(currentWidth - 0.5)
-      ? currentWidth - 1
-      : currentWidth - 0.5;
-
-  let y = Math.round(orgY - 0.5) + 0.5;
-  y =
-    y < currentHeight
-      ? y
-      : Number.isInteger(currentHeight - 0.5)
-      ? currentHeight - 1
-      : currentHeight - 0.5;
-
+  //  let x = Math.round(orgX - 0.5) + 0.5;
+  //  x =
+  //    x < currentWidth
+  //      ? x
+  //      : Number.isInteger(currentWidth - 0.5)
+  //      ? currentWidth - 1
+  //      : currentWidth - 0.5;
+  //
+  //  let y = Math.round(orgY - 0.5) + 0.5;
+  //  y =
+  //    y < currentHeight
+  //      ? y
+  //      : Number.isInteger(currentHeight - 0.5)
+  //      ? currentHeight - 1
+  //      : currentHeight - 0.5;
+  //
   // console.log("current width and heigh: ", currentWidth, currentHeight);
   // console.log("orginal and scaled x: ", orgX, x);
   // console.log("orginal and scaled y: ", orgY, y);
+  //return { x, y };
 
+  let x = Math.round(orgX);
+  let y = Math.round(orgY);
   return { x, y };
-
-  // let x = orgX;
-  // let y = orgY;
-  // return { x, y };
 }
 
 function paintCircularText(label, ctx, angle) {
@@ -70,14 +68,7 @@ function paintCircularText(label, ctx, angle) {
   }
 }
 
-export function setupCanvas(
-  cnv,
-  cnvWidth,
-  zoomValue,
-  plotsizex,
-  plotsizey,
-  hasLabel
-) {
+function setupCanvas(cnv, cnvWidth, zoomValue, plotsizex, plotsizey, hasLabel) {
   // for optimal canvas rendering on the current screen.
   // change the dpr based on manual zoom
   let dpr = window.devicePixelRatio || 1;
@@ -120,13 +111,13 @@ export function setupCanvas(
   return ctx;
 }
 
-export function paintBg(ctx) {
+function paintBg(ctx) {
   // paint background
   ctx.fillStyle = "#000000"; //"#138496";
   ctx.fillRect(0, 0, currentWidth, currentHeight);
 }
 
-export function paintOnSquare(
+function paintOnSquare(
   ctx,
   plotsizex,
   plotsizey,
@@ -234,11 +225,11 @@ export function paintOnSquare(
       ctx.strokeStyle = colors.canvasGrid;
       if (hasRedGrid) {
         if ((plotsizey - i) % redGridFactor === 0) {
-          ctx.moveTo(0 + offsetWidth, y);
+          ctx.moveTo(0.5 + offsetWidth, y);
           ctx.lineTo(x, y);
         }
       } else {
-        ctx.moveTo(0 + offsetWidth, y);
+        ctx.moveTo(0.5 + offsetWidth, y);
         ctx.lineTo(x, y);
       }
     }
@@ -263,7 +254,7 @@ export function paintOnSquare(
   }
 }
 
-export function paintOnCircle(
+function paintOnCircle(
   ctx,
   plotsizex,
   plotsizey,
@@ -286,7 +277,7 @@ export function paintOnCircle(
   // paint X axis grid and numbers
   for (let i = 0; i <= plotsizex; i++) {
     //i = 0 and 20 to make the border
-    let { x, y } = nearestHalf(pxPerUnitX * i, 0);
+    let { x, y } = nearestHalf(pxPerUnitX * i, 0.5);
 
     if (hasGrid) {
       ctx.beginPath();
@@ -332,7 +323,7 @@ export function paintOnCircle(
   // paint Y axis grid and numbers
   for (let i = 0; i <= plotsizey; i++) {
     // include 0 and 20 to make the border
-    let { x, y } = nearestHalf(0, pxPerUnitY * i);
+    let { x, y } = nearestHalf(0.5, pxPerUnitY * i);
 
     // paint grid
     if (hasGrid) {
@@ -350,3 +341,5 @@ export function paintOnCircle(
     }
   }
 }
+
+export { setupCanvas, paintBg, paintOnSquare, paintOnCircle };

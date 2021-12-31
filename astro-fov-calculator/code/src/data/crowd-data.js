@@ -1,5 +1,4 @@
-import { PLANETIMAGES } from "../img/planets/planetimages";
-import { MOONIMAGES } from "../img/moons/moonimages";
+import { PLANETIMAGES, MOONIMAGES } from "./img-data";
 
 const initPlanetData = {
   mercury: {
@@ -79,9 +78,9 @@ const initMoonData = {
   },
 };
 
-export const initCrowdData = {
+const initCrowdData = {
   planets: initPlanetData,
   moons: initMoonData,
 };
 
-export const selectedX = require("../img/body-selection/selectedx.png").default;
+export default initCrowdData;

@@ -1,36 +1,49 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { selectedX } from "../../data/crowd-data";
-import loading from "../../img/error-loading/loading.gif";
-import error from "../../img/error-loading/error.gif";
-import BodySelectorImage from "./bodySelectorImage";
-import BodySelectorMenu from "./bodySelectorMenu";
+import { DIVIMAGES } from "../../data/img-data";
+import BodySelectorImage from "./bodyselectorimage";
+import BodySelectorMenu from "./bodyselectormenu";
+
+// props:
+// isLoading
+// isError
+// onBodySelection
+// onCrowdSelection
+// crowdNamesArray
+// currCrowdName
+// colors
+// currCrowd
+// isEyepieceMode
 
 const BodySelector = (props) => {
   return (
     <div className="container d-flex justify-content-around p-0 mb-4">
       {props.isError ? (
-        <img src={error} alt="ERROR..." width="25px" height="25px" />
+        <img src={DIVIMAGES.error} alt="ERROR..." width="25px" height="25px" />
       ) : props.isLoading ? (
-        <img src={loading} alt="loading..." width="25px" height="25px" />
+        <img
+          src={DIVIMAGES.loading}
+          alt="loading..."
+          width="25px"
+          height="25px"
+        />
       ) : (
         <>
           <BodySelectorMenu
-            onCrowdSelection={props.onCrowdSelection}
             isEyepieceMode={props.isEyepieceMode}
             colors={props.colors}
-            crowdArray={props.crowdArray}
-            currentCrowd={props.currentCrowd}
+            onCrowdSelection={props.onCrowdSelection}
+            currCrowdName={props.currCrowdName}
+            crowdNamesArray={props.crowdNamesArray}
           />
-          {Object.keys(props.bodyData).map((key) => {
+          {Object.keys(props.currCrowd).map((key) => {
             return (
               <BodySelectorImage
-                bodyName={props.bodyData[key].string}
+                bodyName={props.currCrowd[key].string}
                 bodyWidth={"25px"}
-                key={props.bodyData[key].string}
-                isVisible={props.bodyData[key].isVisible}
-                bodyImg={props.bodyData[key].img}
-                selectedX={selectedX}
+                key={props.currCrowd[key].string}
+                isVisible={props.currCrowd[key].isVisible}
+                bodyImg={props.currCrowd[key].img}
+                selectedX={DIVIMAGES.selectedX}
                 onBodySelection={props.onBodySelection}
               />
             );

@@ -4,10 +4,10 @@ import {
   paintOnCircle,
   paintBg,
   setupCanvas,
-} from "./utils-canvas.js";
+} from "../../utils/canvasMethods.js";
 
 // layouteffect runs before the DOM initally renders. A good place to update/get size of DOM elements to avoid flickering.
-const Canvas = React.forwardRef((props, ref) => {
+const Canvas = (props) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(null);
@@ -84,8 +84,8 @@ const Canvas = React.forwardRef((props, ref) => {
         );
       }
 
-      // canvas.style.width = canvasWidth + "px";
-      // canvas.style.height = canvasWidth + "px";
+      // canvas.style.width = canvasWidth + "px !important";
+      // canvas.style.height = canvasWidth + "px !important";
     }
   }, [canvasRef, props.colors, props.canvasData, canvasWidth]);
 
@@ -97,12 +97,13 @@ const Canvas = React.forwardRef((props, ref) => {
           className={
             props.canvasData.isEyepieceMode
               ? "w-100 border rounded-circle"
-              : "w-100"
+              : "w-100 border"
           }
         />
+        {props.children(canvasRef, canvasWidth)}
       </div>
     </div>
   );
-});
+};
 
 export default Canvas;

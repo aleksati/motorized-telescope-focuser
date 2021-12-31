@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Menubar from "./components/menubar/menubar";
 import Chart from "./components/chart/chart";
-import {
-  camCanvasSize,
-  eyepieceCanvasSize,
-} from "./components/menubar/utils-menubar.js";
-import {
-  initCanvasData,
-  initColorData,
-  initFormData,
-} from "./data/menubar-data";
+import eyePiece2canvasSize from "./utils/eyepiece2canvassize";
+import camera2canvasSize from "./utils/camera2canvassize";
+import initColorData from "./data/color-data";
+import initCanvasData from "./data/canvas-data";
+import initFormData from "./data/form-data";
 
 const App = () => {
   const colors = initColorData;
@@ -111,7 +107,7 @@ const App = () => {
 
       // if there are no 0 value in any of the variables
       newFormDataInfo =
-        vars.indexOf(0) === -1 ? eyepieceCanvasSize(...vars) : {};
+        vars.indexOf(0) === -1 ? eyePiece2canvasSize(...vars) : {};
     } else {
       let pxS = numberify(formData.pixelsize.value);
       let resX = numberify(formData.resolutionx.value);
@@ -122,7 +118,8 @@ const App = () => {
       let vars = [pxS, resX, resY, FL, b];
 
       // if there are no 0 values in any of the variables
-      newFormDataInfo = vars.indexOf(0) === -1 ? camCanvasSize(...vars) : {};
+      newFormDataInfo =
+        vars.indexOf(0) === -1 ? camera2canvasSize(...vars) : {};
     }
 
     if (Object.keys(newFormDataInfo).length) {

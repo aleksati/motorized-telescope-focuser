@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import loading from "../../img/error-loading/loading.gif";
-import error from "../../img/error-loading/error.gif";
+import { DIVIMAGES } from "../../data/img-data";
+import getUserLocation from "../../utils/getUserLocation";
 
 // Make so that, if we check at 23:00 (for instace) it get the info from 23:00.. not 21:00..
 
@@ -12,29 +12,6 @@ const Forecast = (props) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
-
-  // request to use user location through the browser
-  function getLocation() {
-    return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            let lat = position.coords.latitude;
-            let long = position.coords.longitude;
-            resolve({
-              latitude: lat,
-              longitude: long,
-            });
-          },
-          (error) => {
-            reject(error);
-          }
-        );
-      } else {
-        reject("geolocation API not supported :(");
-      }
-    });
-  }
 
   // We are only interested in one weather forcast at night time.
   const filterData = useCallback((data) => {
@@ -61,7 +38,7 @@ const Forecast = (props) => {
     setError(false);
     const fetchData = async () => {
       try {
-        const location = await getLocation();
+        const location = await getUserLocation();
         const lat = Math.round(location.latitude);
         const long = Math.round(location.longitude);
         const url =
@@ -86,7 +63,7 @@ const Forecast = (props) => {
   }, [filterData]);
 
   // Find the next6hours forecast from 22:00.
-  // + image
+  // + images
   useEffect(() => {
     // when the object is empty on load, just return back
     if (Object.keys(YRdata.timeseries).length === 0) {
@@ -127,11 +104,21 @@ const Forecast = (props) => {
       </p>
       {isError ? (
         <p className={borderStyle()}>
-          <img src={error} alt="ERROR..." width="25px" height="25px" />
+          <img
+            src={DIVIMAGES.error}
+            alt="ERROR..."
+            width="25px"
+            height="25px"
+          />
         </p>
       ) : isLoading ? (
         <p className={borderStyle()}>
-          <img src={loading} alt="loading..." width="25px" height="25px" />
+          <img
+            src={DIVIMAGES.loading}
+            alt="loading..."
+            width="25px"
+            height="25px"
+          />
         </p>
       ) : (
         <p className={borderStyle()}>

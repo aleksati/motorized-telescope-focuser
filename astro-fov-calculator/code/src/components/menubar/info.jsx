@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Forecast from "./forecast";
 import InfoInput from "./infoinput";
-import { microns2milimeter } from "./utils-menubar.js";
+import microns2milimeter from "../../utils/microns2milimeter";
 
 const Info = (props) => {
   const [state, setState] = useState({
