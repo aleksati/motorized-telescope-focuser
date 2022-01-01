@@ -25,7 +25,7 @@ const initPlanetData = {
     isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
-    angularDiameter: null, // Diameter: 0° 00' 12.065"
+    angularDiameter: null, // Diameter: 0°. 00' 12.065"
     magnitude: null,
   },
   jupiter: {

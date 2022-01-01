@@ -1,4 +1,5 @@
 import microns2milimeter from "./microns2milimeter";
+import { ANGULAR_MEASUREMENT_LABELS } from "../data/angular-measurement-labels";
 
 function camera2canvasSize(
   pixelsizevalue,
@@ -30,7 +31,7 @@ function camera2canvasSize(
       plotSizeX: Math.round(FOV_X * 57.3 * 6),
       plotSizeY: Math.round(FOV_Y * 57.3 * 6),
       plotDivisor: 6,
-      axisLabel: "Degrees",
+      axisLabel: ANGULAR_MEASUREMENT_LABELS[0],
     };
   }
 
@@ -40,7 +41,7 @@ function camera2canvasSize(
       plotSizeX: Math.round(FOV_X * 3438 * 6),
       plotSizeY: Math.round(FOV_Y * 3438 * 6),
       plotDivisor: 6,
-      axisLabel: "Minutes of Arc",
+      axisLabel: ANGULAR_MEASUREMENT_LABELS[1],
     };
   }
 
@@ -49,7 +50,7 @@ function camera2canvasSize(
     plotSizeX: Math.round(FOV_X * 206265),
     plotSizeY: Math.round(FOV_Y * 206265),
     plotDivisor: 1,
-    axisLabel: "Seconds of Arc",
+    axisLabel: ANGULAR_MEASUREMENT_LABELS[2],
   };
 }
 

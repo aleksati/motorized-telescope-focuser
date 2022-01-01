@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { DIVIMAGES } from "../../data/img-data";
-import getUserLocation from "../../utils/getUserLocation";
+import getUserLocation from "../../utils/requests/getUserLocation";
 
 // Make so that, if we check at 23:00 (for instace) it get the info from 23:00.. not 21:00..
 

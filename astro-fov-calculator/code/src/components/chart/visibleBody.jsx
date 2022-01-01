@@ -13,7 +13,7 @@ const VisibleBody = ({
 }) => {
   const [currBody, setCurrBody] = useState(null);
 
-  // Add currBody from currCrowd
+  // Add the currBody from currCrowd
   useEffect(() => {
     if (!isLoading && !isError) {
       let selectedBodyName = Object.keys(currCrowd).filter(
@@ -31,15 +31,9 @@ const VisibleBody = ({
     if (currBody) {
       let canvas = canvasRef.current;
       let ctx = canvas.getContext("2d");
-      //   ctx.fillStyle = "rgb(255, 0, 0)";
-      //   ctx.lineWidth = 14;
-      //   ctx.beginPath();
-      //   ctx.moveTo(250, 500);
-      //   ctx.lineTo(100, 100);
-      //   ctx.stroke();
+
       let img = new Image();
       img.src = currBody.img;
-      //console.log(typeof img, img);
       ctx.drawImage(img, 255, 255, 50, 50);
     } else {
       console.log("remove");

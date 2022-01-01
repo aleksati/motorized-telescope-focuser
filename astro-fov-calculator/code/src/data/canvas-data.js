@@ -1,3 +1,5 @@
+import { ANGULAR_MEASUREMENT_LABELS } from "./angular-measurement-labels";
+
 const initCanvasData = {
   isEyepieceMode: true,
   hasGrid: true,
@@ -8,7 +10,7 @@ const initCanvasData = {
   plotSizeX: 20,
   plotSizeY: 20,
   plotDivisor: 6,
-  axisLabel: "Minutes of Arc",
+  axisLabel: ANGULAR_MEASUREMENT_LABELS[1],
 };
 
 export default initCanvasData;

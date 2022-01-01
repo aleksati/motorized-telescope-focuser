@@ -1,10 +1,19 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { DIVIMAGES } from "../../data/img-data";
 
 // https://www.framer.com/docs/examples/
 // include some error-handling
 
-const BodySelectorImage = (props) => {
+const BODYWIDTH = "25px";
+const SELECTEDX = DIVIMAGES.selectedX;
+
+const BodySelectorImage = ({
+  bodyName,
+  isVisible,
+  bodyImg,
+  onBodySelection,
+}) => {
   return (
     <motion.div
       initial={true}
@@ -13,14 +22,14 @@ const BodySelectorImage = (props) => {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.8 }}
       onTap={(event) => {
-        props.onBodySelection(event.target.alt);
+        onBodySelection(event.target.alt);
       }}
     >
       <img
-        src={props.isVisible ? props.selectedX : props.bodyImg}
-        alt={props.bodyName}
-        width={props.bodyWidth}
-        style={{ opacity: props.isVisible ? 0.4 : 1, cursor: "pointer" }}
+        src={isVisible ? SELECTEDX : bodyImg}
+        alt={bodyName}
+        width={BODYWIDTH}
+        style={{ opacity: isVisible ? 0.4 : 1, cursor: "pointer" }}
       />
     </motion.div>
   );

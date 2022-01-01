@@ -1,93 +1,142 @@
-import React, { useRef, useState, useReducer, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useReducer,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import {
-  paintOnSquare,
-  paintOnCircle,
-  paintBg,
-  setupCanvas,
-} from "../../utils/canvasMethods.js";
+  getDPRwithZoom,
+  getCanvasHeight,
+  getScaledCanvasDim,
+  getSizeOffsetForLabels,
+} from "../../utils/canvas/setupCanvas.js";
+import {
+  drawCanvasBg,
+  drawSquareCanvas,
+  drawCircleCanvas,
+} from "../../utils/canvas/drawCanvas.js";
+import { drawBody } from "../../utils/canvas/drawBodies.js";
+import PropTypes from "prop-types";
 
-// layouteffect runs before the DOM initally renders. A good place to update/get size of DOM elements to avoid flickering.
-const Canvas = (props) => {
+const LABELFONT = "40px Arial";
+const NUMBERFONT = "20px Arial";
+const OFFSET = 5;
+
+// layouteffect runs before the DOM initally renders.
+// A good place to update/get size of DOM elements to avoid flickering.
+const Canvas = ({ isLoading, isError, canvasData, colors, currCrowd }) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(null);
   const [canvasWidth, setCanvasWidth] = useState(null);
-  const [onUpdate, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [forceUpdate, setForceUpdate] = useReducer((x) => x + 1, 0);
+  const [currBody, setCurrBody] = useState(null);
 
-  // on mount, attach event listner.
+  // on mount, listen and forceUpdate on the window resizing.
   useEffect(() => {
     if (canvasRef.current) {
-      window.addEventListener("resize", forceUpdate);
+      window.addEventListener("resize", setForceUpdate);
       return () => {
-        window.removeEventListener("resize", forceUpdate);
+        window.removeEventListener("resize", setForceUpdate);
       };
     }
   }, [canvasRef]);
 
-  // Store the container width when the DIV mounts
-  // and whenever we resize the window.
-  useEffect(() => {
+  // Set the containerWidth when the parent DIV mounts, and whenever we resize the window.
+  useLayoutEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.parentNode.clientWidth);
     }
-  }, [containerRef, onUpdate]);
+  }, [containerRef, forceUpdate]);
 
-  // If the container width OR a new zoom value is registered:
-  // we update the canvasWidth.
-  useEffect(() => {
+  // Set the canvasWidth If the container width OR a new zoom value is registered.
+  useLayoutEffect(() => {
     if (containerWidth) {
-      let cw = (containerWidth / 100) * props.canvasData.zoomValue;
+      let cw = (containerWidth / 100) * canvasData.zoomValue;
       setCanvasWidth(cw);
     }
-  }, [containerWidth, props.canvasData.zoomValue]);
+  }, [containerWidth, canvasData.zoomValue]);
 
-  // Paint the canvas on most renders.
+  // set the currBody (selected from the bodySelector) from currCrowd
   useEffect(() => {
+    if (!isLoading && !isError) {
+      let selectedBodyName = Object.keys(currCrowd).filter(
+        (key) => currCrowd[key].isVisible
+      );
+      let newBody = selectedBodyName.length
+        ? currCrowd[selectedBodyName]
+        : null;
+      setCurrBody(newBody);
+    }
+  }, [currCrowd, isLoading, isError]);
+
+  // Paint the canvas
+  useLayoutEffect(() => {
     if (canvasRef.current && canvasWidth) {
-      let canvas = canvasRef.current;
-      let context = setupCanvas(
-        canvas,
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      const dpr = getDPRwithZoom(canvasData.zoomValue);
+      const canvasHeight = getCanvasHeight(canvasWidth, canvasData);
+      const { scaledCanvasWidth, scaledCanvasHeight } = getScaledCanvasDim(
+        dpr,
         canvasWidth,
-        props.canvasData.zoomValue,
-        props.canvasData.plotSizeX,
-        props.canvasData.plotSizeY,
-        props.canvasData.hasLabels
+        canvasHeight
+      );
+      const LABELOFFSET = getSizeOffsetForLabels(
+        canvasData.hasLabels,
+        scaledCanvasWidth,
+        scaledCanvasHeight,
+        NUMBERFONT,
+        LABELFONT,
+        OFFSET
       );
 
-      paintBg(context);
+      canvas.width = scaledCanvasWidth;
+      canvas.height = scaledCanvasHeight;
+      // context.scale(dpr, dpr);
 
-      if (!props.canvasData.isEyepieceMode) {
-        paintOnSquare(
+      drawCanvasBg(context, scaledCanvasWidth, scaledCanvasHeight);
+
+      if (!canvasData.isEyepieceMode) {
+        drawSquareCanvas(
           context,
-          props.canvasData.plotSizeX,
-          props.canvasData.plotSizeY,
-          props.canvasData.plotDivisor,
-          props.canvasData.axisLabel,
-          props.canvasData.hasLabels,
-          props.canvasData.hasGrid,
-          props.canvasData.hasRedGrid,
-          props.canvasData.redGridFactor,
-          props.colors
+          canvasData,
+          colors,
+          scaledCanvasWidth,
+          scaledCanvasHeight,
+          LABELFONT,
+          NUMBERFONT,
+          LABELOFFSET,
+          OFFSET
         );
       } else {
-        paintOnCircle(
+        drawCircleCanvas(
           context,
-          props.canvasData.plotSizeX,
-          props.canvasData.plotSizeY,
-          props.canvasData.plotDivisor,
-          props.canvasData.axisLabel,
-          props.canvasData.hasLabels,
-          props.canvasData.hasGrid,
-          props.canvasData.hasRedGrid,
-          props.canvasData.redGridFactor,
-          props.colors
+          canvasData,
+          colors,
+          scaledCanvasWidth,
+          scaledCanvasHeight,
+          LABELFONT,
+          NUMBERFONT,
+          OFFSET
         );
       }
+
+      // finally,
+      if (currBody)
+        drawBody(
+          context,
+          canvasData,
+          scaledCanvasWidth,
+          scaledCanvasHeight,
+          currBody
+        );
 
       // canvas.style.width = canvasWidth + "px !important";
       // canvas.style.height = canvasWidth + "px !important";
     }
-  }, [canvasRef, props.colors, props.canvasData, canvasWidth]);
+  }, [canvasRef, canvasWidth, colors, canvasData, currBody]);
 
   return (
     <div className="container d-flex justify-content-center p-0">
@@ -95,15 +144,20 @@ const Canvas = (props) => {
         <canvas
           ref={canvasRef}
           className={
-            props.canvasData.isEyepieceMode
-              ? "w-100 border rounded-circle"
-              : "w-100 border"
+            canvasData.isEyepieceMode ? "w-100 border rounded-circle" : "w-100"
           }
         />
-        {props.children(canvasRef, canvasWidth)}
       </div>
     </div>
   );
+};
+
+Canvas.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  isError: PropTypes.bool.isRequired,
+  currCrowd: PropTypes.object.isRequired,
+  canvasData: PropTypes.object.isRequired,
+  colors: PropTypes.object.isRequired,
 };
 
 export default Canvas;

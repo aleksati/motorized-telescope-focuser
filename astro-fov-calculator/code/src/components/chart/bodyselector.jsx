@@ -14,17 +14,21 @@ import BodySelectorMenu from "./bodyselectormenu";
 // currCrowd
 // isEyepieceMode
 
+const BODYWIDTH = "25px";
+const loading = DIVIMAGES.loading;
+const error = DIVIMAGES.error;
+
 const BodySelector = (props) => {
   return (
     <div className="container d-flex justify-content-around p-0 mb-4">
       {props.isError ? (
-        <img src={DIVIMAGES.error} alt="ERROR..." width="25px" height="25px" />
+        <img src={error} alt="ERROR..." width={BODYWIDTH} height={BODYWIDTH} />
       ) : props.isLoading ? (
         <img
-          src={DIVIMAGES.loading}
+          src={loading}
           alt="loading..."
-          width="25px"
-          height="25px"
+          width={BODYWIDTH}
+          height={BODYWIDTH}
         />
       ) : (
         <>
@@ -36,14 +40,13 @@ const BodySelector = (props) => {
             crowdNamesArray={props.crowdNamesArray}
           />
           {Object.keys(props.currCrowd).map((key) => {
+            // Here I should really optiise so that only the images that need to be re-rendered are re-rendered
             return (
               <BodySelectorImage
                 bodyName={props.currCrowd[key].string}
-                bodyWidth={"25px"}
                 key={props.currCrowd[key].string}
                 isVisible={props.currCrowd[key].isVisible}
                 bodyImg={props.currCrowd[key].img}
-                selectedX={DIVIMAGES.selectedX}
                 onBodySelection={props.onBodySelection}
               />
             );

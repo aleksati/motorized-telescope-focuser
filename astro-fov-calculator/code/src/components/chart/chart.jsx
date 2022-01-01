@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Canvas from "./canvas";
 import BodySelector from "./bodyselector";
-import VisibleBody from "./visibleBody";
 import initCrowdData from "../../data/crowd-data";
-import getSolarSystemData from "../../utils/getSolarSystemData";
+import getSolarSystemData from "../../utils/requests/getSolarSystemData";
 
 // props:
 // canvasData
@@ -17,7 +16,7 @@ const Chart = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  // Fetch more space data.
+  // Fetch current API data on celestial objects (AU, distance from earth etc.)
   useEffect(() => {
     setIsLoading(true);
     setIsError(false);
@@ -69,18 +68,13 @@ const Chart = (props) => {
         isEyepieceMode={props.canvasData.isEyepieceMode}
       />
       {/* Canvas passes some props as children render props to visible body */}
-      <Canvas canvasData={props.canvasData} colors={props.colors}>
-        {(canvasRef, canvasWidth) => (
-          <VisibleBody
-            isLoading={isLoading}
-            isError={isError}
-            canvasRef={canvasRef}
-            canvasWidth={canvasWidth ? canvasWidth : 0}
-            currCrowd={currCrowd ? currCrowd : {}}
-            canvasData={props.canvasData}
-          />
-        )}
-      </Canvas>
+      <Canvas
+        isLoading={isLoading}
+        isError={isError}
+        canvasData={props.canvasData}
+        colors={props.colors}
+        currCrowd={currCrowd ? currCrowd : {}}
+      ></Canvas>
     </div>
   );
 };
