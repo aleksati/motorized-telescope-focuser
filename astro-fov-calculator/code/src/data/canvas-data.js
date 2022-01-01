@@ -13,4 +13,6 @@ const initCanvasData = {
   axisLabel: ANGULAR_MEASUREMENT_LABELS[1],
 };
 
+// should be angularUnit
+
 export default initCanvasData;

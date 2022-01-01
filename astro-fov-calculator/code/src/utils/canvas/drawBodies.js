@@ -13,8 +13,8 @@ function drawBody(
   scaledCanvasHeight,
   currBody
 ) {
-  const width = scaledCanvasWidth;
-  const height = scaledCanvasHeight;
+  const canvasWidth = scaledCanvasWidth;
+  const canvasHeight = scaledCanvasHeight;
   const { plotSizeX, plotSizeY, plotDivisor, axisLabel } = canvasData;
   const { angularDiameter, img } = currBody;
   let imgObject = new Image();
@@ -23,7 +23,10 @@ function drawBody(
   const canvasUnitCount = plotSizeX / plotDivisor;
   const { bodyUnit, bodyUnitCount } = formatBodyUnits(angularDiameter);
 
-  // scale the angDiameter to the current plotDivisor
+  // first check that bodyUnit and canvasUnit are the same. Else, do another formatting canculation.
+  // then,
+  // pxPerUnitX = canvasWidth / canvasUnitCount
+  // picWidth = bodyUnitCount * pxPerUnitX ... right?
 }
 
 function drawTextBox() {}
