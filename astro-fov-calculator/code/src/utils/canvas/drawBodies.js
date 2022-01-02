@@ -26,29 +26,27 @@ function drawBody(
   canvasData,
   scaledCanvasWidth,
   scaledCanvasHeight,
-  currBody
+  currBody,
+  labelOffset
 ) {
-  const { plotSizeX, plotSizeY, plotDivisor, angularUnit } = canvasData;
+  const { plotSizeX, plotDivisor, angularUnit } = canvasData;
   const { angularDiameterDeg, img } = currBody;
   const bodyUnitCount = formatBodyUnits(angularDiameterDeg, angularUnit);
 
-  const canvasUnit = angularUnit;
   const canvasUnitCount = plotSizeX / plotDivisor;
-  const pxPerUnit = scaledCanvasWidth / canvasUnitCount;
+  const offsetWidth = (scaledCanvasWidth / 100) * labelOffset;
+  const offsetHeight = (scaledCanvasHeight / 100) * labelOffset;
+  const pxPerUnit = (scaledCanvasWidth - offsetWidth) / canvasUnitCount;
 
   const imagePxDiameter = bodyUnitCount * pxPerUnit;
-
-  //   console.log("Canvas unit:", canvasUnit);
-  //   console.log("Body diameter in that unit:", bodyUnitCount);
-  //   console.log("Body diameter in degrees:", angularDiameterDeg);
-  //   console.log(imagePxDiameter);
+  const centeringOffset = imagePxDiameter / 2;
 
   let imgObject = new Image();
   imgObject.src = img;
   context.drawImage(
     imgObject,
-    scaledCanvasWidth / 2,
-    scaledCanvasHeight / 2,
+    (scaledCanvasWidth + offsetWidth) / 2 - centeringOffset,
+    (scaledCanvasHeight - offsetHeight) / 2 - centeringOffset,
     imagePxDiameter,
     imagePxDiameter
   );

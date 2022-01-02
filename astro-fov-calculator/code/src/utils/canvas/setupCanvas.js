@@ -23,6 +23,7 @@ function getScaledCanvasDim(dpr, width, height) {
 
 function getSizeOffsetForLabels(
   hasLabels,
+  isEyepieceMode,
   scaledCanvasWidth,
   scaledCanvasHeight,
   numberFont,
@@ -30,8 +31,9 @@ function getSizeOffsetForLabels(
   offset
 ) {
   let labelOffset = 0;
-  if (hasLabels && scaledCanvasWidth && scaledCanvasHeight) {
-    // calculate how much we should shrink the canvas in order to fit the labelFont and numberFont nicely on the outside.
+  if (!isEyepieceMode && hasLabels && scaledCanvasWidth && scaledCanvasHeight) {
+    // calculate how much we should shrink the canvas in order to
+    // fit the labelFont and numberFont nicely on the outside.
     // we base the calculation on whichever axis has the least pixels.
     let smllstSide =
       scaledCanvasHeight < scaledCanvasWidth

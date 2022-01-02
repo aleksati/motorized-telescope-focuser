@@ -86,6 +86,7 @@ const Canvas = ({ isLoading, isError, canvasData, colors, currCrowd }) => {
       );
       const LABELOFFSET = getSizeOffsetForLabels(
         canvasData.hasLabels,
+        canvasData.isEyepieceMode,
         scaledCanvasWidth,
         scaledCanvasHeight,
         NUMBERFONT,
@@ -131,7 +132,8 @@ const Canvas = ({ isLoading, isError, canvasData, colors, currCrowd }) => {
           canvasData,
           scaledCanvasWidth,
           scaledCanvasHeight,
-          currBody
+          currBody,
+          LABELOFFSET
         );
 
       // canvas.style.width = canvasWidth + "px !important";
