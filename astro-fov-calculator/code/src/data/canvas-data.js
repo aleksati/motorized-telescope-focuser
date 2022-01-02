@@ -10,9 +10,7 @@ const initCanvasData = {
   plotSizeX: 20,
   plotSizeY: 20,
   plotDivisor: 6,
-  axisLabel: ANGULAR_MEASUREMENT_LABELS[1],
+  angularUnit: ANGULAR_MEASUREMENT_LABELS[1],
 };
-
-// should be angularUnit
 
 export default initCanvasData;

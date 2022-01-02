@@ -53,7 +53,7 @@ function drawSquareCanvas(
     plotSizeX,
     plotSizeY,
     plotDivisor,
-    axisLabel,
+    angularUnit,
     hasLabels,
     hasGrid,
     hasRedGrid,
@@ -117,7 +117,7 @@ function drawSquareCanvas(
     // X label
     ctx.font = labelFont;
     ctx.fillText(
-      axisLabel,
+      angularUnit,
       scaledCanvasWidth / 2 + offsetWidth,
       scaledCanvasHeight -
         offsetHeight +
@@ -135,7 +135,7 @@ function drawSquareCanvas(
       scaledCanvasHeight / 2 - offsetHeight
     );
     ctx.rotate(Math.PI / -2);
-    ctx.fillText(axisLabel, 0, 0);
+    ctx.fillText(angularUnit, 0, 0);
     ctx.restore();
   }
 
@@ -239,18 +239,18 @@ function drawCircleCanvas(
   numberFont,
   offset
 ) {
-  let {
+  const {
     plotSizeX,
     plotSizeY,
     plotDivisor,
-    axisLabel,
+    angularUnit,
     hasLabels,
     hasGrid,
     hasRedGrid,
     redGridFactor,
   } = canvasData;
-  let pxPerUnitX = scaledCanvasWidth / plotSizeX;
-  let pxPerUnitY = scaledCanvasHeight / plotSizeY;
+  const pxPerUnitX = scaledCanvasWidth / plotSizeX;
+  const pxPerUnitY = scaledCanvasHeight / plotSizeY;
 
   ctx.textAlign = "center";
   ctx.fillStyle = colors.canvasText; // text and numbers
@@ -300,7 +300,7 @@ function drawCircleCanvas(
     // X labels
     ctx.save();
     paintCircularText(
-      axisLabel,
+      angularUnit,
       ctx,
       45,
       labelFont,

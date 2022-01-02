@@ -31,7 +31,7 @@ function camera2canvasSize(
       plotSizeX: Math.round(FOV_X * 57.3 * 6),
       plotSizeY: Math.round(FOV_Y * 57.3 * 6),
       plotDivisor: 6,
-      axisLabel: ANGULAR_MEASUREMENT_LABELS[0],
+      angularUnit: ANGULAR_MEASUREMENT_LABELS[0],
     };
   }
 
@@ -41,7 +41,7 @@ function camera2canvasSize(
       plotSizeX: Math.round(FOV_X * 3438 * 6),
       plotSizeY: Math.round(FOV_Y * 3438 * 6),
       plotDivisor: 6,
-      axisLabel: ANGULAR_MEASUREMENT_LABELS[1],
+      angularUnit: ANGULAR_MEASUREMENT_LABELS[1],
     };
   }
 
@@ -50,7 +50,7 @@ function camera2canvasSize(
     plotSizeX: Math.round(FOV_X * 206265),
     plotSizeY: Math.round(FOV_Y * 206265),
     plotDivisor: 1,
-    axisLabel: ANGULAR_MEASUREMENT_LABELS[2],
+    angularUnit: ANGULAR_MEASUREMENT_LABELS[2],
   };
 }
 

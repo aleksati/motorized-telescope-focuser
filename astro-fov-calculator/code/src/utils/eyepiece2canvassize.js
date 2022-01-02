@@ -23,7 +23,7 @@ function eyePiece2canvasSize(
       plotSizeX: Math.round(tfov * 6),
       plotSizeY: Math.round(tfov * 6),
       plotDivisor: 6,
-      axisLabel: ANGULAR_MEASUREMENT_LABELS[0],
+      angularUnit: ANGULAR_MEASUREMENT_LABELS[0],
     };
   }
 
@@ -33,7 +33,7 @@ function eyePiece2canvasSize(
       plotSizeX: Math.round(tfov * 60 * 6),
       plotSizeY: Math.round(tfov * 60 * 6),
       plotDivisor: 6,
-      axisLabel: ANGULAR_MEASUREMENT_LABELS[1],
+      angularUnit: ANGULAR_MEASUREMENT_LABELS[1],
     };
   }
 
@@ -42,7 +42,7 @@ function eyePiece2canvasSize(
     plotSizeX: Math.round(tfov * 60 * 60),
     plotSizeY: Math.round(tfov * 60 * 60),
     plotDivisor: 1,
-    axisLabel: ANGULAR_MEASUREMENT_LABELS[2],
+    angularUnit: ANGULAR_MEASUREMENT_LABELS[2],
   };
 }
 

@@ -7,7 +7,7 @@ const initPlanetData = {
     isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
-    angularDiameter: null, // Diameter: 0° 00' 12.065"
+    angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   venus: {
@@ -16,7 +16,7 @@ const initPlanetData = {
     isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
-    angularDiameter: null, // Diameter: 0° 00' 12.065"
+    angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   mars: {
@@ -25,7 +25,7 @@ const initPlanetData = {
     isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
-    angularDiameter: null, // Diameter: 0°. 00' 12.065"
+    angularDiameterDeg: null, // Diameter: 0°. 00' 12.065"
     magnitude: null,
   },
   jupiter: {
@@ -34,7 +34,7 @@ const initPlanetData = {
     isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
-    angularDiameter: null, // Diameter: 0° 00' 12.065"
+    angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   saturn: {
@@ -43,7 +43,7 @@ const initPlanetData = {
     isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
-    angularDiameter: null, // Diameter: 0° 00' 12.065"
+    angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   uranus: {
@@ -52,7 +52,7 @@ const initPlanetData = {
     isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
-    angularDiameter: null, // Diameter: 0° 00' 12.065"
+    angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   neptune: {
@@ -61,7 +61,7 @@ const initPlanetData = {
     isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
-    angularDiameter: null, // Diameter: 0° 00' 12.065"
+    angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
 };
@@ -73,7 +73,7 @@ const initMoonData = {
     isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
-    angularDiameter: null, // Diameter: 0° 00' 12.065"
+    angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
 };

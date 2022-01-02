@@ -42,6 +42,9 @@ const Info = (props) => {
       isChanged: false,
     },
   });
+  // for get pxPerSquare (Grid)
+  const prevRedGridState = useRef(props.hasRedGrid);
+  const prevGridState = useRef(props.hasGrid);
 
   // When I submit, I set the isChanged fla to false
   // Whenever the info boxes is changed after submit, the text color changes.
@@ -179,8 +182,6 @@ const Info = (props) => {
   }, [props.focallength, props.aperture]);
 
   // get pxPerSquare (Grid)
-  const prevRedGridState = useRef(props.hasRedGrid);
-  const prevGridState = useRef(props.hasGrid);
   useEffect(() => {
     let resX =
       Number(props.resolutionx.value) <= 0
@@ -203,8 +204,12 @@ const Info = (props) => {
 
       // if hasRedGrid, then the px² should be the: result * redGridFactor²?
       result = props.hasRedGrid
-        ? result * (props.redGridFactor * props.redGridFactor) + "px²"
-        : result + "px²";
+        ? Math.round(
+            result * (props.redGridFactor * props.redGridFactor) * 10
+          ) /
+            10 +
+          "px²"
+        : Math.round(result * 10) / 10 + "px²";
     }
 
     setState((prevState) => ({

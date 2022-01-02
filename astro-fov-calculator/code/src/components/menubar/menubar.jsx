@@ -23,11 +23,7 @@ const Menubar = (props) => (
       onFormSubmit={props.onFormSubmit}
     />
     <Info
-      isEyepieceMode={props.formDataInfo.isEyepieceMode}
       isSubmit={props.isSubmit}
-      hasGrid={props.formDataInfo.hasGrid}
-      hasRedGrid={props.formDataInfo.hasRedGrid}
-      redGridFactor={props.formDataInfo.redGridFactor}
       focallength={props.formData.focallength}
       barlow={props.formData.barlow}
       aperture={props.formData.aperture}
@@ -35,8 +31,12 @@ const Menubar = (props) => (
       resolutiony={props.formData.resolutiony}
       pixelsize={props.formData.pixelsize}
       eyepiecefocallength={props.formData.eyepiecefocallength}
+      hasGrid={props.formDataInfo.hasGrid}
+      hasRedGrid={props.formDataInfo.hasRedGrid}
+      redGridFactor={props.formDataInfo.redGridFactor}
       plotsizex={props.formDataInfo.plotSizeX}
       plotsizey={props.formDataInfo.plotSizeY}
+      isEyepieceMode={props.formDataInfo.isEyepieceMode}
       colors={props.colors}
     />
     <CanvasOptions

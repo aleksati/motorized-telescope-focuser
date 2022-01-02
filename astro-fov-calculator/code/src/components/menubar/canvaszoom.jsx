@@ -5,8 +5,8 @@ import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
 
+const INC = 10;
 const CanvasZoom = (props) => {
-  const INC = 10;
   return (
     <Tooltip title={props.zoomValue + "%"} placement="bottom">
       <ButtonGroup

@@ -3,7 +3,8 @@ import { DIVIMAGES } from "../../data/img-data";
 import getUserLocation from "../../utils/requests/getUserLocation";
 
 // Make so that, if we check at 23:00 (for instace) it get the info from 23:00.. not 21:00..
-
+const loading = DIVIMAGES.loading;
+const error = DIVIMAGES.error;
 const Forecast = (props) => {
   const [YRdata, setYRdata] = useState({
     timeseries: {},
@@ -104,21 +105,11 @@ const Forecast = (props) => {
       </p>
       {isError ? (
         <p className={borderStyle()}>
-          <img
-            src={DIVIMAGES.error}
-            alt="ERROR..."
-            width="25px"
-            height="25px"
-          />
+          <img src={error} alt="ERROR..." width="25px" height="25px" />
         </p>
       ) : isLoading ? (
         <p className={borderStyle()}>
-          <img
-            src={DIVIMAGES.loading}
-            alt="loading..."
-            width="25px"
-            height="25px"
-          />
+          <img src={loading} alt="loading..." width="25px" height="25px" />
         </p>
       ) : (
         <p className={borderStyle()}>

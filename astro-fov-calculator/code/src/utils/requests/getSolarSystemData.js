@@ -11,6 +11,7 @@ import {
 import { createMoon } from "astronomy-bundle/moon";
 
 // used in component/chart/chart.jsx
+// adds more data to the currCrowd object
 
 // crowdsObj =
 // mercury: {
@@ -49,20 +50,21 @@ const getSolarSystemData = async (crowdsObj) => {
     for (let x = 0; x < currCrowdBodies.length; x++) {
       let currBody = currCrowd[currCrowdBodies[x]];
       let currBodyName = currBody.string;
-      //   if (currBodyName !== "jupiter") continue; for testing
+      //   if (currBodyName !== "mercury") continue; for testing
 
       let currMethod = functionMap[currBodyName];
       let bodyData = currMethod(toi);
 
       const km = await bodyData.getDistanceToEarth();
       const au = km * Number(6.6845871222684e-9);
-      const aDiameter = await bodyData.getAngularDiameter();
+      const aDiameter = await bodyData.getAngularDiameter(); // returns the answer in degrees.
       const mag = await bodyData.getApparentMagnitude();
 
       // save new data in the copied object.
       crowdsObjCopy[crowds[i]][currCrowdBodies[x]].kmFromEarth = km;
       crowdsObjCopy[crowds[i]][currCrowdBodies[x]].auFromEarth = au;
-      crowdsObjCopy[crowds[i]][currCrowdBodies[x]].angularDiameter = aDiameter;
+      crowdsObjCopy[crowds[i]][currCrowdBodies[x]].angularDiameterDeg =
+        aDiameter;
       crowdsObjCopy[crowds[i]][currCrowdBodies[x]].magnitude = mag;
     }
   }
