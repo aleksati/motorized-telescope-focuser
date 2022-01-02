@@ -14,7 +14,7 @@ import BodySelectorMenu from "./bodyselectormenu";
 // currCrowd
 // isEyepieceMode
 
-const BODYWIDTH = "25px";
+const BODYWIDTH = "35px";
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
 
@@ -48,6 +48,7 @@ const BodySelector = (props) => {
                 isVisible={props.currCrowd[key].isVisible}
                 bodyImg={props.currCrowd[key].img}
                 onBodySelection={props.onBodySelection}
+                bodyWidth={BODYWIDTH}
               />
             );
           })}

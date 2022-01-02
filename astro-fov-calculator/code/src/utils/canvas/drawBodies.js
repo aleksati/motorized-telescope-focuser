@@ -38,10 +38,10 @@ function drawBody(
 
   const imagePxDiameter = bodyUnitCount * pxPerUnit;
 
-  console.log("Canvas unit:", canvasUnit);
-  console.log("Body diameter in that unit:", bodyUnitCount);
-  console.log("Body diameter in degrees:", angularDiameterDeg);
-  console.log(imagePxDiameter);
+  //   console.log("Canvas unit:", canvasUnit);
+  //   console.log("Body diameter in that unit:", bodyUnitCount);
+  //   console.log("Body diameter in degrees:", angularDiameterDeg);
+  //   console.log(imagePxDiameter);
 
   let imgObject = new Image();
   imgObject.src = img;

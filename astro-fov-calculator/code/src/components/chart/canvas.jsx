@@ -18,6 +18,7 @@ import {
 } from "../../utils/canvas/drawCanvas.js";
 import { drawBody } from "../../utils/canvas/drawBodies.js";
 import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 
 const LABELFONT = "40px Arial";
 const NUMBERFONT = "20px Arial";
@@ -139,16 +140,26 @@ const Canvas = ({ isLoading, isError, canvasData, colors, currCrowd }) => {
   }, [canvasRef, canvasWidth, colors, canvasData, currBody]);
 
   return (
-    <div className="container d-flex justify-content-center p-0">
-      <div ref={containerRef} style={{ width: canvasWidth }}>
-        <canvas
-          ref={canvasRef}
-          className={
-            canvasData.isEyepieceMode ? "w-100 border rounded-circle" : "w-100"
-          }
-        />
+    <motion.div
+      key={canvasData.isEyepieceMode ? "ep" : "cam"}
+      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 20 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.2, type: "spring", stiffness: 100 }}
+    >
+      <div className="container d-flex justify-content-center p-0">
+        <div ref={containerRef} style={{ width: canvasWidth }}>
+          <canvas
+            ref={canvasRef}
+            className={
+              canvasData.isEyepieceMode
+                ? "w-100 border rounded-circle"
+                : "w-100"
+            }
+          />
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

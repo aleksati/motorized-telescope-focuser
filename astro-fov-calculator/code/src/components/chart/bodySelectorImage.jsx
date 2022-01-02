@@ -5,7 +5,6 @@ import { DIVIMAGES } from "../../data/img-data";
 // https://www.framer.com/docs/examples/
 // include some error-handling
 
-const BODYWIDTH = "25px";
 const SELECTEDX = DIVIMAGES.selectedX;
 
 const BodySelectorImage = ({
@@ -13,12 +12,13 @@ const BodySelectorImage = ({
   isVisible,
   bodyImg,
   onBodySelection,
+  bodyWidth,
 }) => {
   return (
     <motion.div
-      initial={true}
-      animate={{ x: [-100, 0] }}
-      transition={{ ease: "easeOut", duration: 0.1 }}
+      //   initial={true}
+      animate={{ x: [-100, 0], rotate: 360 }}
+      transition={{ type: "spring", stiffness: 100, duration: 0.3 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.8 }}
       onTap={(event) => {
@@ -28,7 +28,7 @@ const BodySelectorImage = ({
       <img
         src={isVisible ? SELECTEDX : bodyImg}
         alt={bodyName}
-        width={BODYWIDTH}
+        width={bodyWidth}
         style={{ opacity: isVisible ? 0.4 : 1, cursor: "pointer" }}
       />
     </motion.div>
