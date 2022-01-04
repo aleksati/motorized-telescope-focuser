@@ -31,7 +31,7 @@ const Chart = (props) => {
         setCurrCrowdName(firstCrowdName);
         setIsLoading(false);
       } catch (error) {
-        console.log(error);
+        alert(error);
         setIsError(true);
       }
     };
