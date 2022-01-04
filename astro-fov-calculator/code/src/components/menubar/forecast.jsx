@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { DIVIMAGES } from "../../data/img-data";
-import getUserLocation from "../../utils/requests/getUserLocation";
+import { getUserLocation, location2city } from "../../utils/requests";
+import * as calc from "../../utils/calc";
 
 // Make so that, if we check at 23:00 (for instace) it get the info from 23:00.. not 21:00..
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
+
 const Forecast = (props) => {
   const [YRdata, setYRdata] = useState({
     timeseries: {},
@@ -14,34 +16,14 @@ const Forecast = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
 
-  // We are only interested in one weather forcast at night time.
-  const filterData = useCallback((data) => {
-    const currTime = Date();
-    let currTimeHour = currTime.slice(16, 18);
-    let idx;
-
-    // IF its night already, we find the current hour and return it.
-    if (currTimeHour >= "21" || currTimeHour <= "03") {
-      idx = data.findIndex((item) => {
-        return item.time.slice(11, 13) === currTimeHour;
-      });
-    } else {
-      idx = data.findIndex((item) => {
-        return item.time.slice(11, 13) === "21";
-      });
-    }
-    return data[idx];
-  }, []);
-
   // Componemt did mount
   useEffect(() => {
     setIsLoading(true);
     setError(false);
     const fetchData = async () => {
       try {
-        const location = await getUserLocation();
-        const lat = Math.round(location.latitude);
-        const long = Math.round(location.longitude);
+        const { lat, long } = await getUserLocation();
+        location2city(lat, long);
         const url =
           "https://api.met.no/weatherapi/locationforecast/2.0/compact.json?altitude=0&lat=" +
           lat +
@@ -50,18 +32,18 @@ const Forecast = (props) => {
 
         const response = await fetch(url);
         const data = await response.json();
-        const fdata = filterData(data.properties.timeseries); // remove the timeseries to a single desired object.
+        const fdata = calc.filterForecastData(data.properties.timeseries); // remove the timeseries to a single desired object.
         setYRdata((prevState) => ({
           ...prevState,
           timeseries: fdata,
         }));
       } catch (error) {
-        console.log(error);
+        alert(error);
         setError(true);
       }
     };
     fetchData();
-  }, [filterData]);
+  }, []);
 
   // Find the next6hours forecast from 22:00.
   // + images

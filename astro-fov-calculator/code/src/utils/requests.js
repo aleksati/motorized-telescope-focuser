@@ -1,4 +1,5 @@
 import { createTimeOfInterest } from "astronomy-bundle/time";
+import { createMoon } from "astronomy-bundle/moon";
 import {
   createMars,
   createVenus,
@@ -8,7 +9,6 @@ import {
   createUranus,
   createNeptune,
 } from "astronomy-bundle/planets";
-import { createMoon } from "astronomy-bundle/moon";
 
 // used in component/chart/chart.jsx
 // adds more data to the currCrowd object
@@ -37,7 +37,7 @@ const functionMap = {
 };
 
 // returns a promise
-const getSolarSystemData = async (crowdsObj) => {
+export const getSolarSystemData = async (crowdsObj) => {
   let crowdsObjCopy = JSON.parse(JSON.stringify(crowdsObj));
   const date = new Date();
   const toi = createTimeOfInterest.fromDate(date);
@@ -71,4 +71,42 @@ const getSolarSystemData = async (crowdsObj) => {
   return crowdsObjCopy;
 };
 
-export default getSolarSystemData;
+// used in component/menubar/forecast.jsx
+// request to use user location through the browser
+export async function getUserLocation() {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          let latitude = position.coords.latitude;
+          let longitude = position.coords.longitude;
+          resolve({
+            lat: Math.round(latitude),
+            long: Math.round(longitude),
+          });
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } else {
+      reject("geolocation API not supported :(");
+    }
+  });
+}
+
+const GOOGLE_API_KEY;
+
+export async function location2city(lat, long) {
+  const url =
+    "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+    lat +
+    "," +
+    long +
+    "&key=" +
+    GOOGLE_API_KEY;
+  console.log(url);
+  const response = await fetch(url);
+  const data = await response.json();
+  console.log(data);
+}

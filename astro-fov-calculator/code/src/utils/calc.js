@@ -6,6 +6,28 @@ export function numberify(val) {
   return Number(val) <= 0 ? 0 : Number(val);
 }
 
+// ../components/chart/forecast.jsx //
+export function filterForecastData(data) {
+  // filter forecastData from the YR API
+  // const url = "https://api.met.no/weatherapi/locationforecast/2.0/compact.json?altitude=0&lat=" + lat + "&lon=" + long;
+  const currTime = Date();
+  let currTimeHour = currTime.slice(16, 18);
+  let idx;
+
+  // We are only interested in one weather forcast at night time.
+  // IF its night already, we find the current hour and return it.
+  if (currTimeHour >= "21" || currTimeHour <= "03") {
+    idx = data.findIndex((item) => {
+      return item.time.slice(11, 13) === currTimeHour;
+    });
+  } else {
+    idx = data.findIndex((item) => {
+      return item.time.slice(11, 13) === "21";
+    });
+  }
+  return data[idx];
+}
+
 // ../components/chart/info.jsx //
 export function getFratio(flength, barlow, aperture) {
   let b = Number(barlow) <= 0 ? 1 : Number(barlow);
@@ -80,6 +102,21 @@ export function getPxPerGridSquare(
   return pxPerSquare;
 }
 
+export function getChipSize(resX, resY, micronssquared) {
+  // get camera sensor size in mm²
+  let chipSize = "";
+  const rX = Number(resX) <= 0 ? 0 : Number(resX);
+  const rY = Number(resY) <= 0 ? 0 : Number(resY);
+  const pxSize = Number(micronssquared) <= 0 ? 0 : Number(micronssquared);
+  // any none of the the var above are 0.
+  if ([rX, rY, pxSize].indexOf(0) === -1) {
+    const sensorXsizeMM = mic2mm(rX, pxSize);
+    const sensorYsizeMM = mic2mm(rY, pxSize);
+    chipSize = Math.round(sensorXsizeMM * sensorYsizeMM * 10) / 10 + "mm²";
+  }
+  return chipSize;
+}
+
 // ./utils/eye2canvas & ./utils/eye2canvas//
 // ../components/chart/info.jsx //
 export function getTrueFOVdeg(afov, mag) {
@@ -90,8 +127,8 @@ export function getTrueFOVdeg(afov, mag) {
 }
 
 export function getMag(flengthScope, flengthEye) {
-  const scope = Number(flengthScope) <= 0 ? 1 : Number(flengthScope);
-  const eye = Number(flengthEye) <= 0 ? 1 : Number(flengthEye);
+  const scope = Number(flengthScope) <= 0 ? 0 : Number(flengthScope);
+  const eye = Number(flengthEye) <= 0 ? 0 : Number(flengthEye);
   return eye !== 0 && scope !== 0 ? Math.round((scope / eye) * 10) / 10 : "";
 }
 
@@ -171,6 +208,19 @@ export function deg2unitEye(deg) {
     return ANGULAR_MEASUREMENT_LABELS[2]; // arc seconds
   } else {
     return ANGULAR_MEASUREMENT_LABELS[1]; // arc minutes
+  }
+}
+
+// used in ./drawBodies //
+export function unit2ang(deg, unit) {
+  // convert angular values from degrees to arcmin or arcsec based on prefered unit.
+  switch (unit) {
+    case ANGULAR_MEASUREMENT_LABELS[0]:
+      return deg;
+    case ANGULAR_MEASUREMENT_LABELS[1]:
+      return deg2arcmin(deg);
+    case ANGULAR_MEASUREMENT_LABELS[2]:
+      return deg2arcsec(deg);
   }
 }
 

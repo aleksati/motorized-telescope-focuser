@@ -2,46 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import Forecast from "./forecast";
 import InfoInput from "./infoinput";
 import * as calc from "../../utils/calc";
+import initInfoData from "../../data/info-data";
 
 const Info = (props) => {
-  const [state, setState] = useState({
-    focalRatio: {
-      name: "FR",
-      value: "",
-      isEyepieceInfo: true,
-      isChanged: true,
-    },
-    aspectRatio: {
-      name: "AR",
-      value: "",
-      isEyepieceInfo: false,
-      isChanged: true,
-    },
-    magnification: {
-      name: "CurrMag",
-      value: "",
-      isEyepieceInfo: true,
-      isChanged: false,
-    },
-    maxMagnification: {
-      name: "MaxMag",
-      value: "",
-      isEyepieceInfo: true,
-      isChanged: false,
-    },
-    pxPerSquare: {
-      name: "Grid □",
-      value: "",
-      isEyepieceInfo: false,
-      isChanged: false,
-    },
-    chipSize: {
-      name: "Chip",
-      value: "",
-      isEyepieceInfo: false,
-      isChanged: false,
-    },
-  });
+  const [state, setState] = useState(initInfoData);
   // for get pxPerSquare (Grid)
   const prevRedGridState = useRef(props.hasRedGrid);
   const prevGridState = useRef(props.hasGrid);
@@ -166,24 +130,11 @@ const Info = (props) => {
 
   // get Chip Size (Chip)
   useEffect(() => {
-    let resX =
-      Number(props.resolutionx.value) <= 0
-        ? 0
-        : Number(props.resolutionx.value);
-    let resY =
-      Number(props.resolutiony.value) <= 0
-        ? 0
-        : Number(props.resolutiony.value);
-    let pixelSize =
-      Number(props.pixelsize.value) <= 0 ? 0 : Number(props.pixelsize.value);
-    let result = "";
-    // any none of the the var above are 0.
-    if ([resX, resY, pixelSize].indexOf(0) === -1) {
-      const sensorXsizeMM = calc.mic2mm(resX, pixelSize);
-      const sensorYsizeMM = calc.mic2mm(resY, pixelSize);
-      result = Math.round(sensorXsizeMM * sensorYsizeMM * 10) / 10 + "mm²";
-    }
-
+    const result = calc.getChipSize(
+      props.resolutionx.value,
+      props.resolutiony.value,
+      props.pixelsize.value
+    );
     setState((prevState) => ({
       ...prevState,
       chipSize: {

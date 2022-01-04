@@ -1,27 +1,6 @@
-import { ANGULAR_MEASUREMENT_LABELS } from "../../data/angular-measurement-labels";
+import * as calc from "../calc";
 
-function deg2arcmin(deg) {
-  let arcmin = deg * 60;
-  return arcmin;
-}
-
-function deg2arcsec(deg) {
-  let arcsec = deg * 3600;
-  return arcsec;
-}
-
-function formatBodyUnits(bodyDiDeg, canvasUnit) {
-  switch (canvasUnit) {
-    case ANGULAR_MEASUREMENT_LABELS[0]:
-      return bodyDiDeg;
-    case ANGULAR_MEASUREMENT_LABELS[1]:
-      return deg2arcmin(bodyDiDeg);
-    case ANGULAR_MEASUREMENT_LABELS[2]:
-      return deg2arcsec(bodyDiDeg);
-  }
-}
-
-function drawBody(
+export function drawBody(
   context,
   canvasData,
   scaledCanvasWidth,
@@ -31,7 +10,7 @@ function drawBody(
 ) {
   const { plotSizeX, plotDivisor, angularUnit } = canvasData;
   const { angularDiameterDeg, img } = currBody;
-  const bodyUnitCount = formatBodyUnits(angularDiameterDeg, angularUnit);
+  const bodyUnitCount = calc.unit2ang(angularDiameterDeg, angularUnit);
 
   const canvasUnitCount = plotSizeX / plotDivisor;
   const offsetWidth = (scaledCanvasWidth / 100) * labelOffset;
@@ -52,6 +31,4 @@ function drawBody(
   );
 }
 
-function drawTextBox() {}
-
-export { drawBody };
+export function drawTextBox() {}
