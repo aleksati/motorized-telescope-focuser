@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Menubar from "./components/menubar/menubar";
 import Chart from "./components/chart/chart";
-import eyePiece2canvasSize from "./utils/eyepiece2canvassize";
-import camera2canvasSize from "./utils/camera2canvassize";
+import eye2canvas from "./utils/eye2canvas";
+import cam2canvas from "./utils/cam2canvas";
+import { numberify } from "./utils/calc";
 import initColorData from "./data/color-data";
 import initCanvasData from "./data/canvas-data";
 import initFormData from "./data/form-data";
@@ -95,7 +96,6 @@ const App = () => {
 
   // For setting the rest of the FormInfoData when we have enough info the form
   useEffect(() => {
-    const numberify = (val) => (Number(val) <= 0 ? 0 : Number(val));
     let newFormDataInfo = [];
     if (formDataInfo.isEyepieceMode) {
       let epAFOV = numberify(formData.eyepieceafov.value);
@@ -106,8 +106,7 @@ const App = () => {
       let vars = [epAFOV, epFL, FL, b];
 
       // if there are no 0 value in any of the variables
-      newFormDataInfo =
-        vars.indexOf(0) === -1 ? eyePiece2canvasSize(...vars) : {};
+      newFormDataInfo = vars.indexOf(0) === -1 ? eye2canvas(...vars) : {};
     } else {
       let pxS = numberify(formData.pixelsize.value);
       let resX = numberify(formData.resolutionx.value);
@@ -118,8 +117,7 @@ const App = () => {
       let vars = [pxS, resX, resY, FL, b];
 
       // if there are no 0 values in any of the variables
-      newFormDataInfo =
-        vars.indexOf(0) === -1 ? camera2canvasSize(...vars) : {};
+      newFormDataInfo = vars.indexOf(0) === -1 ? cam2canvas(...vars) : {};
     }
 
     if (Object.keys(newFormDataInfo).length) {

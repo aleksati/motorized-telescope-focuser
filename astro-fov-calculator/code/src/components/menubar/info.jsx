@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Forecast from "./forecast";
 import InfoInput from "./infoinput";
-import microns2milimeter from "../../utils/microns2milimeter";
+import * as calc from "../../utils/calc";
 
 const Info = (props) => {
   const [state, setState] = useState({
@@ -58,21 +58,13 @@ const Info = (props) => {
     });
   }, [props.isSubmit]);
 
-  // get Focal Ratio (F number)
+  // get Focal Ratio
   useEffect(() => {
-    let barlow =
-      Number(props.barlow.value) <= 0 ? 1 : Number(props.barlow.value);
-    let flength =
-      Number(props.focallength.value) <= 0
-        ? 0
-        : Number(props.focallength.value) * barlow;
-    let aperture =
-      Number(props.aperture.value) <= 0 ? 0 : Number(props.aperture.value);
-
-    let focalRatio =
-      aperture !== 0 && flength !== 0
-        ? Math.floor((flength / aperture) * 10) / 10
-        : "";
+    const focalRatio = calc.getFratio(
+      props.focallength.value,
+      props.barlow.value,
+      props.aperture.value
+    );
 
     setState((prevState) => ({
       ...prevState,
@@ -84,42 +76,12 @@ const Info = (props) => {
     }));
   }, [props.barlow, props.focallength, props.aperture]);
 
-  // get Aspect Ratio (Ar)
+  // get Aspect Ratio
   useEffect(() => {
-    let aspectRatio = "";
-
-    let resX =
-      Number(props.resolutionx.value) <= 0
-        ? 0
-        : Number(props.resolutionx.value);
-    let resY =
-      Number(props.resolutiony.value) <= 0
-        ? 0
-        : Number(props.resolutiony.value);
-
-    let aspectX = 10000;
-    let aspectY =
-      resX === 0 || resY === 0
-        ? 0
-        : (Number(props.resolutiony.value) / Number(props.resolutionx.value)) *
-          10000;
-
-    if (aspectY !== 0) {
-      let factorX = [];
-      let factorY = [];
-      for (let i = 1; i <= aspectX; i++) {
-        if (aspectX % i === 0) factorX.push(i);
-        if (aspectY % i === 0) factorY.push(i);
-      }
-
-      if (factorY.length && factorX.length) {
-        let commonFactors = factorX.filter((n) => factorY.indexOf(n) !== -1);
-        let greatestCommonFactor = Math.max(...commonFactors);
-        aspectX /= greatestCommonFactor;
-        aspectY /= greatestCommonFactor;
-        aspectRatio = aspectX + ":" + aspectY;
-      }
-    }
+    const aspectRatio = calc.getAspectRatio(
+      props.resolutionx.value,
+      props.resolutiony.value
+    );
 
     setState((prevState) => ({
       ...prevState,
@@ -133,21 +95,11 @@ const Info = (props) => {
 
   // get Magnification (Mag)
   useEffect(() => {
-    let barlow =
-      Number(props.barlow.value) <= 0 ? 1 : Number(props.barlow.value);
-    let flength =
-      Number(props.focallength.value) <= 0
-        ? 0
-        : Number(props.focallength.value) * barlow;
-    let eyeflength =
-      Number(props.eyepiecefocallength.value) <= 0
-        ? 0
-        : Number(props.eyepiecefocallength.value);
-
-    let mag =
-      eyeflength !== 0 && flength !== 0
-        ? Math.round((flength / eyeflength) * 10) / 10
-        : "";
+    const flengthScope = calc.getFlength(
+      props.focallength.value,
+      props.barlow.value
+    );
+    const mag = calc.getMag(flengthScope, props.eyepiecefocallength.value);
 
     setState((prevState) => ({
       ...prevState,
@@ -161,16 +113,10 @@ const Info = (props) => {
 
   // get Max Magnification (Max Mag)
   useEffect(() => {
-    let flength =
-      Number(props.focallength.value) <= 0
-        ? 0
-        : Number(props.focallength.value);
-    let aperture =
-      Number(props.aperture.value) <= 0 ? 0 : Number(props.aperture.value);
-
-    let maxMag =
-      flength !== 0 && aperture !== 0 ? Math.round(aperture * 2 * 10) / 10 : "";
-
+    const maxMag = calc.getMaxMag(
+      props.focallength.value,
+      props.aperture.value
+    );
     setState((prevState) => ({
       ...prevState,
       maxMagnification: {
@@ -183,40 +129,21 @@ const Info = (props) => {
 
   // get pxPerSquare (Grid)
   useEffect(() => {
-    let resX =
-      Number(props.resolutionx.value) <= 0
-        ? 0
-        : Number(props.resolutionx.value);
-    let resY =
-      Number(props.resolutiony.value) <= 0
-        ? 0
-        : Number(props.resolutiony.value);
-    let plotX = Number(props.plotsizex) <= 0 ? 1 : Number(props.plotsizex);
-    let plotY = Number(props.plotsizey) <= 0 ? 1 : Number(props.plotsizey);
-    let result = "";
-
-    // if the grid switch is ON and none of the numbers above are 0, we calcuate the grid pixel size.
-    if (props.hasGrid && [resX, resY, plotX, plotY].indexOf(0) === -1) {
-      let pixelsPerUnitX = Math.round((resX / plotX) * 10) / 10;
-      let pixelsPerUnitY = Math.round((resY / plotY) * 10) / 10;
-
-      result = Math.round(pixelsPerUnitX * pixelsPerUnitY * 10) / 10;
-
-      // if hasRedGrid, then the px² should be the: result * redGridFactor²?
-      result = props.hasRedGrid
-        ? Math.round(
-            result * (props.redGridFactor * props.redGridFactor) * 10
-          ) /
-            10 +
-          "px²"
-        : Math.round(result * 10) / 10 + "px²";
-    }
+    const pxPerGridSquare = calc.getPxPerGridSquare(
+      props.resolutionx.value,
+      props.resolutiony.value,
+      props.plotsizex,
+      props.plotsizey,
+      props.hasGrid,
+      props.hasRedGrid,
+      props.redGridFactor
+    );
 
     setState((prevState) => ({
       ...prevState,
       pxPerSquare: {
         ...prevState.pxPerSquare,
-        value: result,
+        value: pxPerGridSquare,
         isChanged:
           props.hasRedGrid !== prevRedGridState.current ||
           props.hasGrid !== prevGridState.current
@@ -252,11 +179,8 @@ const Info = (props) => {
     let result = "";
     // any none of the the var above are 0.
     if ([resX, resY, pixelSize].indexOf(0) === -1) {
-      let { sensorXsizeMM, sensorYsizeMM } = microns2milimeter(
-        resX,
-        resY,
-        pixelSize
-      );
+      const sensorXsizeMM = calc.mic2mm(resX, pixelSize);
+      const sensorYsizeMM = calc.mic2mm(resY, pixelSize);
       result = Math.round(sensorXsizeMM * sensorYsizeMM * 10) / 10 + "mm²";
     }
 

@@ -23,7 +23,6 @@ const Chart = (props) => {
     const fetchData = async () => {
       try {
         const newCrowdData = await getSolarSystemData(initCrowdData);
-        console.log("fresh from API (in Chart.jsx):", newCrowdData);
         const firstCrowdName = Object.keys(newCrowdData)[0];
         const firstCrowd = newCrowdData[firstCrowdName];
 
