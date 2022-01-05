@@ -1,15 +1,12 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
-// props:
-// isEyepieceMode
-// colors
+import PropTypes from "prop-types";
 
 const MENUPAPER_HEIGHT = 48;
-const style = (props) => ({
+const style = (isEyepieceMode) => ({
   style: {
     maxHeight: MENUPAPER_HEIGHT * 4.5,
     width: "20ch",
@@ -22,12 +19,12 @@ const style = (props) => ({
       borderRadius: 20,
     },
     "& .MuiMenuItem-root.Mui-selected": {
-      backgroundColor: props.isEyepieceMode
+      backgroundColor: isEyepieceMode
         ? "rgba(25, 118, 210, 0.2)"
         : "rgba(25, 210, 118, 0.2)",
     },
     "& .MuiMenuItem-root:hover": {
-      border: props.isEyepieceMode
+      border: isEyepieceMode
         ? "1px solid rgba(25, 118, 210, 1)"
         : "1px solid rgba(25, 210, 118, 1)",
     },
@@ -39,15 +36,21 @@ const style = (props) => ({
   },
 });
 
-const BodySelectorMenu = (props) => {
-  const paperPropsStyle = style(props);
-  const [options, setOptions] = React.useState([]);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const CrowdSelector = ({
+  isEyepieceMode,
+  colors,
+  currCrowdName,
+  onCrowdSelection,
+  crowdNamesArray,
+}) => {
+  const paperPropsStyle = style(isEyepieceMode);
+  const [options, setOptions] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  React.useEffect(() => {
-    setOptions(props.crowdNamesArray);
-  }, [props.crowdNamesArray]);
+  useEffect(() => {
+    setOptions(crowdNamesArray);
+  }, [crowdNamesArray]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -59,11 +62,7 @@ const BodySelectorMenu = (props) => {
   return (
     <div>
       <IconButton
-        color={
-          props.isEyepieceMode
-            ? props.colors.eyepieceMode
-            : props.colors.cameraMode
-        }
+        color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
         aria-label="more"
         id="body-selector-menu"
         aria-controls={open ? "body-selector-menu" : undefined}
@@ -87,9 +86,9 @@ const BodySelectorMenu = (props) => {
           <MenuItem
             key={option}
             id={option}
-            selected={option === props.currCrowdName}
+            selected={option === currCrowdName}
             onClick={(e) => {
-              props.onCrowdSelection(e.target.id);
+              onCrowdSelection(e.target.id);
               handleClose();
             }}
           >
@@ -101,4 +100,12 @@ const BodySelectorMenu = (props) => {
   );
 };
 
-export default BodySelectorMenu;
+CrowdSelector.propTypes = {
+  isEyepieceMode: PropTypes.bool.isRequired,
+  colors: PropTypes.object.isRequired,
+  currCrowdName: PropTypes.string.isRequired,
+  onCrowdSelection: PropTypes.func.isRequired,
+  crowdNamesArray: PropTypes.array.isRequired,
+};
+
+export default CrowdSelector;

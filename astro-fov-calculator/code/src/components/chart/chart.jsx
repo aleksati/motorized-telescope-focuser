@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Canvas from "./canvas";
 import BodySelector from "./bodyselector";
+import CrowdSelector from "./crowdselector";
 import initCrowdData from "../../data/crowd-data";
 import { getSolarSystemData } from "../../utils/requests/getSolarsystemdata";
 
-// props:
-// canvasData
-// colors
-
-const Chart = (props) => {
+const Chart = ({ canvasData, colors }) => {
   const [crowdData, setCrowdData] = useState(null);
   const [currCrowd, setCurrCrowd] = useState(null);
   const [currCrowdName, setCurrCrowdName] = useState(null);
-
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -56,23 +52,26 @@ const Chart = (props) => {
 
   return (
     <div className="container p-0">
-      <BodySelector
-        isLoading={isLoading}
-        isError={isError}
-        onBodySelection={handleBodySelection}
-        onCrowdSelection={handleCrowdSelection}
-        crowdNamesArray={crowdData ? Object.keys(crowdData) : []}
-        currCrowdName={currCrowdName ? currCrowdName : ""}
-        colors={props.colors}
-        currCrowd={currCrowd}
-        isEyepieceMode={props.canvasData.isEyepieceMode}
-      />
-      {/* Canvas passes some props as children render props to visible body */}
+      <div className="container d-flex justify-content-around p-0 mb-4">
+        <CrowdSelector
+          isEyepieceMode={canvasData.isEyepieceMode}
+          colors={colors}
+          onCrowdSelection={handleCrowdSelection}
+          currCrowdName={currCrowdName ? currCrowdName : ""}
+          crowdNamesArray={crowdData ? Object.keys(crowdData) : []}
+        />
+        <BodySelector
+          isLoading={isLoading}
+          isError={isError}
+          onBodySelection={handleBodySelection}
+          currCrowd={currCrowd}
+        />
+      </div>
       <Canvas
         isLoading={isLoading}
         isError={isError}
-        canvasData={props.canvasData}
-        colors={props.colors}
+        canvasData={canvasData}
+        colors={colors}
         currCrowd={currCrowd ? currCrowd : {}}
       ></Canvas>
     </div>

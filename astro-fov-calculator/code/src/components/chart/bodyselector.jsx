@@ -1,29 +1,17 @@
 import React from "react";
+import Body from "./body";
 import { DIVIMAGES } from "../../data/img-data";
-import BodySelectorImage from "./bodyselectorimage";
-import BodySelectorMenu from "./bodyselectormenu";
-
-// props:
-// isLoading
-// isError
-// onBodySelection
-// onCrowdSelection
-// crowdNamesArray
-// currCrowdName
-// colors
-// currCrowd
-// isEyepieceMode
 
 const BODYWIDTH = "35px";
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
 
-const BodySelector = (props) => {
+const BodySelector = ({ isLoading, isError, onBodySelection, currCrowd }) => {
   return (
-    <div className="container d-flex justify-content-around p-0 mb-4">
-      {props.isError ? (
+    <>
+      {isError ? (
         <img src={error} alt="ERROR..." width={BODYWIDTH} height={BODYWIDTH} />
-      ) : props.isLoading ? (
+      ) : isLoading ? (
         <img
           src={loading}
           alt="loading..."
@@ -32,29 +20,21 @@ const BodySelector = (props) => {
         />
       ) : (
         <>
-          <BodySelectorMenu
-            isEyepieceMode={props.isEyepieceMode}
-            colors={props.colors}
-            onCrowdSelection={props.onCrowdSelection}
-            currCrowdName={props.currCrowdName}
-            crowdNamesArray={props.crowdNamesArray}
-          />
-          {Object.keys(props.currCrowd).map((key) => {
-            // Here I should really optiise so that only the images that need to be re-rendered are re-rendered
+          {Object.keys(currCrowd).map((key) => {
             return (
-              <BodySelectorImage
-                bodyName={props.currCrowd[key].string}
-                key={props.currCrowd[key].string}
-                isVisible={props.currCrowd[key].isVisible}
-                bodyImg={props.currCrowd[key].img}
-                onBodySelection={props.onBodySelection}
+              <Body
+                bodyName={currCrowd[key].string}
+                key={currCrowd[key].string}
+                isVisible={currCrowd[key].isVisible}
+                bodyImg={currCrowd[key].img}
+                onBodySelection={onBodySelection}
                 bodyWidth={BODYWIDTH}
               />
             );
           })}
         </>
       )}
-    </div>
+    </>
   );
 };
 

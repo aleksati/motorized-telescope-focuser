@@ -22,12 +22,6 @@ export function nrstPointZero(val, scaledCanvasNumb) {
   //return pointZero;
 }
 
-// ../App.js //
-export function numberify(val) {
-  // return only numbers above 0
-  return Number(val) <= 0 ? 0 : Number(val);
-}
-
 // ../components/chart/info.jsx //
 export function getFratio(flength, barlow, aperture) {
   let b = Number(barlow) <= 0 ? 1 : Number(barlow);
@@ -260,4 +254,49 @@ export function getCanvasObject(angUnit, degX, degY, plotDiv) {
         angularUnit: ANGULAR_MEASUREMENT_LABELS[2],
       };
   }
+}
+
+// ../App.js //
+export function numberify(val) {
+  // return only numbers above 0
+  return Number(val) <= 0 ? 0 : Number(val);
+}
+
+export function cam2canvas(
+  pixelsizevalue,
+  resolutionxvalue,
+  resolutionyvalue,
+  focallenghtvalue,
+  barlowvalue
+) {
+  // calculate the tfov (in degrees) from the size of our camera sensor
+  const flength = getFlength(focallenghtvalue, barlowvalue);
+
+  const sensorXsizeMM = mic2mm(resolutionxvalue, pixelsizevalue);
+  const sensorYsizeMM = mic2mm(resolutionyvalue, pixelsizevalue);
+  const fovXrad = sensor2rad(sensorXsizeMM, flength);
+  const fovYrad = sensor2rad(sensorYsizeMM, flength);
+
+  const fovXdeg = rad2deg(fovXrad);
+  const fovYdeg = rad2deg(fovYrad);
+  const preferedUnit = deg2unitCam(fovXdeg, fovYdeg);
+  const plotDivisor = unit2plotDivisor(preferedUnit);
+
+  return getCanvasObject(preferedUnit, fovXdeg, fovYdeg, plotDivisor);
+}
+
+export function eye2canvas(
+  eyepieceafovvalue,
+  eyepiecefocallengthvalue,
+  focallenghtvalue,
+  barlowvalue
+) {
+  // calculate the tfov of or eyepiece from the eyepiece afov, focal length and scope specifics
+  const flength_scope = getFlength(focallenghtvalue, barlowvalue);
+  const mag = getMag(flength_scope, eyepiecefocallengthvalue);
+  const tFovDeg = getTrueFOVdeg(eyepieceafovvalue, mag);
+  const preferedUnit = deg2unitEye(tFovDeg);
+  const plotDivisor = unit2plotDivisor(preferedUnit);
+
+  return getCanvasObject(preferedUnit, tFovDeg, tFovDeg, plotDivisor);
 }

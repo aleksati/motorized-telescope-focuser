@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Menubar from "./components/menubar/menubar";
 import Chart from "./components/chart/chart";
-import eye2canvas from "./utils/eye2canvas";
-import cam2canvas from "./utils/cam2canvas";
-import { numberify } from "./utils/calc";
+import { numberify, cam2canvas, eye2canvas } from "./utils/calc";
 import initColorData from "./data/color-data";
 import initCanvasData from "./data/canvas-data";
 import initFormData from "./data/form-data";
