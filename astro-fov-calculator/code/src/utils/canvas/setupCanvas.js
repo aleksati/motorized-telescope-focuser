@@ -1,5 +1,5 @@
 //// SETUP THE CANVAS ////
-function getDPRwithZoom(zoomValue) {
+export function getDPRwithZoom(zoomValue) {
   let dpr = window.devicePixelRatio || 1;
   let zoomValueFlipped = 100 - zoomValue;
   let valueToAdd = (dpr / 100) * zoomValueFlipped;
@@ -7,7 +7,7 @@ function getDPRwithZoom(zoomValue) {
   return dpr;
 }
 
-function getCanvasHeight(canvasWidth, canvasData) {
+export function getCanvasHeight(canvasWidth, canvasData) {
   let { plotSizeX, plotSizeY } = canvasData;
   let unitY = plotSizeY;
   let unitX = plotSizeX;
@@ -15,13 +15,13 @@ function getCanvasHeight(canvasWidth, canvasData) {
   return pxPerUnitX * unitY;
 }
 
-function getScaledCanvasDim(dpr, width, height) {
+export function getScaledCanvasDim(dpr, width, height) {
   let scaledCanvasWidth = dpr * width;
   let scaledCanvasHeight = dpr * height;
   return { scaledCanvasWidth, scaledCanvasHeight };
 }
 
-function getSizeOffsetForLabels(
+export function getSizeOffsetForLabels(
   hasLabels,
   isEyepieceMode,
   scaledCanvasWidth,
@@ -30,11 +30,11 @@ function getSizeOffsetForLabels(
   labelFont,
   offset
 ) {
+  // calculate how much we should shrink the canvas in order to
+  // fit the labelFont and numberFont nicely on the outside.
+  // we base the calculation on whichever axis has the least pixels.
   let labelOffset = 0;
   if (!isEyepieceMode && hasLabels && scaledCanvasWidth && scaledCanvasHeight) {
-    // calculate how much we should shrink the canvas in order to
-    // fit the labelFont and numberFont nicely on the outside.
-    // we base the calculation on whichever axis has the least pixels.
     let smllstSide =
       scaledCanvasHeight < scaledCanvasWidth
         ? scaledCanvasHeight
@@ -49,10 +49,3 @@ function getSizeOffsetForLabels(
   }
   return labelOffset;
 }
-
-export {
-  getDPRwithZoom,
-  getCanvasHeight,
-  getScaledCanvasDim,
-  getSizeOffsetForLabels,
-};

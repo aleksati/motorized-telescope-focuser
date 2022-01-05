@@ -1,6 +1,6 @@
 import * as calc from "../calc";
 
-export function drawBody(
+export function drawCanvasBody(
   context,
   canvasData,
   scaledCanvasWidth,
@@ -30,5 +30,3 @@ export function drawBody(
     imagePxDiameter
   );
 }
-
-export function drawTextBox() {}

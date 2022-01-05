@@ -64,7 +64,6 @@ const Forecast = (props) => {
 
   return (
     <div className="form-label-group mb-0 mt-2" key="forecast">
-      {console.log(forecastData)}
       <p className={"mr-1 " + props.colors.text}>
         <small>Forecast</small>
       </p>

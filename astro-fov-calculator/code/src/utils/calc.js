@@ -1,5 +1,27 @@
 import { ANGULAR_MEASUREMENT_LABELS } from "../data/angular-measurement-labels";
 
+// ./canvas/drawSquareCanvas & drawCircleCanvas //
+
+export function nrstPointZero(val, scaledCanvasNumb) {
+  // round to nearest 0.5
+  // The screen can’t display half a pixel, so it expands the line to cover a total of two pixels.
+  // thats why every line must go from .5 something to .5 something
+  // http://diveintohtml5.info/canvas.html
+
+  let pointZero = Math.round(val - 0.5) + 0.5;
+  pointZero =
+    pointZero < scaledCanvasNumb
+      ? pointZero
+      : Number.isInteger(scaledCanvasNumb - 0.5)
+      ? scaledCanvasNumb - 1
+      : scaledCanvasNumb - 0.5;
+
+  return pointZero;
+
+  //let pointZero = Math.round(numb);
+  //return pointZero;
+}
+
 // ../App.js //
 export function numberify(val) {
   // return only numbers above 0
