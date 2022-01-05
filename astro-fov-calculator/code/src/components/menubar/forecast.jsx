@@ -1,18 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DIVIMAGES } from "../../data/img-data";
-import { getUserLocation, location2city } from "../../utils/requests";
-import * as calc from "../../utils/calc";
+import {
+  getLatLong,
+  getAreaCountry,
+  getData,
+  filterData,
+} from "../../utils/requests/getForecast";
 
 // Make so that, if we check at 23:00 (for instace) it get the info from 23:00.. not 21:00..
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
 
 const Forecast = (props) => {
-  const [YRdata, setYRdata] = useState({
-    timeseries: {},
-    next6h_temp: 0,
-    next6h_img: "",
-  });
+  const [forecastData, setForecastData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
 
@@ -22,21 +22,27 @@ const Forecast = (props) => {
     setError(false);
     const fetchData = async () => {
       try {
-        const { lat, long } = await getUserLocation();
-        location2city(lat, long);
-        const url =
-          "https://api.met.no/weatherapi/locationforecast/2.0/compact.json?altitude=0&lat=" +
-          lat +
-          "&lon=" +
-          long;
+        const { lat, long } = await getLatLong();
+        const { area, country } = await getAreaCountry(lat, long);
+        const data = await getData(lat, long);
+        const { forecast, forecastTime, forecastDate } = filterData(
+          data.properties.timeseries
+        );
+        const symbol_code = forecast.data.next_6_hours.summary.symbol_code;
+        const temperature = forecast.data.instant.details.air_temperature;
+        const wimg = require("../../img/weather/" +
+          symbol_code +
+          ".png").default;
 
-        const response = await fetch(url);
-        const data = await response.json();
-        const fdata = calc.filterForecastData(data.properties.timeseries); // remove the timeseries to a single desired object.
-        setYRdata((prevState) => ({
-          ...prevState,
-          timeseries: fdata,
-        }));
+        setForecastData({
+          next6h_img: wimg,
+          next6h_temp: temperature,
+          area: area,
+          country: country,
+          current_date: forecastDate,
+          current_time: forecastTime,
+        });
+        setIsLoading(false);
       } catch (error) {
         alert(error);
         setError(true);
@@ -44,30 +50,6 @@ const Forecast = (props) => {
     };
     fetchData();
   }, []);
-
-  // Find the next6hours forecast from 22:00.
-  // + images
-  useEffect(() => {
-    // when the object is empty on load, just return back
-    if (Object.keys(YRdata.timeseries).length === 0) {
-      return;
-    }
-    const symbol_code = YRdata.timeseries.data.next_6_hours.summary.symbol_code;
-    const temperature = YRdata.timeseries.data.instant.details.air_temperature;
-    // "try" to get image from folder based on symbol_code
-    try {
-      const wimg = require("../../img/weather/" + symbol_code + ".png").default;
-      setYRdata((prevState) => ({
-        ...prevState,
-        next6h_img: wimg,
-        next6h_temp: temperature,
-      }));
-      setIsLoading(false); // loading is complete when we have the image loaded in our state.
-    } catch (error) {
-      console.log(error);
-      setError(true);
-    }
-  }, [YRdata.timeseries]);
 
   const borderStyle = () => {
     let css =
@@ -82,6 +64,7 @@ const Forecast = (props) => {
 
   return (
     <div className="form-label-group mb-0 mt-2" key="forecast">
+      {console.log(forecastData)}
       <p className={"mr-1 " + props.colors.text}>
         <small>Forecast</small>
       </p>
@@ -96,13 +79,13 @@ const Forecast = (props) => {
       ) : (
         <p className={borderStyle()}>
           <img
-            src={YRdata.next6h_img}
+            src={forecastData.next6h_img}
             alt="Specification Drawing"
             width="25px"
             height="25px"
             className="mr-2"
           />
-          {YRdata.next6h_temp}°
+          {forecastData.next6h_temp}°
         </p>
       )}
     </div>

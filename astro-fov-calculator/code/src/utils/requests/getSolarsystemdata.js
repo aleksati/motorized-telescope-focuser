@@ -20,7 +20,7 @@ import {
 //   isVisible: false,
 //   auFromEarth: null,
 //   kmFromEarth: null,
-//   angularDiameter: null, // Diameter: 0° 00' 12.065"
+//   angularDiameter: null,
 //   magnitude: null,
 // },
 // ...
@@ -37,7 +37,7 @@ const functionMap = {
 };
 
 // returns a promise
-export const getSolarSystemData = async (crowdsObj) => {
+export async function getSolarSystemData(crowdsObj) {
   let crowdsObjCopy = JSON.parse(JSON.stringify(crowdsObj));
   const date = new Date();
   const toi = createTimeOfInterest.fromDate(date);
@@ -69,43 +69,4 @@ export const getSolarSystemData = async (crowdsObj) => {
     }
   }
   return crowdsObjCopy;
-};
-
-// used in component/menubar/forecast.jsx
-// request to use user location through the browser
-export async function getUserLocation() {
-  return new Promise((resolve, reject) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          let latitude = position.coords.latitude;
-          let longitude = position.coords.longitude;
-          resolve({
-            lat: Math.round(latitude),
-            long: Math.round(longitude),
-          });
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } else {
-      reject("geolocation API not supported :(");
-    }
-  });
-}
-
-const GOOGLE_API_KEY;
-
-export async function location2city(lat, long) {
-  const url =
-    "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-    lat +
-    "," +
-    long +
-    "&key=" +
-    GOOGLE_API_KEY;
-  const response = await fetch(url);
-  const data = await response.json();
-  console.log(data);
 }

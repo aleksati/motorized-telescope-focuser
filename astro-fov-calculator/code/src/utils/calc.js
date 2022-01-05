@@ -6,28 +6,6 @@ export function numberify(val) {
   return Number(val) <= 0 ? 0 : Number(val);
 }
 
-// ../components/chart/forecast.jsx //
-export function filterForecastData(data) {
-  // filter forecastData from the YR API
-  // const url = "https://api.met.no/weatherapi/locationforecast/2.0/compact.json?altitude=0&lat=" + lat + "&lon=" + long;
-  const currTime = Date();
-  let currTimeHour = currTime.slice(16, 18);
-  let idx;
-
-  // We are only interested in one weather forcast at night time.
-  // IF its night already, we find the current hour and return it.
-  if (currTimeHour >= "21" || currTimeHour <= "03") {
-    idx = data.findIndex((item) => {
-      return item.time.slice(11, 13) === currTimeHour;
-    });
-  } else {
-    idx = data.findIndex((item) => {
-      return item.time.slice(11, 13) === "21";
-    });
-  }
-  return data[idx];
-}
-
 // ../components/chart/info.jsx //
 export function getFratio(flength, barlow, aperture) {
   let b = Number(barlow) <= 0 ? 1 : Number(barlow);

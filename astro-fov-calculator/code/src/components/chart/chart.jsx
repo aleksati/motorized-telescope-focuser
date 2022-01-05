@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Canvas from "./canvas";
 import BodySelector from "./bodyselector";
 import initCrowdData from "../../data/crowd-data";
-import { getSolarSystemData } from "../../utils/requests";
+import { getSolarSystemData } from "../../utils/requests/getSolarsystemdata";
 
 // props:
 // canvasData
