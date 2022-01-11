@@ -60,6 +60,7 @@ export async function getData(lat, long) {
 
 export async function getAreaCountry(lat, long) {
   //reverse geocode
+  // from https://rapidapi.com/trueway/api/trueway-geocoding/
   const url =
     "https://trueway-geocoding.p.rapidapi.com/ReverseGeocode?location=" +
     lat +

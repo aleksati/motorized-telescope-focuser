@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Canvas from "./canvas";
-import BodySelector from "./bodyselector";
-import CrowdSelector from "./crowdselector";
+import Canvas from "./canvas/canvas";
+import BodySelector from "./selector/bodyselector";
+import CrowdSelector from "./selector/crowdselector";
 import initCrowdData from "../../data/crowd-data";
 import { getSolarSystemData } from "../../utils/requests/getSolarsystemdata";
+import PropTypes from "prop-types";
 
 const Chart = ({ canvasData, colors }) => {
   const [crowdData, setCrowdData] = useState(null);
@@ -34,12 +35,16 @@ const Chart = ({ canvasData, colors }) => {
     fetchData();
   }, []);
 
+  // Can have a useEffect that triggers when currCrowd is changed
+  // set the currBody
+
   const handleCrowdSelection = (crowdSelection) => {
     setCurrCrowdName(crowdSelection);
     setCurrCrowd(crowdData[crowdSelection]);
   };
 
   const handleBodySelection = (bodyName) => {
+    // set isVisible value to true to display the X over the planet in planetselector.
     setCurrCrowd((prevState) => {
       let stateCopy = JSON.parse(JSON.stringify(prevState));
       Object.keys(stateCopy).forEach((key) => {
@@ -64,7 +69,7 @@ const Chart = ({ canvasData, colors }) => {
           isLoading={isLoading}
           isError={isError}
           onBodySelection={handleBodySelection}
-          currCrowd={currCrowd}
+          currCrowd={currCrowd ? currCrowd : {}}
         />
       </div>
       <Canvas
@@ -76,6 +81,11 @@ const Chart = ({ canvasData, colors }) => {
       ></Canvas>
     </div>
   );
+};
+
+Chart.propTypes = {
+  canvasData: PropTypes.object.isRequired,
+  colors: PropTypes.object.isRequired,
 };
 
 export default Chart;

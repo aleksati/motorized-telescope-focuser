@@ -215,6 +215,7 @@ export function unit2ang(deg, unit) {
       return deg2arcmin(deg);
     case ANGULAR_MEASUREMENT_LABELS[2]:
       return deg2arcsec(deg);
+    default:
   }
 }
 
@@ -227,6 +228,7 @@ export function unit2plotDivisor(unit) {
       return plotDiv;
     case ANGULAR_MEASUREMENT_LABELS[2]:
       return 1;
+    default:
   }
 }
 
@@ -253,6 +255,7 @@ export function getCanvasObject(angUnit, degX, degY, plotDiv) {
         plotDivisor: plotDiv,
         angularUnit: ANGULAR_MEASUREMENT_LABELS[2],
       };
+    default:
   }
 }
 

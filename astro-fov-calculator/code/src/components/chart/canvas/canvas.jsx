@@ -10,11 +10,11 @@ import {
   getCanvasHeight,
   getScaledCanvasDim,
   getSizeOffsetForLabels,
-} from "../../utils/canvas/setupCanvas.js";
-import { drawCircleCanvas } from "../../utils/canvas/drawCircleCanvas.js";
-import { drawCanvasBg } from "../../utils/canvas/drawCanvasBg.js";
-import { drawSquareCanvas } from "../../utils/canvas/drawSquareCanvas.js";
-import { drawCanvasBody } from "../../utils/canvas/drawCanvasBody.js";
+} from "../../../utils/canvas/setupCanvas.js";
+import { drawCircleCanvas } from "../../../utils/canvas/drawCircleCanvas.js";
+import { drawCanvasBg } from "../../../utils/canvas/drawCanvasBg.js";
+import { drawSquareCanvas } from "../../../utils/canvas/drawSquareCanvas.js";
+import { drawCanvasBody } from "../../../utils/canvas/drawCanvasBody.js";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 
