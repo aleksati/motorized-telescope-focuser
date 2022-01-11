@@ -46,10 +46,12 @@ export async function getSolarSystemData(crowdsObj) {
   for (let i = 0; i < crowds.length; i++) {
     if (crowds[i] !== "planets" && crowds[i] !== "moons") continue;
     let currCrowd = crowdsObj[crowds[i]];
-    let currCrowdBodies = Object.keys(currCrowd);
+    let currCrowdBodies = Object.keys(currCrowd).filter(
+      (item) => item !== "key"
+    );
     for (let x = 0; x < currCrowdBodies.length; x++) {
       let currBody = currCrowd[currCrowdBodies[x]];
-      let currBodyName = currBody.string;
+      let currBodyName = currBody.key;
       //   if (currBodyName !== "mercury") continue; for testing
 
       let currMethod = functionMap[currBodyName];

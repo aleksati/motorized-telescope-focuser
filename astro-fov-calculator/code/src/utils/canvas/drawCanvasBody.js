@@ -5,11 +5,11 @@ export function drawCanvasBody(
   canvasData,
   scaledCanvasWidth,
   scaledCanvasHeight,
-  currBody,
+  selectedBody,
   labelOffset
 ) {
   const { plotSizeX, plotDivisor, angularUnit } = canvasData;
-  const { angularDiameterDeg, img } = currBody;
+  const { angularDiameterDeg, img } = selectedBody;
   const bodyUnitCount = calc.unit2ang(angularDiameterDeg, angularUnit);
 
   const canvasUnitCount = plotSizeX / plotDivisor;

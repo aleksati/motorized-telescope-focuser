@@ -39,9 +39,9 @@ const style = (isEyepieceMode) => ({
 const CrowdSelector = ({
   isEyepieceMode,
   colors,
-  currCrowdName,
   onCrowdSelection,
-  crowdNamesArray,
+  currCrowdName,
+  crowdNames,
 }) => {
   const paperPropsStyle = style(isEyepieceMode);
   const [options, setOptions] = useState([]);
@@ -49,8 +49,8 @@ const CrowdSelector = ({
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    setOptions(crowdNamesArray);
-  }, [crowdNamesArray]);
+    setOptions(crowdNames);
+  }, [crowdNames]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -103,9 +103,9 @@ const CrowdSelector = ({
 CrowdSelector.propTypes = {
   isEyepieceMode: PropTypes.bool.isRequired,
   colors: PropTypes.object.isRequired,
-  currCrowdName: PropTypes.string.isRequired,
   onCrowdSelection: PropTypes.func.isRequired,
-  crowdNamesArray: PropTypes.array.isRequired,
+  currCrowdName: PropTypes.string.isRequired,
+  crowdNames: PropTypes.array.isRequired,
 };
 
 export default CrowdSelector;

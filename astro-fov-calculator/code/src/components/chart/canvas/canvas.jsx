@@ -15,8 +15,8 @@ import { drawCircleCanvas } from "../../../utils/canvas/drawCircleCanvas.js";
 import { drawCanvasBg } from "../../../utils/canvas/drawCanvasBg.js";
 import { drawSquareCanvas } from "../../../utils/canvas/drawSquareCanvas.js";
 import { drawCanvasBody } from "../../../utils/canvas/drawCanvasBody.js";
-import PropTypes from "prop-types";
 import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
 const LABELFONT = "40px Arial";
 const NUMBERFONT = "20px Arial";
@@ -24,13 +24,12 @@ const OFFSET = 5;
 
 // layouteffect runs before the DOM initally renders.
 // A good place to update/get size of DOM elements to avoid flickering.
-const Canvas = ({ isLoading, isError, canvasData, colors, currCrowd }) => {
+const Canvas = ({ canvasData, colors, currBody }) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(null);
   const [canvasWidth, setCanvasWidth] = useState(null);
   const [forceUpdate, setForceUpdate] = useReducer((x) => x + 1, 0);
-  const [currBody, setCurrBody] = useState(null);
 
   // on mount, listen and forceUpdate on the window resizing.
   useEffect(() => {
@@ -56,19 +55,6 @@ const Canvas = ({ isLoading, isError, canvasData, colors, currCrowd }) => {
       setCanvasWidth(cw);
     }
   }, [containerWidth, canvasData.zoomValue]);
-
-  // set the currBody (selected from the bodySelector) from currCrowd
-  useEffect(() => {
-    if (!isLoading && !isError) {
-      let selectedBodyName = Object.keys(currCrowd).filter(
-        (key) => currCrowd[key].isVisible
-      );
-      let newBody = selectedBodyName.length
-        ? currCrowd[selectedBodyName]
-        : null;
-      setCurrBody(newBody);
-    }
-  }, [currCrowd, isLoading, isError]);
 
   // Paint the canvas
   useLayoutEffect(() => {
@@ -165,10 +151,8 @@ const Canvas = ({ isLoading, isError, canvasData, colors, currCrowd }) => {
 };
 
 Canvas.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  isError: PropTypes.bool.isRequired,
-  currCrowd: PropTypes.object.isRequired,
   canvasData: PropTypes.object.isRequired,
+  currBody: PropTypes.object.isRequired,
   colors: PropTypes.object.isRequired,
 };
 

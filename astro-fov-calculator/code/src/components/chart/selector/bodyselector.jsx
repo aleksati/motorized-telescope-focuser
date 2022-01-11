@@ -3,33 +3,43 @@ import Body from "./body";
 import { DIVIMAGES } from "../../../data/img-data";
 import PropTypes from "prop-types";
 
-const BODYWIDTH = "35px";
+const bodyWidth = "35px";
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
+const selectedx = DIVIMAGES.selectedX;
 
-const BodySelector = ({ isLoading, isError, onBodySelection, currCrowd }) => {
+const BodySelector = ({
+  isLoading,
+  isError,
+  onBodySelection,
+  currCrowd,
+  currBodyName,
+}) => {
   return (
     <>
       {isError ? (
-        <img src={error} alt="ERROR..." width={BODYWIDTH} height={BODYWIDTH} />
+        <img src={error} alt="ERROR..." width={bodyWidth} height={bodyWidth} />
       ) : isLoading ? (
         <img
           src={loading}
           alt="loading..."
-          width={BODYWIDTH}
-          height={BODYWIDTH}
+          width={bodyWidth}
+          height={bodyWidth}
         />
       ) : (
         <>
-          {Object.keys(currCrowd).map((key) => {
+          {Object.keys(currCrowd).map((item) => {
+            if (item === "key") return;
+            let bodyName = currCrowd[item].key;
             return (
               <Body
-                bodyName={currCrowd[key].string}
-                key={currCrowd[key].string}
-                isVisible={currCrowd[key].isVisible}
-                bodyImg={currCrowd[key].img}
+                name={bodyName}
+                key={bodyName}
+                img={
+                  bodyName === currBodyName ? selectedx : currCrowd[item].img
+                }
                 onBodySelection={onBodySelection}
-                bodyWidth={BODYWIDTH}
+                bodyWidth={bodyWidth}
               />
             );
           })}

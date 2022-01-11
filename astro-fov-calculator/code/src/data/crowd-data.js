@@ -1,64 +1,58 @@
 import { PLANETIMAGES, MOONIMAGES } from "./img-data";
 
 const initPlanetData = {
+  key: "planets",
   mercury: {
-    string: "mercury",
+    key: "mercury",
     img: PLANETIMAGES.mercury,
-    isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   venus: {
-    string: "venus",
+    key: "venus",
     img: PLANETIMAGES.venus,
-    isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   mars: {
-    string: "mars",
+    key: "mars",
     img: PLANETIMAGES.mars,
-    isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0°. 00' 12.065"
     magnitude: null,
   },
   jupiter: {
-    string: "jupiter",
+    key: "jupiter",
     img: PLANETIMAGES.jupiter,
-    isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   saturn: {
-    string: "saturn",
+    key: "saturn",
     img: PLANETIMAGES.saturn,
-    isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   uranus: {
-    string: "uranus",
+    key: "uranus",
     img: PLANETIMAGES.uranus,
-    isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
     magnitude: null,
   },
   neptune: {
-    string: "neptune",
+    key: "neptune",
     img: PLANETIMAGES.neptune,
-    isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
@@ -67,10 +61,10 @@ const initPlanetData = {
 };
 
 const initMoonData = {
+  key: "moons",
   moon: {
-    string: "moon",
+    key: "moon",
     img: MOONIMAGES.moon,
-    isVisible: false,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"

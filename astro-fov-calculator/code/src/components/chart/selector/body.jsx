@@ -1,13 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { DIVIMAGES } from "../../../data/img-data";
 import PropTypes from "prop-types";
 
 // https://www.framer.com/docs/examples/
 
-const SELECTEDX = DIVIMAGES.selectedX;
-
-const Body = ({ bodyName, isVisible, bodyImg, onBodySelection, bodyWidth }) => {
+const Body = ({ name, img, onBodySelection, bodyWidth }) => {
   return (
     <motion.div
       //   initial={true}
@@ -20,13 +17,13 @@ const Body = ({ bodyName, isVisible, bodyImg, onBodySelection, bodyWidth }) => {
       }}
     >
       <img
-        src={isVisible ? SELECTEDX : bodyImg}
-        alt={bodyName}
-        width={isVisible ? bodyWidth.slice(0, 2) - 7 + "px" : bodyWidth}
+        src={img}
+        alt={name}
+        width={bodyWidth}
         style={{
-          opacity: isVisible ? 0.4 : 1,
+          opacity: 1,
           cursor: "pointer",
-          margin: isVisible ? "10%" : "0",
+          margin: "0",
         }}
       />
     </motion.div>
@@ -34,10 +31,10 @@ const Body = ({ bodyName, isVisible, bodyImg, onBodySelection, bodyWidth }) => {
 };
 
 Body.propTypes = {
-  bodyName: PropTypes.string.isRequired,
-  isVisible: PropTypes.bool.isRequired,
-  bodyImg: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  img: PropTypes.string.isRequired,
   onBodySelection: PropTypes.func.isRequired,
+  bodyWidth: PropTypes.string.isRequired,
 };
 
 export default Body;

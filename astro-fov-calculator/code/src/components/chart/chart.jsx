@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 const Chart = ({ canvasData, colors }) => {
   const [crowdData, setCrowdData] = useState(null);
   const [currCrowd, setCurrCrowd] = useState(null);
-  const [currCrowdName, setCurrCrowdName] = useState(null);
+  const [currBody, setCurrBody] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -25,7 +25,6 @@ const Chart = ({ canvasData, colors }) => {
 
         setCrowdData(newCrowdData);
         setCurrCrowd(firstCrowd);
-        setCurrCrowdName(firstCrowdName);
         setIsLoading(false);
       } catch (error) {
         alert(error);
@@ -35,24 +34,19 @@ const Chart = ({ canvasData, colors }) => {
     fetchData();
   }, []);
 
-  // Can have a useEffect that triggers when currCrowd is changed
-  // set the currBody
-
+  // Set the currCrowed based on the user selection in the crowdSelector menu.
   const handleCrowdSelection = (crowdSelection) => {
-    setCurrCrowdName(crowdSelection);
-    setCurrCrowd(crowdData[crowdSelection]);
+    if (!isLoading && !isError) setCurrCrowd(crowdData[crowdSelection]);
   };
 
   const handleBodySelection = (bodyName) => {
-    // set isVisible value to true to display the X over the planet in planetselector.
-    setCurrCrowd((prevState) => {
-      let stateCopy = JSON.parse(JSON.stringify(prevState));
-      Object.keys(stateCopy).forEach((key) => {
-        stateCopy[key].isVisible =
-          String(bodyName) === String(key) ? !stateCopy[key].isVisible : false;
-      });
-      return { ...stateCopy };
-    });
+    if (!isLoading && !isError) {
+      if (!currBody || currBody.key !== bodyName) {
+        setCurrBody(currCrowd[bodyName]);
+        return;
+      }
+      setCurrBody(null);
+    }
   };
 
   return (
@@ -61,23 +55,22 @@ const Chart = ({ canvasData, colors }) => {
         <CrowdSelector
           isEyepieceMode={canvasData.isEyepieceMode}
           colors={colors}
+          currCrowdName={currCrowd ? currCrowd.key : ""}
           onCrowdSelection={handleCrowdSelection}
-          currCrowdName={currCrowdName ? currCrowdName : ""}
-          crowdNamesArray={crowdData ? Object.keys(crowdData) : []}
+          crowdNames={crowdData ? Object.keys(crowdData) : []}
         />
         <BodySelector
           isLoading={isLoading}
           isError={isError}
           onBodySelection={handleBodySelection}
           currCrowd={currCrowd ? currCrowd : {}}
+          currBodyName={currBody ? currBody.key : ""}
         />
       </div>
       <Canvas
-        isLoading={isLoading}
-        isError={isError}
         canvasData={canvasData}
         colors={colors}
-        currCrowd={currCrowd ? currCrowd : {}}
+        currBody={currBody ? currBody : {}}
       ></Canvas>
     </div>
   );
