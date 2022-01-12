@@ -13,7 +13,7 @@ const Chart = ({ canvasData, colors }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  // Fetch current API data on celestial objects (AU, distance from earth etc.)
+  // Fetch current API data on celestiasl objects (AU, distance from earth etc.)
   useEffect(() => {
     setIsLoading(true);
     setIsError(false);
@@ -36,7 +36,10 @@ const Chart = ({ canvasData, colors }) => {
 
   // Set the currCrowed based on the user selection in the crowdSelector menu.
   const handleCrowdSelection = (crowdSelection) => {
-    if (!isLoading && !isError) setCurrCrowd(crowdData[crowdSelection]);
+    if (!isLoading && !isError) {
+      setCurrCrowd(crowdData[crowdSelection]);
+      setCurrBody(null);
+    }
   };
 
   const handleBodySelection = (bodyName) => {

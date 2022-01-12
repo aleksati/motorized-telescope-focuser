@@ -31,8 +31,8 @@ const Canvas = ({ canvasData, colors, currBody }) => {
   const [canvasWidth, setCanvasWidth] = useState(null);
   const [forceUpdate, setForceUpdate] = useReducer((x) => x + 1, 0);
 
-  // on mount, listen and forceUpdate on the window resizing.
   useEffect(() => {
+    // on mount, listen and forceUpdate on the window resizing.
     if (canvasRef.current) {
       window.addEventListener("resize", setForceUpdate);
       return () => {
@@ -41,15 +41,19 @@ const Canvas = ({ canvasData, colors, currBody }) => {
     }
   }, [canvasRef]);
 
-  // Set the containerWidth when the parent DIV mounts, and whenever we resize the window.
   useLayoutEffect(() => {
+    // Set the containerWidth when the parent DIV mounts,
+    // and whenever we resize the window.
+
     if (containerRef.current) {
       setContainerWidth(containerRef.current.parentNode.clientWidth);
     }
   }, [containerRef, forceUpdate]);
 
-  // Set the canvasWidth If the container width OR a new zoom value is registered.
   useLayoutEffect(() => {
+    // Set the canvasWidth If the container width
+    //OR a new zoom value is registered.
+
     if (containerWidth) {
       let cw = (containerWidth / 100) * canvasData.zoomValue;
       setCanvasWidth(cw);

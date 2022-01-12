@@ -3,6 +3,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import Form from "./form";
 import Info from "./info";
 import CanvasOptions from "./canvasoptions";
+import PropTypes from "prop-types";
 
 const Menubar = (props) => (
   <div className="container p-0">
@@ -53,5 +54,19 @@ const Menubar = (props) => (
     />
   </div>
 );
+
+Menubar.propTypes = {
+  onFormChange: PropTypes.func.isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
+  onModeChange: PropTypes.func.isRequired,
+  onGridChange: PropTypes.func.isRequired,
+  onRedGridChange: PropTypes.func.isRequired,
+  onLabelChange: PropTypes.func.isRequired,
+  onZoomChange: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
+  formDataInfo: PropTypes.object.isRequired,
+  colors: PropTypes.object.isRequired,
+  isSubmit: PropTypes.bool.isRequired,
+};
 
 export default Menubar;

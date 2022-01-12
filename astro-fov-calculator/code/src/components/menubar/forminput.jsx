@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const FormInput = (props) => (
+const FormInput = ({ items, onFormChange, addoncolor }) => (
   <div className="d-flex">
-    {props.items.map((item) => {
+    {items.map((item) => {
       return (
         <div className="form-label-group" key={item.ref}>
           <input
@@ -10,7 +11,7 @@ const FormInput = (props) => (
             placeholder={item.name}
             id={item.ref}
             name={item.ref}
-            onChange={props.onFormChange}
+            onChange={onFormChange}
             value={item.value}
             required={item.required}
             className="form-control ml-2"
@@ -18,7 +19,7 @@ const FormInput = (props) => (
           />
           <label htmlFor={item.ref}>{item.name}</label>
           <div className="input-group-append">
-            <span className={props.addoncolor} id={item.ref}>
+            <span className={addoncolor} id={item.ref}>
               {item.unit}
             </span>
           </div>
@@ -27,5 +28,11 @@ const FormInput = (props) => (
     })}
   </div>
 );
+
+FormInput.propTypes = {
+  items: PropTypes.array.isRequired,
+  onFormChange: PropTypes.func.isRequired,
+  addoncolor: PropTypes.string.isRequired,
+};
 
 export default FormInput;

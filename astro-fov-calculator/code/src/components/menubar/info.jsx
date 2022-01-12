@@ -5,7 +5,7 @@ import * as calc from "../../utils/calc";
 import initInfoData from "../../data/info-data";
 
 const Info = (props) => {
-  const [state, setState] = useState(initInfoData);
+  const [infoData, setInfoData] = useState(initInfoData);
   // for get pxPerSquare (Grid)
   const prevRedGridState = useRef(props.hasRedGrid);
   const prevGridState = useRef(props.hasGrid);
@@ -13,8 +13,8 @@ const Info = (props) => {
   // When I submit, I set the isChanged fla to false
   // Whenever the info boxes is changed after submit, the text color changes.
   useEffect(() => {
-    setState((prevState) => {
-      let stateCopy = JSON.parse(JSON.stringify(prevState));
+    setInfoData((prevInfoData) => {
+      let stateCopy = JSON.parse(JSON.stringify(prevInfoData));
       Object.keys(stateCopy).forEach((key) => {
         stateCopy[key].isChanged = false;
       });
@@ -30,10 +30,10 @@ const Info = (props) => {
       props.aperture.value
     );
 
-    setState((prevState) => ({
-      ...prevState,
+    setInfoData((prevInfoData) => ({
+      ...prevInfoData,
       focalRatio: {
-        ...prevState.focalRatio,
+        ...prevInfoData.focalRatio,
         value: focalRatio,
         isChanged: true,
       },
@@ -47,10 +47,10 @@ const Info = (props) => {
       props.resolutiony.value
     );
 
-    setState((prevState) => ({
-      ...prevState,
+    setInfoData((prevInfoData) => ({
+      ...prevInfoData,
       aspectRatio: {
-        ...prevState.aspectRatio,
+        ...prevInfoData.aspectRatio,
         value: aspectRatio,
         isChanged: true,
       },
@@ -65,10 +65,10 @@ const Info = (props) => {
     );
     const mag = calc.getMag(flengthScope, props.eyepiecefocallength.value);
 
-    setState((prevState) => ({
-      ...prevState,
+    setInfoData((prevInfoData) => ({
+      ...prevInfoData,
       magnification: {
-        ...prevState.magnification,
+        ...prevInfoData.magnification,
         value: mag,
         isChanged: true,
       },
@@ -81,10 +81,10 @@ const Info = (props) => {
       props.focallength.value,
       props.aperture.value
     );
-    setState((prevState) => ({
-      ...prevState,
+    setInfoData((prevInfoData) => ({
+      ...prevInfoData,
       maxMagnification: {
-        ...prevState.maxMagnification,
+        ...prevInfoData.maxMagnification,
         value: maxMag,
         isChanged: true,
       },
@@ -103,15 +103,15 @@ const Info = (props) => {
       props.redGridFactor
     );
 
-    setState((prevState) => ({
-      ...prevState,
+    setInfoData((prevInfoData) => ({
+      ...prevInfoData,
       pxPerSquare: {
-        ...prevState.pxPerSquare,
+        ...prevInfoData.pxPerSquare,
         value: pxPerGridSquare,
         isChanged:
           props.hasRedGrid !== prevRedGridState.current ||
           props.hasGrid !== prevGridState.current
-            ? prevState.pxPerSquare.isChanged
+            ? prevInfoData.pxPerSquare.isChanged
             : true,
       },
     }));
@@ -135,10 +135,10 @@ const Info = (props) => {
       props.resolutiony.value,
       props.pixelsize.value
     );
-    setState((prevState) => ({
-      ...prevState,
+    setInfoData((prevInfoData) => ({
+      ...prevInfoData,
       chipSize: {
-        ...prevState.chipSize,
+        ...prevInfoData.chipSize,
         value: result,
         isChanged: true,
       },
@@ -152,7 +152,7 @@ const Info = (props) => {
       }
     >
       <div className="d-flex justify-content-around">
-        {Object.values(state).map((item) => {
+        {Object.values(infoData).map((item) => {
           if (props.isEyepieceMode && item.isEyepieceInfo) {
             return (
               <InfoInput

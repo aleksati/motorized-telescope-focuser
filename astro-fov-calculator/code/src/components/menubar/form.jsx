@@ -1,20 +1,23 @@
 import React from "react";
 import FormInput from "./forminput";
+import PropTypes from "prop-types";
 
-const Form = (props) => {
+const Form = ({
+  colors,
+  isEyepieceMode,
+  formData,
+  onFormChange,
+  onFormSubmit,
+}) => {
   const SubmitBtnColor = () => {
-    let className = "btn ml-1 mb-1 " + props.colors.text + " bg-";
-    className += props.isEyepieceMode
-      ? props.colors.eyepieceMode
-      : props.colors.cameraMode;
+    let className = "btn ml-1 mb-1 " + colors.text + " bg-";
+    className += isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
     return className;
   };
 
   const inputAddonColor = () => {
-    let className = "input-group-text " + props.colors.text + " bg-";
-    className += props.isEyepieceMode
-      ? props.colors.eyepieceMode
-      : props.colors.cameraMode;
+    let className = "input-group-text " + colors.text + " bg-";
+    className += isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
     return className;
   };
 
@@ -22,19 +25,14 @@ const Form = (props) => {
     <div
       className={
         "form-group border border-white rounded ml-1 mb-1 col bg-" +
-        props.colors.background
+        colors.background
       }
     >
-      <h2 className={"ml-2 mt-1 " + props.colors.text}>Camera</h2>
+      <h2 className={"ml-2 mt-1 " + colors.text}>Camera</h2>
       <FormInput
-        title="Camera"
-        items={[
-          props.formData.pixelsize,
-          props.formData.resolutionx,
-          props.formData.resolutiony,
-        ]}
+        items={[formData.pixelsize, formData.resolutionx, formData.resolutiony]}
         addoncolor={inputAddonColor()}
-        onFormChange={props.onFormChange}
+        onFormChange={onFormChange}
       />
     </div>
   );
@@ -43,46 +41,45 @@ const Form = (props) => {
     <div
       className={
         "form-group border border-white rounded ml-1 mb-1 col bg-" +
-        props.colors.background
+        colors.background
       }
     >
-      <h2 className={"ml-2 mt-1 " + props.colors.text}>Eyepiece</h2>
+      <h2 className={"ml-2 mt-1 " + colors.text}>Eyepiece</h2>
       <FormInput
-        title="Eyepiece"
-        items={[
-          props.formData.eyepiecefocallength,
-          props.formData.eyepieceafov,
-        ]}
+        items={[formData.eyepiecefocallength, formData.eyepieceafov]}
         addoncolor={inputAddonColor()}
-        onFormChange={props.onFormChange}
+        onFormChange={onFormChange}
       />
     </div>
   );
 
   return (
-    <form className="d-flex" onSubmit={props.onFormSubmit}>
+    <form className="d-flex" onSubmit={onFormSubmit}>
       <div
         className={
           "form-group border border-white rounded mb-1 col bg-" +
-          props.colors.background
+          colors.background
         }
       >
-        <h2 className={"ml-2 mt-1 " + props.colors.text}>Telescope</h2>
+        <h2 className={"ml-2 mt-1 " + colors.text}>Telescope</h2>
         <FormInput
-          title="Telescope"
-          items={[
-            props.formData.aperture,
-            props.formData.focallength,
-            props.formData.barlow,
-          ]}
-          onFormChange={props.onFormChange}
+          items={[formData.aperture, formData.focallength, formData.barlow]}
+          onFormChange={onFormChange}
           addoncolor={inputAddonColor()}
         />
       </div>
-      {props.isEyepieceMode ? getEyeSection() : getCamSection()}
+      {isEyepieceMode ? getEyeSection() : getCamSection()}
       <input className={SubmitBtnColor()} type="submit" value="Plot!" />
     </form>
   );
+};
+
+Form.propTypes = {
+  colors: PropTypes.object.isRequired,
+  isEyepieceMode: PropTypes.bool.isRequired,
+  formData: PropTypes.object.isRequired,
+  onFormChange: PropTypes.func.isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
 };
 
 export default Form;

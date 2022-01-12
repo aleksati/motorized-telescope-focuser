@@ -5,10 +5,10 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PropTypes from "prop-types";
 
-const MENUPAPER_HEIGHT = 48;
+const menuPaperHeight = 48;
 const style = (isEyepieceMode) => ({
   style: {
-    maxHeight: MENUPAPER_HEIGHT * 4.5,
+    maxHeight: menuPaperHeight * 4.5,
     width: "20ch",
     background: "black",
     color: "white",
