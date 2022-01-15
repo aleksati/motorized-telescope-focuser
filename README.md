@@ -1,1 +1,1 @@
-# Tools for my Astronomy Hobby!
+# Motorized Telescope Focuser
